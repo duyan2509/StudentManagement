@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/icons8_home_80"
+        android:title="HOME"
+        />
+    <item
+        android:id="@+id/navigation_myclass"
+        android:icon="@drawable/icons8_note_100"
+        android:title="MY CLASSES" />
+    <item
+        android:id="@+id/navigation_inbox"
+        android:icon="@drawable/icons8_message_50"
+        android:title="INBOX" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/icons8_account_50"
+        android:title="PROFILE" />
+
+</menu>

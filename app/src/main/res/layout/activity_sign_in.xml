@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInActivity"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingVertical="36dp"
+    android:paddingHorizontal="24dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Login Account"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_weight="1"
+        android:text="Please login with registered account" />
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:text="Email"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_si_ed_em"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconTint="@color/main_purple"
+        android:hint="Enter your email"
+        android:textColorHint="@color/grey_font"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        >
+    <EditText
+        android:id="@+id/edEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:textSize="16dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/edittext_border"
+        android:paddingHorizontal="12dp"
+        android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/baseline_contact_mail_24"
+        android:drawablePadding="6dp"
+
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:text="Password"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_si_ed_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/main_blue"
+        android:hint="Enter your password"
+        android:textColorHint="@color/grey_font"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textSize="16dp"
+            android:inputType="textPassword"
+            android:typeface="normal"
+            android:background="@drawable/edittext_border"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="4dp"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/forgotPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="Forgot Password?"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/main_blue"
+        android:textSize="16dp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/prbSI"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="invisible">
+
+        </ProgressBar>
+
+        <Button
+            android:id="@+id/btSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginVertical="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="Sign In"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textAllCaps="true" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="0.5"
+        android:padding="0dp"
+        android:text="or"
+        android:textAlignment="center"
+        android:textSize="16dp"
+         />
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ProgressBar
+        android:id="@+id/prbGG"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:visibility="invisible">
+
+    </ProgressBar>
+    <ImageButton
+        android:id="@+id/btSIGG"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+
+        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+    </FrameLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="3">
+
+    </View>
+
+
+</LinearLayout>
+
+</LinearLayout>
