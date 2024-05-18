@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anh Kiet"
+            android:textColor="@color/grey_font"
+            android:textSize="12sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="2dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border"
+            android:backgroundTint="@color/chat_color_sender"
+            android:padding="8dp"
+            android:layout_marginEnd="80dp"
+            android:id="@+id/left_chat_layout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:text="Hello How are you"
+                android:id="@+id/left_chat_textview"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_border"
+        android:backgroundTint="@color/chat_color_receiver"
+        android:layout_alignParentEnd="true"
+        android:padding="8dp"
+        android:layout_marginStart="80dp"
+        android:id="@+id/right_chat_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:id="@+id/right_chat_textview"/>
+    </LinearLayout>
+
+</RelativeLayout>

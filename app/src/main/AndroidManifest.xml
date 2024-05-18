@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.studentmanagement">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,18 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestAuthentication"
         tools:targetApi="31">
-
         <activity
-            android:name="com.example.studentmanagement.UserActivity"
+            android:name=".ChatActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.studentmanagement.SignInActivity"
+            android:name=".SearchChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignInActivity"
             android:exported="false"
             android:label="@string/title_activity_sign_in"
             android:theme="@style/Theme.TestAuthentication" />
-
         <activity
-            android:name="com.example.studentmanagement.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
