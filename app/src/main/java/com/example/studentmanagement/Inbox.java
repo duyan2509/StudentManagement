@@ -19,6 +19,7 @@ import com.example.studentmanagement.Model.ChatRoom;
 import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
+//import com.sun.xml.bind.v2.model.core.Adapter;
 
 /**
  * A simple {@link Fragment} subclass.
