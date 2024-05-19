@@ -7,8 +7,7 @@
     android:layout_centerHorizontal="true"
     android:orientation="vertical"
     android:background="#EEEEEE"
-    tools:context=".DetailClassDocumentFragment"
-    >
+    tools:context=".LectureDetailClassAssignmentFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -110,8 +109,7 @@
             android:layout_marginLeft="30dp"
             android:layout_centerVertical="true"
             android:text="Documents"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/main_blue"
+            android:textColor="@color/black"
             android:background="@drawable/edittext_border"/>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -121,48 +119,33 @@
             android:layout_marginLeft="220dp"
             android:layout_centerVertical="true"
             android:text="Assignments"
+            android:textColor="@color/white"
+            android:backgroundTint="#1d5ef5"
             android:background="@drawable/edittext_border"/>
     </RelativeLayout>
 
-<!--folder-->
-    <RelativeLayout
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="30dp"
-        android:backgroundTint="#ADD8E6">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"/>
 
-        <Button
-            app:backgroundTint="@null"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_documents"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="45dp"
-            android:textColor="@color/black"
-            android:text="17"
-            android:textSize="15dp"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
-            android:layout_marginTop="45dp"
-            android:textColor="@color/black"
-            android:text="Items"
-            android:textSize="15dp"/>
-    </RelativeLayout>
-
-<!--de cuong-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="280dp">
+        android:layout_height="65dp"
+        android:layout_marginTop="0dp">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="ADD ASSIGNMENT"
+            android:textColor="@color/white"
+            android:backgroundTint="#1d5ef5"
+            android:background="@drawable/edittext_border"/>
     </RelativeLayout>
 
     <RelativeLayout
