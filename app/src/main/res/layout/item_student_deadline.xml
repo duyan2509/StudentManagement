@@ -30,6 +30,7 @@
         android:background="@drawable/edittext_border"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deadline_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
@@ -49,6 +50,7 @@
         android:textSize="15dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deadline_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="110dp"

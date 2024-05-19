@@ -138,6 +138,7 @@
         android:layout_marginTop="0dp">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_assignment"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
@@ -155,6 +156,7 @@
         android:layout_marginTop="0dp">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_danh_sach_lop"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
