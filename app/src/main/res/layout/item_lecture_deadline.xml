@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="80dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="30dp">
+
+    <Button
+        android:id="@+id/btn_view_document"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/edittext_border"
+        app:backgroundTint="#E0FFFF" />
+
+    <Button
+        android:id="@+id/btn_edit"
+        app:backgroundTint="@null"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="300dp"
+        android:background="@drawable/btn_edit_deadline"/>
+
+    <Button
+        android:id="@+id/btn_remove"
+        app:backgroundTint="@null"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="300dp"
+        android:background="@drawable/btn_remove_deadline"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:text="BAI TAP OOP"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="45dp"
+        android:textColor="@color/black"
+        android:text="Deadline: "
+        android:textSize="15dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="45dp"
+        android:textColor="@color/black"
+        android:text="23:00 12/12/2024"
+        android:textSize="15dp"/>
+
+</RelativeLayout>
+
