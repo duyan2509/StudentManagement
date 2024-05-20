@@ -59,6 +59,7 @@
                 app:backgroundTint="@null"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:tooltipText="Năm học"
                 android:layout_marginLeft="10dp"/>
         </RelativeLayout>
 
@@ -73,6 +74,7 @@
                 app:backgroundTint="@null"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:tooltipText="Học kỳ"
                 android:layout_marginLeft="10dp"/>
         </RelativeLayout>
 

@@ -40,14 +40,15 @@
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:background="@color/white"
-        android:paddingLeft="10dp"
+        android:background="@drawable/edittext_border"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
         android:text="@string/deadline_description"
-        android:textSize="18dp"/>
+        android:textSize="15dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp">
 
         <Button
@@ -61,8 +62,8 @@
 
         <ImageView
             app:backgroundTint="@null"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:background="@drawable/icon_folder_bg"/>
@@ -71,7 +72,7 @@
             android:id="@+id/textview_de_bai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="110dp"
             android:text="DE BAI"
             android:textSize="20dp"
@@ -81,7 +82,7 @@
             android:id="@+id/size_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             android:layout_marginLeft="110dp"
             android:text="1.2 MB"
             android:textSize="15dp"
@@ -159,7 +160,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp">
 
         <Button
@@ -185,8 +186,8 @@
 
         <ImageView
             app:backgroundTint="@null"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:background="@drawable/icon_folder_bg"/>
@@ -195,7 +196,7 @@
             android:id="@+id/textview_title_submission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="110dp"
             android:text="BAI NOP"
             android:textSize="20dp"
@@ -205,7 +206,7 @@
             android:id="@+id/size_submission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             android:layout_marginLeft="110dp"
             android:text="1.2 MB"
             android:textSize="15dp"
