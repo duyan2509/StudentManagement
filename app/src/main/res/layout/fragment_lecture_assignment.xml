@@ -144,12 +144,12 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent" />-->
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/submission_pieChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        app:chart_backgroundColor="#FFFFFF" />
+<!--    <com.github.mikephil.charting.charts.PieChart-->
+<!--        android:id="@+id/submission_pieChart"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        app:chart_backgroundColor="#FFFFFF" />-->
 
 </LinearLayout>

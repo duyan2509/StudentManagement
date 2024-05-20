@@ -84,7 +84,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:19.2.0")
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    implementation ("com.github.AnyChart:AnyChart-Android:1.1.2")
 
 
 

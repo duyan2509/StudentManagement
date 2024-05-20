@@ -97,19 +97,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/class_view"
         android:layout_width="match_parent"
-        android:layout_height="490dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        app:menu="@menu/bottom_nav_menu"
-        android:layout_alignParentBottom="true"
-        app:labelVisibilityMode="labeled"
-        android:background="#FFFFFF"/>
 
 </LinearLayout>

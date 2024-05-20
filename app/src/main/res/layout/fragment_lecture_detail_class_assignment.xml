@@ -129,20 +129,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="0dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_assignment"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:text="ADD ASSIGNMENT"
@@ -153,9 +153,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="25dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_danh_sach_lop"
