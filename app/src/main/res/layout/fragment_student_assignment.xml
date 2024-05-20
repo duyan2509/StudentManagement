@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    tools:context=".StudentAssignmentFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:backgroundTint="@null"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_back"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/deadline_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_centerVertical="true"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="BAI TAP OOP"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/deadline_description"
+        android:layout_width="360dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:background="@color/white"
+        android:paddingLeft="10dp"
+        android:text="@string/deadline_description"
+        android:textSize="18dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_open_pdf"
+            app:backgroundTint="#5ce7ff"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_border"/>
+
+        <ImageView
+            app:backgroundTint="@null"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/icon_folder_bg"/>
+
+        <TextView
+            android:id="@+id/textview_de_bai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="110dp"
+            android:text="DE BAI"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/size_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="110dp"
+            android:text="1.2 MB"
+            android:textSize="15dp"
+            android:textStyle="normal"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/DEADLINE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="DEADLINE: "
+            android:textStyle="italic"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/deadline_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105dp"
+            android:text="23:00 12/12/2024"
+            android:textStyle="italic"
+            android:textSize="15dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/textview_submission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_centerVertical="true"
+            android:text="Your submissions"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <Button
+            android:id="@+id/btn_add"
+            app:backgroundTint="@null"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="25dp"
+            android:layout_centerVertical="true"
+            android:text="ADD"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:background="@drawable/button_border"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            app:backgroundTint="@null"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="230dp"
+            android:layout_centerVertical="true"
+            android:text="SAVE"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:background="@drawable/button_border"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_open_submission"
+            app:backgroundTint="#5ce7ff"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_border"/>
+
+        <Button
+            android:id="@+id/btn_remove_submission"
+            app:backgroundTint="@null"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="330dp"
+            android:layout_centerVertical="true"
+            android:text="ADD"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:background="@drawable/btn_remove_submission"/>
+
+        <ImageView
+            app:backgroundTint="@null"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/icon_folder_bg"/>
+
+        <TextView
+            android:id="@+id/textview_title_submission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="110dp"
+            android:text="BAI NOP"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/size_submission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="110dp"
+            android:text="1.2 MB"
+            android:textSize="15dp"
+            android:textStyle="normal"/>
+    </RelativeLayout>
+
+
+</LinearLayout>
