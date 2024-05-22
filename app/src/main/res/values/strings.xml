@@ -10,4 +10,5 @@
     <string name="default_web_client_id">353227038605-gst3fm0g807eluilm6qg4cju59simar0.apps.googleusercontent.com</string>
     <string name="default_web_client_id_1">353227038605-rjs8kaim4drc7ufrnme6o66ombcrmmir.apps.googleusercontent.com</string>
     <string name="deadline_description">Làm chết mẹ tụi mày đi</string>
+    <string name="title_activity_lecture_detail_class">LectureDetailClassActivity</string>
 </resources>

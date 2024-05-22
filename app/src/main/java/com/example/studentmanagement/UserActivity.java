@@ -10,8 +10,7 @@ import android.view.MenuItem;
 
 import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
+import com.google.android.material.navigation.NavigationBarView;
 
 
 public class UserActivity extends AppCompatActivity {
@@ -21,9 +20,15 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
-        getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new Home()).commitAllowingStateLoss();
+        // Kiểm tra flag trong Intent để hiển thị MyClass fragment
+        boolean showFragmentMyClass = getIntent().getBooleanExtra("show_fragment_my_class", false);
 
+        if (savedInstanceState == null) {
+            Fragment initialFragment = showFragmentMyClass ? new MyClass() : new Home();
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, initialFragment).commitAllowingStateLoss();
+        }
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -40,20 +45,11 @@ public class UserActivity extends AppCompatActivity {
                 else if (itemId == R.id.navigation_profile)
                     selectedFragment = new Profile();
 
-
                 if (selectedFragment != null)
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_container, selectedFragment).commitAllowingStateLoss();
-
                 return true;
             }
         });
-
-
-
-
-
-
-
 
     }
 }

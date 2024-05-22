@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:orientation="vertical"
     android:background="#EEEEEE"
-    tools:context=".LectureDetailSubmissionFragment">
+    tools:context=".LectureDetailSubmissionActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
             android:layout_centerVertical="true"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:text="My Classes"/>
+            android:text="BAI TAP OOP"/>
     </RelativeLayout>
 
     <RelativeLayout
