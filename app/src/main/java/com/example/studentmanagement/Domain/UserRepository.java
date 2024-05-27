@@ -15,18 +15,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserRepository {
     private FirebaseFirestore db;
     private CollectionReference users;
 
     public UserRepository(Context ccontext) {
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("user");
+    }
+    public UserRepository() {
         db = FirebaseFirestore.getInstance();
         users = db.collection("user");
     }
@@ -66,4 +72,38 @@ public class UserRepository {
             }
         });
     };
+
+    public Task<String> getNameById(String id) {
+        return users.document(id)
+                .get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            return document.getString("name");
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        throw Objects.requireNonNull(task.getException());
+                        }
+                });
+        }
+    public Task<String> getRole() {
+        return users.document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            return document.getString("role");
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                });
+    }
+
 }
