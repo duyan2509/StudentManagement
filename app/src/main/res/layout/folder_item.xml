@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="80dp"
+    android:padding="16dp"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="@drawable/shape_document_button">
+
+    <LinearLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+
+        android:padding="10dp"
+        android:background="@drawable/item_background"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/DOCUMENT_image"
+            android:layout_width="30dp"
+            android:layout_height="48dp"
+            android:src="@drawable/folder_symbols" /> <!-- Hình ảnh biểu tượng document -->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/document_text"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@id/frameLayout"
+        android:gravity="center_vertical"
+        android:text="Folder Name"
+        android:textColor="#999990"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/right_icon"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_marginEnd="0dp"
+        android:gravity="center_vertical"
+        android:scaleX="-1"
+        android:src="@drawable/backarrow" /> <!-- Hình ảnh biểu tượng thêm ở bên phải -->
+</RelativeLayout>

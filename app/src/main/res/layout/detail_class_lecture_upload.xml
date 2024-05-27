@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F0FF"
+        android:padding="0dp">
+        <!-- Back Arrow -->
+        <LinearLayout
+            android:id="@+id/button_with_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:padding="0dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/back_arrow" />
+
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:gravity="center_vertical"
+                android:text="@string/my_classes"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/info_container"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_with_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/info_shape"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Hàng thứ nhất -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_id"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text1_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_name"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Hàng thứ hai -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lecture"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=": "
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Hàng thứ ba -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text3_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_of_lessons"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=", "
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text3_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/info_container"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <!-- Button 1 -->
+            <Button
+                android:id="@+id/button_text1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#0961F5"
+                android:text="@string/document"
+                android:textColor="@android:color/white" />
+
+            <!-- Button 2 -->
+            <Button
+                android:id="@+id/button_text2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FFFFFF"
+                android:text="@string/assignment"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/list_classes_container"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_below="@id/container2"
+            android:layout_marginTop="20dp"
+
+            android:orientation="vertical">
+
+            <!-- RecyclerView cho list document -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/documentRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp" />
+        </LinearLayout>
+
+
+
+        <!-- Container for Buttons -->
+
+
+        <LinearLayout
+            android:id="@+id/Add_Document_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@id/list_classes_container"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:padding="0dp">
+
+            <!-- Button AddFile -->
+            <ImageButton
+                android:id="@+id/Add_File_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="270dp"
+                android:src="@drawable/add_file_64"
+                android:scaleType="centerInside"
+                android:padding="8dp"
+                android:background="@null"
+                android:contentDescription="@string/add_file"/>
+            <!-- Button AddFolder -->
+            <ImageButton
+                android:id="@+id/Add_Folder_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="0dp"
+                android:src="@drawable/add_folder_64"
+                android:scaleType="centerInside"
+                android:padding="8dp"
+                android:background="@null"
+                android:contentDescription="@string/add_folder"/>
+
+            <!-- Button Close -->
+            <ImageButton
+                android:id="@+id/close_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/round_shape"
+                android:contentDescription="@string/close"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:padding="0dp">
+
+            <Button
+                android:id="@+id/back_list_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:backgroundTint="#0961F5"
+                android:text="@string/list_classes"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/right_icon"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_alignEnd="@id/back_list_class"
+                android:layout_alignBottom="@id/back_list_class"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/next_arrow" />
+            <!-- Các phần tử bên trong của bottom layout -->
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
