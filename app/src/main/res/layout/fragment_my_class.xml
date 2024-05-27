@@ -80,12 +80,28 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/class_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/class_view1"
+            android:layout_width="196dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/class_view2"
+            android:layout_width="212dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentRight="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"/>
+    </RelativeLayout>
 
 </LinearLayout>

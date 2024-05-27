@@ -2,10 +2,10 @@
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="150dp"
+    android:layout_width="170dp"
     android:layout_height="120dp"
     android:layout_marginTop="15dp"
-    android:layout_marginLeft="30dp"
+    android:layout_marginLeft="20dp"
     android:background="@drawable/edittext_border">
 
     <TextView
@@ -42,7 +42,6 @@
         android:textSize="15dp" />
 
     <TextView
-        android:id="@+id/class_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -53,12 +52,13 @@
         android:textSize="12dp" />
 
     <TextView
+        android:id="@+id/class_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="95dp"
         android:textColor="@color/black"
-        android:text="2-5, Thu nam "
+        android:text="2-5 Thu nam "
         android:textStyle="italic"
         android:textSize="12dp" />
 </RelativeLayout>
