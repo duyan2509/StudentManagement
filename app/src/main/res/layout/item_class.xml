@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="170dp"
+    android:layout_height="120dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="20dp"
+    android:background="@drawable/edittext_border">
+
+    <TextView
+        android:id="@+id/class_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#f55722"
+        android:text="SE330.O22"
+        android:textStyle="bold"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/class_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/black"
+        android:text="Lap Trinh Java"
+        android:textStyle="bold"
+        android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/class_lecture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="65dp"
+        android:textColor="@color/black"
+        android:text="⭐ Le Thanh Trong"
+        android:textStyle="normal"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="95dp"
+        android:textColor="@color/black"
+        android:text="Tiet: "
+        android:textStyle="italic"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/class_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="95dp"
+        android:textColor="@color/black"
+        android:text="2-5 Thu nam "
+        android:textStyle="italic"
+        android:textSize="12dp" />
+</RelativeLayout>
+

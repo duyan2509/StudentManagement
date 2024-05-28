@@ -1,0 +1,11 @@
+<!-- res/drawable/custom_shape.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFE"/> <!-- Màu nền -->
+    <corners android:radius="16dp"/> <!-- Góc bo tròn -->
+    <stroke android:width="2dp" android:color="#AEB3B5"/> <!-- Đường viền -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp"/>
+</shape>

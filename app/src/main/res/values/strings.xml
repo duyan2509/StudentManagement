@@ -8,4 +8,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_web_client_id">353227038605-gst3fm0g807eluilm6qg4cju59simar0.apps.googleusercontent.com</string>
+    <string name="default_web_client_id_1">353227038605-rjs8kaim4drc7ufrnme6o66ombcrmmir.apps.googleusercontent.com</string>
+
+    <string name="deadline_description">Làm chết mẹ tụi mày đi</string>
+    <string name="title_activity_lecture_detail_class">LectureDetailClassActivity</string>
+
+    <string name="my_classes">My Classes</string>
+    <string name="class_id">Class ID</string>
+    <string name="class_name">Class Name</string>
+    <string name="name">Name</string>
+    <string name="plus_button_desc">Add new item</string>
+    <string name="list_classes">List Classes</string>
+    <string name="assignment">Assignment</string>
+    <string name="document">Document</string>
+    <string name="date">Date</string>
+    <string name="number_of_lessons">Number of lessons</string>
+    <string name="lecture">Lecture</string>
+    <string name="add_folder">Add Folder</string>
+    <string name="close">Close</string>
+    <string name="add_file">Add File</string>
 </resources>

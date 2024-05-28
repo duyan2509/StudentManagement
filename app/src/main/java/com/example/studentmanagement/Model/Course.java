@@ -10,60 +10,23 @@ public class Course {
     String room;
     String schedule;
     long start;
-
-    public List<Assignment> getAssignments() {
-        return assignments;
-    }
-
-    public void setAssignments(List<Assignment> assignments) {
-        this.assignments = assignments;
-    }
-
+    long end;
+    Long semester;
     List<Assignment> assignments;
-
 
     public Course() {
     }
 
-    public Long getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Long semester) {
-        this.semester = semester;
-    }
-
-    private Long semester;
-
-    public String getAcademic_year() {
-        return academic_year;
-    }
-
-    @Override
-    public String toString() {
-        return "Course{" +
-                "academic_year='" + academic_year + '\'' +
-                ", code='" + code + '\'' +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", room='" + room + '\'' +
-                ", schedule='" + schedule + '\'' +
-                ", start=" + start +
-                ", semester='" + semester + '\'' +
-                ", end=" + end +
-                '}';
-    }
-
-    public void setAcademic_year(String academic_year) {
-        this.academic_year = academic_year;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
+    public Course(String id, String code, String name, long start, long end, String schedule, Long semester, String academic_year, String room) {
+        this.id = id;
         this.code = code;
+        this.name = name;
+        this.start = start;
+        this.end = end;
+        this.schedule = schedule;
+        this.semester = semester;
+        this.academic_year = academic_year;
+        this.room = room;
     }
 
     public String getId() {
@@ -72,6 +35,14 @@ public class Course {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -114,7 +85,42 @@ public class Course {
         this.end = end;
     }
 
-    private long end;
+    public Long getSemester() {
+        return semester;
+    }
 
+    public void setSemester(Long semester) {
+        this.semester = semester;
+    }
 
+    public String getAcademic_year() {
+        return academic_year;
+    }
+
+    public void setAcademic_year(String academic_year) {
+        this.academic_year = academic_year;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "academic_year='" + academic_year + '\'' +
+                ", code='" + code + '\'' +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", room='" + room + '\'' +
+                ", schedule='" + schedule + '\'' +
+                ", start=" + start +
+                ", semester=" + semester +
+                ", end=" + end +
+                '}';
+    }
 }

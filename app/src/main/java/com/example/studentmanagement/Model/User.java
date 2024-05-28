@@ -5,6 +5,8 @@ import com.example.studentmanagement.Utils.RoleUtil;
 public class User {
     private String id;
     private String email;
+
+    private String name;
     private String role;
 
     public void setRole(String role) {
@@ -19,10 +21,18 @@ public class User {
         this.name = name;
     }
 
-    private String name;
 
     public String getRole() {
         return role;
+    }
+
+    public User(){}
+
+    public User(String id, String email, String name, String role) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.role = role;
     }
 
     public void setRole() {
@@ -46,4 +56,6 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
+
+
 }

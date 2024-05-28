@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="80dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="30dp"
+    android:backgroundTint="@color/white"
+    android:background="@drawable/edittext_border">
+
+    <TextView
+        android:id="@+id/student_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:text="22520020"
+        android:textColor="#f55722"
+        android:textSize="15dp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/student_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/black"
+        android:text="Nguyen Duy An"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/submit_status"
+        app:backgroundTint="@null"
+        android:layout_width="95dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="240dp"
+        android:text="NO\nSUBMISSTION"
+        android:textStyle="italic"
+        android:textColor="@color/red"
+        android:textSize="15dp"/>
+
+</RelativeLayout>

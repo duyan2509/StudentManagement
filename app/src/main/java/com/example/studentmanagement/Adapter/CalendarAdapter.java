@@ -161,14 +161,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setScheduleView(LocalDate date) {
-        courseList=new ArrayList<>();
-        scheduleAdapter = new ScheduleAdapter(courseList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        rcv_schedule.setAdapter(scheduleAdapter);
-        rcv_schedule.setLayoutManager(layoutManager);
-        rcv_schedule.addItemDecoration(itemDecoration);
-        getCourseId(FirebaseAuth.getInstance().getCurrentUser().getUid(), date);
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+            courseList = new ArrayList<>();
+            scheduleAdapter = new ScheduleAdapter(courseList);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+            rcv_schedule.setAdapter(scheduleAdapter);
+            rcv_schedule.setLayoutManager(layoutManager);
+            rcv_schedule.addItemDecoration(itemDecoration);
+            getCourseId(FirebaseAuth.getInstance().getCurrentUser().getUid(), date);
+        }
     }
 
     private void getCourseId(String uid, LocalDate date) {

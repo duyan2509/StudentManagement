@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lecture_detail_class_assignment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    tools:context=".LectureDetailClassAssignmentFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_document"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_centerVertical="true"
+            android:text="Documents"
+            android:textColor="@color/black"
+            android:background="@drawable/edittext_border"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_assignments"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="220dp"
+            android:layout_centerVertical="true"
+            android:text="Assignments"
+            android:textColor="@color/white"
+            android:backgroundTint="#1d5ef5"
+            android:background="@drawable/edittext_border"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:layout_above="@id/btn_add_assignment"
+            android:paddingBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btn_add_assignment"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="ADD ASSIGNMENT"
+            android:textColor="@color/white"
+            app:backgroundTint="#1d5ef5"
+            android:background="@drawable/edittext_border"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
