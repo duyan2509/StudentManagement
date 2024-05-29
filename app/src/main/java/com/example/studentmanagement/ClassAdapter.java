@@ -39,6 +39,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         return classItemList.size();
     }
 
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView classCode;
         public TextView className;
