@@ -86,7 +86,9 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:21.2.0")
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
 
 }

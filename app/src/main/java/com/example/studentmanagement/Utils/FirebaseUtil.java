@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FirebaseUtil {
-    private static List<Course> courseList = new ArrayList<>();
     public static String currentUserId(){
         return FirebaseAuth.getInstance().getUid();
     }
@@ -34,13 +35,16 @@ public class FirebaseUtil {
         return FirebaseFirestore.getInstance().collection("user");
     }
 
+    public static DocumentReference currentUserDetails(){
+        return FirebaseFirestore.getInstance().collection("user").document(currentUserId());
+    }
+
     public static CollectionReference getAllUserCourses() {
         return FirebaseFirestore.getInstance().collection("user_course");
     }
 
     public static CollectionReference getAllCourse(){
-        CollectionReference courseRef =  FirebaseFirestore.getInstance().collection("course");
-        return courseRef;
+        return FirebaseFirestore.getInstance().collection("course");
     }
 
     public static DocumentReference getChatroomReference(String chatroomId){
@@ -71,6 +75,10 @@ public class FirebaseUtil {
         return new SimpleDateFormat("HH:MM").format(timestamp.toDate());
     }
 
+    public static StorageReference getCurrentUserPicStorageRef(String path){
+        return FirebaseStorage.getInstance().getReference().child(path)
+                .child(FirebaseUtil.currentUserId());
+    }
 }
 
 
