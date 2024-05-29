@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,7 @@ public class MyClass extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -178,29 +180,25 @@ public class MyClass extends Fragment {
             }
         });
 
-        RecyclerView recyclerView1 = view.findViewById(R.id.class_view1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView recyclerView = view.findViewById(R.id.class_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
-        RecyclerView recyclerView2 = view.findViewById(R.id.class_view2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Tạo dữ liệu mẫu
-        List<ClassItem> classItemList1 = new ArrayList<>();
-        classItemList1.add(new ClassItem("SE330.O22", "Lập Trình Java", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
-        classItemList1.add(new ClassItem("SE331.O22", "Cấu Trúc Dữ Liệu", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
-        classItemList1.add(new ClassItem("SE332.O22", "Mạng Máy Tính", "⭐ Trần Văn B", "4-6, Thứ ba"));
-
+        List<ClassItem> classItemList = new ArrayList<>();
+        classItemList.add(new ClassItem("SE330.O22", "Lập Trình Java", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
+        classItemList.add(new ClassItem("SE331.O22", "Cấu Trúc Dữ Liệu", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
+        classItemList.add(new ClassItem("SE332.O22", "Mạng Máy Tính", "⭐ Trần Văn B", "4-6, Thứ ba"));
+        classItemList.add(new ClassItem("SE330.O22", "Cấu Trúc Dữ Liệu", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
+        classItemList.add(new ClassItem("SE331.O22", "Hướng Đối Tượng", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
+        classItemList.add(new ClassItem("SE332.O22", "Lập Trình Java", "⭐ Trần Văn B", "4-6, Thứ ba"));
         // Tạo và gắn Adapter
-        ClassAdapter classAdapter1 = new ClassAdapter(classItemList1);
-        recyclerView1.setAdapter(classAdapter1);
+        ClassAdapter classAdapter = new ClassAdapter(classItemList);
+        recyclerView.setAdapter(classAdapter);
 
-        List<ClassItem> classItemList2 = new ArrayList<>();
-        classItemList2.add(new ClassItem("SE330.O22", "Cấu Trúc Dữ Liệu", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
-        classItemList2.add(new ClassItem("SE331.O22", "Hướng Đối Tượng", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
-        classItemList2.add(new ClassItem("SE332.O22", "Lập Trình Java", "⭐ Trần Văn B", "4-6, Thứ ba"));
-
-        // Tạo và gắn Adapter
-        ClassAdapter classAdapter2 = new ClassAdapter(classItemList2);
-        recyclerView2.setAdapter(classAdapter2);
+        
+        
     }
 }

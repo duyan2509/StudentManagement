@@ -42,17 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Chọn năm học:"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_marginTop="20dp"/>-->
 
         <RelativeLayout
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/edittext_border">
 
             <Spinner
@@ -64,9 +58,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="220dp"
+            android:layout_marginLeft="190dp"
             android:background="@drawable/edittext_border">
 
             <Spinner
@@ -75,33 +69,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:tooltipText="Học kỳ"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="0dp"/>
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/class_view1"
-            android:layout_width="196dp"
+            android:id="@+id/class_view"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="8dp"
             android:clipToPadding="false"
-            android:paddingBottom="16dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/class_view2"
-            android:layout_width="212dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_alignParentRight="true"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp"/>
-    </RelativeLayout>
+            android:paddingBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
