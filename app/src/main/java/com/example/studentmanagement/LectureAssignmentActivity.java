@@ -30,44 +30,35 @@ public class LectureAssignmentActivity extends AppCompatActivity {
         });
 
         Button btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển sang MyClassActivity
-                Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailClassActivity.class);
-                intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
-                startActivity(intent);
-                finish();
-            }
+        btn_back.setOnClickListener(v -> {
+
+            Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailClassActivity.class);
+            intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+            startActivity(intent);
+            finish();
         });
 
         // Thêm sự kiện khi ấn vào textview_see_detail
         TextView textViewSeeDetail = findViewById(R.id.textview_see_detail);
-        textViewSeeDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển sang LectureDetailSubmissionActivity
-                Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailSubmissionActivity.class);
-                startActivity(intent);
-            }
+        textViewSeeDetail.setOnClickListener(v -> {
+
+            Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailSubmissionActivity.class);
+            startActivity(intent);
         });
 
-        // Thêm hiệu ứng gạch chân khi di chuyển chuột đến textViewSeeDetail
-        textViewSeeDetail.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_HOVER_ENTER:
-                    case MotionEvent.ACTION_DOWN:
-                        textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                        break;
-                    case MotionEvent.ACTION_HOVER_EXIT:
-                    case MotionEvent.ACTION_UP:
-                        textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-                        break;
-                }
-                return false;
+
+        textViewSeeDetail.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_DOWN:
+                    textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    break;
+                case MotionEvent.ACTION_HOVER_EXIT:
+                case MotionEvent.ACTION_UP:
+                    textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+                    break;
             }
+            return false;
         });
     }
 }
