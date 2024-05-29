@@ -1,7 +1,6 @@
 package com.example.studentmanagement.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.studentmanagement.ChatActivity;
 import com.example.studentmanagement.Model.ChatMessage;
-import com.example.studentmanagement.Model.Course;
 import com.example.studentmanagement.Model.User;
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.Utils.AndroidUtil;
 import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -42,6 +38,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<ChatMessage, ChatAdapt
                     .get().addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             User user = task.getResult().toObject(User.class);
+                            assert user != null;
                             holder.sender.setText(user.getName());
                         }
                     });

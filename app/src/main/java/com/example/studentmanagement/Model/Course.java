@@ -1,21 +1,23 @@
 package com.example.studentmanagement.Model;
 
-import com.google.firebase.Timestamp;
-
 import java.util.List;
 
 public class Course {
-    String id;
-    String code;
-    String name;
-    int start;
-    int end;
-    String schedule;
-    int semester;
     String academic_year;
+    String code;
+    String id;
+    String name;
     String room;
+    String schedule;
+    long start;
+    long end;
+    Long semester;
+    List<Assignment> assignments;
 
-    public Course(String id, String code, String name, int start, int end, String schedule, int semester, String academic_year, String room) {
+    public Course() {
+    }
+
+    public Course(String id, String code, String name, long start, long end, String schedule, Long semester, String academic_year, String room) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -25,9 +27,6 @@ public class Course {
         this.semester = semester;
         this.academic_year = academic_year;
         this.room = room;
-    }
-
-    public Course() {
     }
 
     public String getId() {
@@ -46,7 +45,6 @@ public class Course {
         this.code = code;
     }
 
-
     public String getName() {
         return name;
     }
@@ -55,20 +53,12 @@ public class Course {
         this.name = name;
     }
 
-    public int getStart() {
-        return start;
+    public String getRoom() {
+        return room;
     }
 
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     public String getSchedule() {
@@ -79,11 +69,27 @@ public class Course {
         this.schedule = schedule;
     }
 
-    public int getSemester() {
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+
+    public void setEnd(long end) {
+        this.end = end;
+    }
+
+    public Long getSemester() {
         return semester;
     }
 
-    public void setSemester(int semester) {
+    public void setSemester(Long semester) {
         this.semester = semester;
     }
 
@@ -95,11 +101,26 @@ public class Course {
         this.academic_year = academic_year;
     }
 
-    public String getRoom() {
-        return room;
+    public List<Assignment> getAssignments() {
+        return assignments;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "academic_year='" + academic_year + '\'' +
+                ", code='" + code + '\'' +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", room='" + room + '\'' +
+                ", schedule='" + schedule + '\'' +
+                ", start=" + start +
+                ", semester=" + semester +
+                ", end=" + end +
+                '}';
     }
 }

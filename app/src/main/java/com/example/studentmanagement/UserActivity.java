@@ -4,13 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
-import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 
 public class UserActivity extends AppCompatActivity {
@@ -51,5 +52,45 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static class DetailClassStudent extends AppCompatActivity{
+        Button back;
+        @SuppressLint("MissingInflatedId")
+        //@Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.detail_class_student);
+            ImageButton back = findViewById(R.id.ImageButton);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+            Button document = findViewById(R.id.button_text1);
+            document.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            Button assignment = findViewById(R.id.button_text2);
+            assignment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            Button listClasses = findViewById(R.id.back_list_class);
+            listClasses.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+        }
     }
 }

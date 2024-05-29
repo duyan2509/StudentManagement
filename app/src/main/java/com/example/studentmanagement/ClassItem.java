@@ -1,10 +1,10 @@
 package com.example.studentmanagement;
 
 public class ClassItem {
-    private String classCode;
-    private String className;
-    private String classLecture;
-    private String classTime;
+    private final String classCode;
+    private final String className;
+    private final String classLecture;
+    private final String classTime;
 
     public ClassItem(String classCode, String className, String classLecture, String classTime) {
         this.classCode = classCode;

@@ -6,6 +6,8 @@
     android:layout_height="120dp"
     android:layout_marginTop="15dp"
     android:layout_marginLeft="20dp"
+    android:clickable="true"
+    android:focusable="true"
     android:background="@drawable/edittext_border">
 
     <TextView

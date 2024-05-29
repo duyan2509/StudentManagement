@@ -8,8 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.example.studentmanagement.Utils.RoleUtil;
@@ -20,34 +19,34 @@ public class MainActivity extends AppCompatActivity {
     private Button student, lecturer;
 
     @SuppressLint("MissingInflatedId")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        student = findViewById(R.id.btStudent);
-        student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RoleUtil.setRole("student");
-                Intent i = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(i);
-            }
-        });
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            student = findViewById(R.id.btStudent);
+            student.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RoleUtil.setRole("student");
+                    Intent i = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(i);
+                }
+            });
 
-        lecturer = findViewById(R.id.btLecturer);
-        lecturer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RoleUtil.setRole("lecturer");
-                Intent i = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(i);
-            }
-        });
+            lecturer = findViewById(R.id.btLecturer);
+            lecturer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RoleUtil.setRole("lecturer");
+                    Intent i = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(i);
+                }
+            });
 
-        skipAuth();
+            skipAuth();
 
 
-    }
+        }
     private void skipAuth(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null)

@@ -2,10 +2,10 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,31 +28,30 @@ public class LectureDetailClassActivity extends AppCompatActivity {
             return insets;
         });
 
-        boolean LectureDetailClassAssignmentFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
+        boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
         if (savedInstanceState == null) {
-            Fragment initialFragment = LectureDetailClassAssignmentFragment ? new LectureDetailClassAssignmentFragment() : new LectureDetailClassAssignmentFragment();
+            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment() : new LectureDetailClassDocumentFragment();
+
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
         }
-
-        // Hiển thị fragment LectureDetailClassAssignmentFragment
-//        if (savedInstanceState == null) {
-//            LectureDetailClassAssignmentFragment fragment = new LectureDetailClassAssignmentFragment();
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.detail_container, fragment);
-//            fragmentTransaction.commit();
-//        }
-
+        //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển sang MyClassActivity
-                Intent intent = new Intent(LectureDetailClassActivity.this, UserActivity.class);
-                intent.putExtra("show_fragment_my_class", true);
-                startActivity(intent);
-                finish();
-            }
+        btn_back.setOnClickListener(v -> {
+
+            Intent intent = new Intent(LectureDetailClassActivity.this, UserActivity.class);
+            intent.putExtra("show_fragment_my_class", true);
+            startActivity(intent);
+            finish();
         });
+        //Xử Lý Button Document;
+        //Xử Lý Button Assignment;
+
+    }
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.detail_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

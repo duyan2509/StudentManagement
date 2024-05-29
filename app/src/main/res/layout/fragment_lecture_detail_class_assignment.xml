@@ -15,7 +15,7 @@
         android:layout_height="40dp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_document"
+            android:id="@+id/Document"
             android:layout_width="160dp"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
@@ -25,7 +25,7 @@
             android:background="@drawable/edittext_border"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_assignments"
+            android:id="@+id/Assignments"
             android:layout_width="160dp"
             android:layout_height="40dp"
             android:layout_marginLeft="220dp"

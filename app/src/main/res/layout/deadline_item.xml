@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="4dp">
+<TextView
+    android:id="@+id/code"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Course Code"
+    android:textSize="16dp"
+    android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title"/>
+    <TextView
+        android:id="@+id/deadline"
+        android:drawableStart="@drawable/icons8_deadline_32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="deadline"
+
+        />
+    <FrameLayout
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/notSubmit"
+        android:drawableStart="@drawable/icons8_running_32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_font"
+        android:text="not yet submitted"
+        />
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/submit"
+        android:drawableStart="@drawable/icons8_status_32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_font"
+        android:text="submitted"
+        />
+    </FrameLayout>
+
+
+
+    <Button
+        android:id="@+id/detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Assignment" />
+
+</LinearLayout>

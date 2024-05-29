@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="main_purple">#514eb7</color>
     <color name="border_ggfb">#fefefe</color>
     <color name="main_blue">#3364ce</color>
+
     <color name="chat_color_sender">#1E88E5</color>
     <color name="chat_color_receiver">#4C935E</color>
-    <color name="red">#ff0000</color>
-
+    <color name="red">#FF0000</color>
 
 </resources>

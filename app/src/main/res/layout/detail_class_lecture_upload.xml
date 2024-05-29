@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,6 +10,7 @@
         android:background="#F5F0FF"
         android:padding="0dp">
         <!-- Back Arrow -->
+
         <LinearLayout
             android:id="@+id/button_with_text"
             android:layout_width="wrap_content"
@@ -30,7 +31,7 @@
                 app:srcCompat="@drawable/back_arrow" />
 
             <TextView
-                android:id="@+id/descriptionText"
+                android:id="@+id/BackText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="1dp"
@@ -151,7 +152,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container2"
+            android:id="@+id/Document_Assignment_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/info_container"
@@ -162,7 +163,7 @@
 
             <!-- Button 1 -->
             <Button
-                android:id="@+id/button_text1"
+                android:id="@+id/Document"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -173,7 +174,7 @@
 
             <!-- Button 2 -->
             <Button
-                android:id="@+id/button_text2"
+                android:id="@+id/Assignment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -182,82 +183,62 @@
                 android:text="@string/assignment"
                 android:textColor="@android:color/black" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/list_classes_container"
+        <!--  List document -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:layout_below="@id/container2"
+            android:layout_below="@id/Document_Assignment_Button"
             android:layout_marginTop="20dp"
-
-            android:orientation="vertical">
-
-            <!-- RecyclerView cho list document -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/documentRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp" />
-        </LinearLayout>
-
-
-
-        <!-- Container for Buttons -->
-
-
-        <LinearLayout
-            android:id="@+id/Add_Document_layout"
-            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="4dp" />
+        <!-- Button AddFile -->
+        <ImageButton
+            android:id="@+id/Add_File"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_above="@+id/bottom_layout"
-            android:layout_below="@id/list_classes_container"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:padding="0dp">
+            android:layout_below="@id/list_view"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:contentDescription="@string/add_file"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_file_64" />
+        <!-- Button AddFolder -->
+        <ImageButton
+            android:id="@+id/Add_Folder_button"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@id/list_view"
+            android:layout_marginStart="310dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:contentDescription="@string/add_folder"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_folder_64" />
 
-            <!-- Button AddFile -->
-            <ImageButton
-                android:id="@+id/Add_File_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginStart="270dp"
-                android:src="@drawable/add_file_64"
-                android:scaleType="centerInside"
-                android:padding="8dp"
-                android:background="@null"
-                android:contentDescription="@string/add_file"/>
-            <!-- Button AddFolder -->
-            <ImageButton
-                android:id="@+id/Add_Folder_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="0dp"
-                android:src="@drawable/add_folder_64"
-                android:scaleType="centerInside"
-                android:padding="8dp"
-                android:background="@null"
-                android:contentDescription="@string/add_folder"/>
+        <!-- Button Close -->
+        <ImageButton
+            android:id="@+id/Close"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_layout"
+            android:layout_below="@id/list_view"
+            android:layout_marginStart="360dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/round_shape"
+            android:contentDescription="@string/close"
+            android:padding="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close" />
 
-            <!-- Button Close -->
-            <ImageButton
-                android:id="@+id/close_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="0dp"
-                android:background="@drawable/round_shape"
-                android:contentDescription="@string/close"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_close" />
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/bottom_layout"
@@ -269,11 +250,11 @@
             android:padding="0dp">
 
             <Button
-                android:id="@+id/back_list_class"
-                android:layout_width="match_parent"
+                android:id="@+id/List_Class_Button"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="34dp"
                 android:backgroundTint="#0961F5"
                 android:text="@string/list_classes"
                 android:textColor="@android:color/white" />
@@ -282,12 +263,12 @@
                 android:id="@+id/right_icon"
                 android:layout_width="24dp"
                 android:layout_height="match_parent"
-                android:layout_alignEnd="@id/back_list_class"
-                android:layout_alignBottom="@id/back_list_class"
+                android:layout_alignEnd="@id/List_Class_Button"
+                android:layout_alignBottom="@id/List_Class_Button"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="0dp"
                 android:src="@drawable/next_arrow" />
             <!-- Các phần tử bên trong của bottom layout -->
         </RelativeLayout>
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

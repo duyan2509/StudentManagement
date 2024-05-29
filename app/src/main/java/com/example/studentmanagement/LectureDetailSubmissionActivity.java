@@ -2,7 +2,6 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 public class LectureDetailSubmissionActivity extends AppCompatActivity {
 
     @Override
@@ -26,14 +24,11 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         });
 
         Button btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển sang MyClassActivity
-                Intent intent = new Intent(LectureDetailSubmissionActivity.this, LectureAssignmentActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        btn_back.setOnClickListener(v -> {
+            // Chuyển sang MyClassActivity
+            Intent intent = new Intent(LectureDetailSubmissionActivity.this, LectureAssignmentActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }
