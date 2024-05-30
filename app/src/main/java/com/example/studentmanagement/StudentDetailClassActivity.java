@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,18 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             Fragment initialFragment = StudentDetailClassAssignmentFragment ? new StudentDetailClassAssignmentFragment() : new StudentDetailClassAssignmentFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
         }
+
+        String classCodeAndName = getIntent().getStringExtra("classCodeAndName");
+        String classLecture = getIntent().getStringExtra("classLecture");
+        String classTime = getIntent().getStringExtra("classTime");
+
+        TextView classCodeView = findViewById(R.id.class_code_and_name);
+        TextView classLectureView = findViewById(R.id.class_lecture);
+        TextView classTimeView = findViewById(R.id.class_time);
+
+        classCodeView.setText(classCodeAndName);
+        classLectureView.setText(classLecture);
+        classTimeView.setText(classTime);
 
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.example.studentmanagement;
 
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
  * Use the {@link MyClass#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyClass extends Fragment {
+public class MyClass extends Fragment implements OnItemClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -197,16 +198,13 @@ public class MyClass extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-
-
-
         // Initialize Firebase Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection("course")
                 .get()
                 .addOnCompleteListener(task -> {
                     classItemList = new ArrayList<>();
-                    classAdapter = new ClassAdapter(classItemList);
+                    classAdapter = new ClassAdapter(classItemList, this);
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -233,5 +231,14 @@ public class MyClass extends Fragment {
         classAdapter = new ClassAdapter(classItemList);
         recyclerView.setAdapter(classAdapter);*/
         }
+
+    @Override
+    public void onItemClick(ClassItem classItem) {
+        Intent intent = new Intent(getActivity(), StudentDetailClassActivity.class);
+        intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
+        intent.putExtra("classLecture", classItem.getClassLecture());
+        intent.putExtra("classTime", classItem.getClassTime());
+        startActivity(intent);
     }
+}
 

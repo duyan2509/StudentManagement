@@ -48,7 +48,7 @@
             android:background="@drawable/edittext_border"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/class_name"
+            android:id="@+id/class_code_and_name"
             android:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_marginLeft="50dp"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:text="SE330.O22 - Lap trinh java" />
+            android:text="SE330.O22 - Lap Trinh Java" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/class_gv"
@@ -70,7 +70,7 @@
             android:text="GVLT: " />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/class_gv_data"
+            android:id="@+id/class_lecture"
             android:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:text="Le Thanh Trong" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/class_time"
+            android:id="@+id/class_time_text"
             android:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:text="Tiết: " />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/class_time_data"
+            android:id="@+id/class_time"
             android:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
