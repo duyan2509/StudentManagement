@@ -239,28 +239,26 @@ public class MyClass extends Fragment implements OnItemClickListener{
 
     @Override
     public void onItemClick(ClassItem classItem) {
-<<<<<<< Updated upstream
         Intent intent = new Intent(getActivity(), LectureDetailClassActivity.class);
-=======
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection("user")
-                .get()
-                .addOnCompleteListener(task -> {
-
-                });
-        Intent intent;
-        if ("Student".equals(role)) {
-            intent = new Intent(getContext(), StudentDetailClassActivity.class);
-        } else if ("Lecture".equals(role)) {
-            intent = new Intent(getContext(), LectureDetailClassActivity.class);
-        } else {
-            // Default to StudentDetailClassActivity if role is unknown
-            intent = new Intent(getContext(), StudentDetailClassActivity.class);
-        }
->>>>>>> Stashed changes
-        intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
-        intent.putExtra("classLecture", classItem.getClassLecture());
-        intent.putExtra("classTime", classItem.getClassTime());
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        database.collection("user")
+//                .get()
+//                .addOnCompleteListener(task -> {
+//
+//                });
+//        Intent intent;
+//        if ("Student".equals(role)) {
+//            intent = new Intent(getContext(), StudentDetailClassActivity.class);
+//        } else if ("Lecture".equals(role)) {
+//            intent = new Intent(getContext(), LectureDetailClassActivity.class);
+//        } else {
+//            // Default to StudentDetailClassActivity if role is unknown
+//            intent = new Intent(getContext(), StudentDetailClassActivity.class);
+//        }
+        intent.putExtra("classID", classItem.getClassCode());
+//        intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
+//        intent.putExtra("classLecture", classItem.getClassLecture());
+//        intent.putExtra("classTime", classItem.getClassTime());
         startActivity(intent);
     }
 }

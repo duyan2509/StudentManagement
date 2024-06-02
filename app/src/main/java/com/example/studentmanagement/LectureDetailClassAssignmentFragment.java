@@ -36,8 +36,15 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Chuyển đến AddAssignmentActivity khi button được click
-                Intent intent = new Intent(getActivity(), AddAssignmentActivity.class);
+                // Lấy tham chiếu đến Activity chứa fragment
+                LectureDetailClassActivity activity = (LectureDetailClassActivity) getActivity();
+
+                // Lấy classCode từ Intent của Activity
+                String classID = activity.getIntent().getStringExtra("classID");
+
+                // Chuyển đến AddAssignmentActivity và truyền classID
+                Intent intent = new Intent(activity, AddAssignmentActivity.class);
+                intent.putExtra("classID", classID);
                 startActivity(intent);
             }
         });

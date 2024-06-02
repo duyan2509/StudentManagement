@@ -66,8 +66,20 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
+            String classID = getIntent().getStringExtra("classID");
             Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
             intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+            intent.putExtra("classID", classID);
+            startActivity(intent);
+            finish();
+        });
+
+        Button btn_add_assignment = findViewById(R.id.btn_add_assignment);
+        btn_back.setOnClickListener(v -> {
+            String classID = getIntent().getStringExtra("classID");
+            Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
+            intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+            intent.putExtra("classID", classID);
             startActivity(intent);
             finish();
         });
