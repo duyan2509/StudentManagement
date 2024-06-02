@@ -32,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-public class MyClass extends Fragment implements OnItemClickListener{
+public class MyClass extends Fragment{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -223,10 +223,5 @@ public class MyClass extends Fragment implements OnItemClickListener{
                 });
 
         }
-
-    @Override
-    public void onItemClick(ClassItem classItem) {
-
-    }
 }
 
