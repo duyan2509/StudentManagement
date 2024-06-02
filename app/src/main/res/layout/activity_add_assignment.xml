@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddAssignmentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:backgroundTint="@null"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_back"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_centerVertical="true"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="ADD ASSIGNMENT"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/deadline_description"
+        android:layout_width="360dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        android:paddingLeft="10dp"
+        android:hint="@string/deadline_description"
+        android:textSize="18dp" />
+
+    <RelativeLayout
+        android:id="@+id/file_item"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_attach_file"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Attach file"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/etSelectedDate"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:hint="Selected Date: "
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"/>
+
+        <Button
+            android:id="@+id/btnSelectDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Selected Date: "
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"/>
+
+        <EditText
+            android:id="@+id/etSelectedTime"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:hint="Selected Time: "
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="25dp"/>
+
+        <Button
+            android:id="@+id/btnSelectTime"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Select Time"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="25dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

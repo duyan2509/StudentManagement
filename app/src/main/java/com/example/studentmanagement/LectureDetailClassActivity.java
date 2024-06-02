@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.widget.Button;
+import android.widget.TextView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,18 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         });
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
+
+        String classCodeAndName = getIntent().getStringExtra("classCodeAndName");
+        String classLecture = getIntent().getStringExtra("classLecture");
+        String classTime = getIntent().getStringExtra("classTime");
+
+        TextView classCodeView = findViewById(R.id.class_code_and_name);
+        TextView classLectureView = findViewById(R.id.class_lecture);
+        TextView classTimeView = findViewById(R.id.class_time);
+
+        classCodeView.setText(classCodeAndName);
+        classLectureView.setText(classLecture);
+        classTimeView.setText(classTime);
 
     }
     public void loadFragment(Fragment fragment) {

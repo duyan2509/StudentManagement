@@ -1,4 +1,5 @@
 package com.example.studentmanagement;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +29,16 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
                 ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment());
+            }
+        });
+
+        Button btnAddAssignment = view.findViewById(R.id.btn_add_assignment);
+        btnAddAssignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển đến AddAssignmentActivity khi button được click
+                Intent intent = new Intent(getActivity(), AddAssignmentActivity.class);
+                startActivity(intent);
             }
         });
         return view;

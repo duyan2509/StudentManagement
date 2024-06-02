@@ -1,4 +1,4 @@
-package com.example.studentmanagement;
+package com.example.studentmanagement.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.studentmanagement.ClassItem;
+import com.example.studentmanagement.OnItemClickListener;
+import com.example.studentmanagement.R;
 
 import java.util.List;
 

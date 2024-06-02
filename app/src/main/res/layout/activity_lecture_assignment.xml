@@ -46,48 +46,12 @@
         android:text="@string/deadline_description"
         android:textSize="18dp"/>
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/file_item"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="20dp">
-
-        <Button
-            android:id="@+id/btn_open_pdf"
-            app:backgroundTint="#5ce7ff"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/edittext_border"/>
-
-        <ImageView
-            app:backgroundTint="@null"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/icon_folder_bg"/>
-
-        <TextView
-            android:id="@+id/textview_de_bai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="110dp"
-            android:text="DE BAI"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/size_file"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="110dp"
-            android:text="1.2 MB"
-            android:textSize="15dp"
-            android:textStyle="normal"/>
-    </RelativeLayout>
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

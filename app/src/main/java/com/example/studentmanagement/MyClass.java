@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 
+import com.example.studentmanagement.Adapter.ClassAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -234,7 +235,7 @@ public class MyClass extends Fragment implements OnItemClickListener{
 
     @Override
     public void onItemClick(ClassItem classItem) {
-        Intent intent = new Intent(getActivity(), StudentDetailClassActivity.class);
+        Intent intent = new Intent(getActivity(), LectureDetailClassActivity.class);
         intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
         intent.putExtra("classLecture", classItem.getClassLecture());
         intent.putExtra("classTime", classItem.getClassTime());
