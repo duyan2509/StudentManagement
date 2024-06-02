@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 public class LectureDetailClassAssignmentFragment extends Fragment {
-
-    public LectureDetailClassAssignmentFragment() {
+    private String code;
+    public LectureDetailClassAssignmentFragment(String ClassCode) {
         // Required empty public constructor
+       this.code=ClassCode;
     }
 
 
@@ -28,7 +29,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment());
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(code));
             }
         });
 
