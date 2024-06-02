@@ -1,4 +1,5 @@
 package com.example.studentmanagement;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -6,17 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 public class LectureDetailClassAssignmentFragment extends Fragment {
-    private String code;
+    private final String code;
     public LectureDetailClassAssignmentFragment(String ClassCode) {
         // Required empty public constructor
-       this.code=ClassCode;
+        this.code=ClassCode;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -33,6 +33,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         });
 
         Button btnAddAssignment = view.findViewById(R.id.btn_add_assignment);
+
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,12 +43,13 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
                 // Lấy classCode từ Intent của Activity
                 String classID = activity.getIntent().getStringExtra("classID");
 
-                // Chuyển đến AddAssignmentActivity và truyền classID
+                // Chuyển đến AddAssignmentActivity và truyền classCode
                 Intent intent = new Intent(activity, AddAssignmentActivity.class);
                 intent.putExtra("classID", classID);
                 startActivity(intent);
             }
         });
+
         return view;
     }
 }
