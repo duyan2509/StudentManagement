@@ -1,5 +1,4 @@
 package com.example.studentmanagement;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,9 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 public class LectureDetailClassAssignmentFragment extends Fragment {
-
-    public LectureDetailClassAssignmentFragment() {
+    private String code;
+    public LectureDetailClassAssignmentFragment(String ClassCode) {
         // Required empty public constructor
+        this.code=ClassCode;
     }
 
 
@@ -28,17 +28,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment());
-            }
-        });
-
-        Button btnAddAssignment = view.findViewById(R.id.btn_add_assignment);
-        btnAddAssignment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển đến AddAssignmentActivity khi button được click
-                Intent intent = new Intent(getActivity(), AddAssignmentActivity.class);
-                startActivity(intent);
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(code));
             }
         });
         return view;

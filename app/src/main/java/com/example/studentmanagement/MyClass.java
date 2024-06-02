@@ -28,17 +28,11 @@ import java.util.List;
 import java.util.Objects;
 
 
-import com.example.studentmanagement.Adapter.ClassAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyClass#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MyClass extends Fragment implements OnItemClickListener{
+public class MyClass extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -209,7 +203,7 @@ public class MyClass extends Fragment implements OnItemClickListener{
                 .get()
                 .addOnCompleteListener(task -> {
                     classItemList = new ArrayList<>();
-                    classAdapter = new ClassAdapter(classItemList, this);
+                    classAdapter = new ClassAdapter(classItemList, getContext());
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -235,33 +229,7 @@ public class MyClass extends Fragment implements OnItemClickListener{
         classItemList.add(new ClassItem("SE332.O22", "Lập Trình Java", "⭐ Trần Văn B", "4-6, Thứ ba"));
         classAdapter = new ClassAdapter(classItemList);
         recyclerView.setAdapter(classAdapter);*/
-        }
-
-    @Override
-    public void onItemClick(ClassItem classItem) {
-<<<<<<< Updated upstream
-        Intent intent = new Intent(getActivity(), LectureDetailClassActivity.class);
-=======
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection("user")
-                .get()
-                .addOnCompleteListener(task -> {
-
-                });
-        Intent intent;
-        if ("Student".equals(role)) {
-            intent = new Intent(getContext(), StudentDetailClassActivity.class);
-        } else if ("Lecture".equals(role)) {
-            intent = new Intent(getContext(), LectureDetailClassActivity.class);
-        } else {
-            // Default to StudentDetailClassActivity if role is unknown
-            intent = new Intent(getContext(), StudentDetailClassActivity.class);
-        }
->>>>>>> Stashed changes
-        intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
-        intent.putExtra("classLecture", classItem.getClassLecture());
-        intent.putExtra("classTime", classItem.getClassTime());
-        startActivity(intent);
     }
+
 }
 
