@@ -30,6 +30,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.concurrent.atomic.AtomicReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 public class LectureDetailClassActivity extends AppCompatActivity {
 
     @Override
@@ -45,9 +49,9 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         String code_text = code +"-"+name;
         // Hiển thị các dữ liệu  lên interface
         //
-        TextView classNameTextView = findViewById(R.id.class_name);
-        TextView classLectureTextView = findViewById(R.id.class_gv_data);
-        TextView classTimeTextView = findViewById(R.id.class_time_data);
+        TextView classNameTextView = findViewById(R.id.class_code_and_name);
+        TextView classLectureTextView = findViewById(R.id.class_lecture);
+        TextView classTimeTextView = findViewById(R.id.class_time);
 
         //classCodeTextView.setText(code);
         classNameTextView.setText(code_text);

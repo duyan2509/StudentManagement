@@ -28,17 +28,11 @@ import java.util.List;
 import java.util.Objects;
 
 
-import com.example.studentmanagement.Adapter.ClassAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyClass#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MyClass extends Fragment implements OnItemClickListener{
+public class MyClass extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -253,5 +247,6 @@ public class MyClass extends Fragment implements OnItemClickListener{
 //        intent.putExtra("classTime", classItem.getClassTime());
         startActivity(intent);
     }
+
 }
 
