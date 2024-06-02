@@ -206,7 +206,7 @@ public class MyClass extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     classItemList = new ArrayList<>();
-                    classAdapter = new ClassAdapter(classItemList);
+                    classAdapter = new ClassAdapter(classItemList,getContext());
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -223,15 +223,7 @@ public class MyClass extends Fragment {
                     }
                     recyclerView.setAdapter(classAdapter);
                 });
-        //recyclerView.setAdapter(classAdapter);
-        /*classItemList.add(new ClassItem("SE330.O22", "Lập Trình Java", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
-        classItemList.add(new ClassItem("SE331.O22", "Cấu Trúc Dữ Liệu", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
-        classItemList.add(new ClassItem("SE332.O22", "Mạng Máy Tính", "⭐ Trần Văn B", "4-6, Thứ ba"));
-        classItemList.add(new ClassItem("SE330.O22", "Cấu Trúc Dữ Liệu", "⭐ Lê Thanh Trọng", "2-5, Thứ năm"));
-        classItemList.add(new ClassItem("SE331.O2w2", "Hướng Đối Tượng", "⭐ Nguyễn Văn A", "1-3, Thứ hai"));
-        classItemList.add(new ClassItem("SE332.O22", "Lập Trình Java", "⭐ Trần Văn B", "4-6, Thứ ba"));
-        classAdapter = new ClassAdapter(classItemList);
-        recyclerView.setAdapter(classAdapter);*/
+
         }
     }
 

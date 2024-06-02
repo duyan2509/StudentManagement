@@ -32,15 +32,16 @@ import androidx.activity.result.contract.ActivityResultContracts;
 //import androidx.fragment.app.FragmentManager;
 
 public class FileFolderCancelButton extends Fragment {
-
+    String code;
     //ContentResolver contentResolver = requireContext().getContentResolver();
 
     private ActivityResultLauncher<String> filePickerLauncher;
     //FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-    StorageReference storageRef = FirebaseStorage.getInstance().getReference("uploads");
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference("SE104.027");
 
-    public FileFolderCancelButton() {
+    public FileFolderCancelButton(String code) {
         // Required empty public constructor
+        this.code = code;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class FileFolderCancelButton extends Fragment {
             // Load CancelFragment
             if (getActivity() != null) {
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container1, new PlusButton())
+                        .replace(R.id.container1, new PlusButton(code))
                         .addToBackStack(null)
                         .commit();
             }
@@ -100,8 +101,8 @@ public class FileFolderCancelButton extends Fragment {
     private void uploadFileToFirebase(Uri fileUri) {
         // Lấy tên file từ Uri
         String fileName = getFileName(fileUri);
-
-        StorageReference fileRef = storageRef.child("uploads/" + fileName);
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
+        StorageReference fileRef = storageRef.child(fileName);
         //Define Notification
         NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(requireContext(), "upload_channel")

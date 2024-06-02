@@ -61,35 +61,7 @@ public class UserActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.detail_class_student);
-            ImageButton back = findViewById(R.id.ImageButton);
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                }
-            });
-
-            Button document = findViewById(R.id.button_text1);
-            document.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            Button assignment = findViewById(R.id.button_text2);
-            assignment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            Button listClasses = findViewById(R.id.back_list_class);
-            listClasses.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
 
         }
     }

@@ -13,9 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 public class PlusButton extends Fragment {
-
-    public PlusButton() {
+    String code;
+    public PlusButton(String code) {
         // Required empty public constructor
+        this.code=code;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class PlusButton extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
 
-                transaction.replace(R.id.container1, new FileFolderCancelButton());
+                transaction.replace(R.id.container1, new FileFolderCancelButton(code));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
