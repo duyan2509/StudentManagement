@@ -48,6 +48,7 @@ public class MyClass extends Fragment implements OnItemClickListener{
 
     private List<ClassItem> classItemList;
     private ClassAdapter classAdapter;
+    private String role;
     public MyClass() {
         // Required empty public constructor
     }
@@ -67,6 +68,9 @@ public class MyClass extends Fragment implements OnItemClickListener{
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        if (getArguments() != null) {
+            role = getArguments().getString("role");
         }
 
     }
@@ -235,7 +239,25 @@ public class MyClass extends Fragment implements OnItemClickListener{
 
     @Override
     public void onItemClick(ClassItem classItem) {
+<<<<<<< Updated upstream
         Intent intent = new Intent(getActivity(), LectureDetailClassActivity.class);
+=======
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection("user")
+                .get()
+                .addOnCompleteListener(task -> {
+
+                });
+        Intent intent;
+        if ("Student".equals(role)) {
+            intent = new Intent(getContext(), StudentDetailClassActivity.class);
+        } else if ("Lecture".equals(role)) {
+            intent = new Intent(getContext(), LectureDetailClassActivity.class);
+        } else {
+            // Default to StudentDetailClassActivity if role is unknown
+            intent = new Intent(getContext(), StudentDetailClassActivity.class);
+        }
+>>>>>>> Stashed changes
         intent.putExtra("classCodeAndName", classItem.getClassCode() + " - " + classItem.getClassName());
         intent.putExtra("classLecture", classItem.getClassLecture());
         intent.putExtra("classTime", classItem.getClassTime());

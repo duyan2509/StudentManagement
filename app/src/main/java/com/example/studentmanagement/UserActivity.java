@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class UserActivity extends AppCompatActivity {
@@ -52,6 +56,31 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        // Get the currently logged-in user
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("user").document(userId).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String role = document.getString("role");
+
+                        // Pass role to fragment
+                        Bundle bundle = new Bundle();
+                        bundle.putString("role", role);
+                        MyClass myClassFragment = new MyClass();
+                        myClassFragment.setArguments(bundle);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.user_container, myClassFragment)
+                                .commitAllowingStateLoss();
+                    }
+                }
+            });
+        }
     }
 
     public static class DetailClassStudent extends AppCompatActivity{
