@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 
 public class LectureDetailClassDocumentFragment extends Fragment {
-    private String code;
+    private final String code;
 
     public LectureDetailClassDocumentFragment(String classCode) {
         // Required empty public constructor

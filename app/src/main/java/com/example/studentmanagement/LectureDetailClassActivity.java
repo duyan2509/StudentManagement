@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,34 +17,67 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class LectureDetailClassActivity extends AppCompatActivity {
 
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_lecture_detail_class);
-        AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
-        String code = intent.get().getStringExtra("code");
-        String name = intent.get().getStringExtra("name");
-        String lecture = intent.get().getStringExtra("lecture");
-        String time = intent.get().getStringExtra("time");
-        String code_text = code +"-"+name;
-        // Hiển thị các dữ liệu  lên interface
-        //
-        TextView classNameTextView = findViewById(R.id.class_code_and_name);
-        TextView classLectureTextView = findViewById(R.id.class_lecture);
-        TextView classTimeTextView = findViewById(R.id.class_time);
 
-        //classCodeTextView.setText(code);
-        classNameTextView.setText(code_text);
-        classLectureTextView.setText(lecture);
-        classTimeTextView.setText(time);
-        checkAndCreateFolder(code);
+        db = FirebaseFirestore.getInstance();
+        String classID = getIntent().getStringExtra("classID");
+
+        if (classID != null) {
+            DocumentReference docRef = db.collection("course").document(classID);
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
+                        String classLecture = documentSnapshot.getString("lecture");
+                        String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
+
+                        TextView classCodeView = findViewById(R.id.class_code_and_name);
+                        TextView classLectureView = findViewById(R.id.class_lecture);
+                        TextView classTimeView = findViewById(R.id.class_time);
+
+                        classCodeView.setText(classCodeAndName);
+                        classLectureView.setText(classLecture);
+                        classTimeView.setText(classTime);
+
+                        AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+                        String classCode = documentSnapshot.getString("code");
+                        checkAndCreateFolder(classCode);
+                        boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
+                        if (savedInstanceState == null) {
+                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(classCode) : new LectureDetailClassDocumentFragment(classCode);
+
+                            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
+                        }
+                    } else {
+                        Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("LectureDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+                }
+            });
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -51,16 +85,10 @@ public class LectureDetailClassActivity extends AppCompatActivity {
             return insets;
         });
 
-        boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
-        if (savedInstanceState == null) {
-            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(code) : new LectureDetailClassDocumentFragment(code);
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
-        }
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
-
+            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
             intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
             intent.get().putExtra("show_fragment_my_class", true);
             startActivity(intent.get());

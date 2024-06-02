@@ -59,6 +59,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
                 if (position != RecyclerView.NO_POSITION) {
                     ClassItem classItem = classItemList.get(position);
                     Intent intent = new Intent(context, LectureDetailClassActivity.class);
+                    intent.putExtra("classID", classItem.getClassID());
                     intent.putExtra("code", classItem.getClassCode());
                     intent.putExtra("name", classItem.getClassName());
                     intent.putExtra("lecture", classItem.getClassLecture());

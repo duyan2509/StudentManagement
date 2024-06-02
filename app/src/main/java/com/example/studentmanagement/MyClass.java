@@ -32,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-public class MyClass extends Fragment {
+public class MyClass extends Fragment implements OnItemClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -207,11 +207,12 @@ public class MyClass extends Fragment {
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getString("id");
                             String code = document.getString("code");
                             String name = document.getString("name");
                             String lecture = document.getString("lecture");
                             String time = Objects.requireNonNull(document.getLong("start")).toString() +"-"+Objects.requireNonNull(document.getLong("end")).toString()+", " + document.getString("schedule") ;
-                            classItemList.add(new ClassItem(code, name, lecture, time));
+                            classItemList.add(new ClassItem(id, code, name, lecture, time));
 
                             Log.d("DEBUG: ", document.getId() + " => " + document.getData());
                         }
@@ -222,7 +223,10 @@ public class MyClass extends Fragment {
                 });
 
         }
-    }
 
+    @Override
+    public void onItemClick(ClassItem classItem) {
+
+    }
 }
 
