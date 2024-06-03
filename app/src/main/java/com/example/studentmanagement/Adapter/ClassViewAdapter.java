@@ -3,6 +3,7 @@ package com.example.studentmanagement.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.ChatActivity;
+import com.example.studentmanagement.ClassItem;
+import com.example.studentmanagement.LectureDetailClassActivity;
 import com.example.studentmanagement.Model.Course;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.StudentDetailClassActivity;
 import com.example.studentmanagement.Utils.AndroidUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ClassViewAdapter extends FirestoreRecyclerAdapter<Course, ClassViewAdapter.CourseViewHolder> {
     Context context;
@@ -33,9 +40,38 @@ public class ClassViewAdapter extends FirestoreRecyclerAdapter<Course, ClassView
         holder.courseCode.setText(model.getCode());
         holder.courseName.setText(model.getName());
 
-        holder.itemView.setOnClickListener(v -> {
-            //navigate to class activity
+        // Set click listener for item view
+        holder.itemView.setOnClickListener(v -> navigateToDetailActivity(model));
 
+        // Set click listener for view details image
+        holder.viewDetails.setOnClickListener(v -> navigateToDetailActivity(model));
+    }
+
+    private void navigateToDetailActivity(Course model) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("user").document(userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.exists()) {
+                    String role = documentSnapshot.getString("role");
+                    Log.d("TAG", "User role: " + role); // Log the user role
+                    Intent intent;
+                    if ("student".equals(role)) {
+                        intent = new Intent(context, StudentDetailClassActivity.class);
+                    } else {
+                        intent = new Intent(context, LectureDetailClassActivity.class);
+                    }
+                    Log.d("TAG", "course_id: " +  model.getId());
+                    intent.putExtra("classID", model.getId()); // Assuming Course class has a getId() method
+                    context.startActivity(intent);
+                } else {
+                    Log.d("TAG", "Document does not exist");
+                }
+            } else {
+                Log.d("TAG", "Failed to get document: ", task.getException());
+            }
         });
     }
 

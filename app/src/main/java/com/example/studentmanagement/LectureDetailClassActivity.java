@@ -40,6 +40,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
+        Log.d("TAG", "classID: " +  classID);
 
         if (classID != null) {
             DocumentReference docRef = db.collection("course").document(classID);

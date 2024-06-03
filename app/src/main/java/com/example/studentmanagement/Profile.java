@@ -86,6 +86,8 @@ public class Profile extends Fragment {
         role = view.findViewById(R.id.role);
         recyclerView = view.findViewById(R.id.recyler_view1);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         getUserData();
         setUpCourseRecycleView();
 
@@ -215,7 +217,7 @@ public class Profile extends Fragment {
         }
 
         adapter = new ClassViewAdapter(options, getContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
     }
