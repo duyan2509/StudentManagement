@@ -28,8 +28,14 @@ import java.util.List;
 import java.util.Objects;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class MyClass extends Fragment{
@@ -199,29 +205,48 @@ public class MyClass extends Fragment{
 
         // Initialize Firebase Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection("course")
+
+        String Uid=FirebaseAuth.getInstance().getUid();
+        database.collection("user_course")
                 .get()
                 .addOnCompleteListener(task -> {
-                    classItemList = new ArrayList<>();
-                    classAdapter = new ClassAdapter(classItemList,getContext());
-
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String id = document.getString("id");
-                            String code = document.getString("code");
-                            String name = document.getString("name");
-                            String lecture = document.getString("lecture");
-                            String time = Objects.requireNonNull(document.getLong("start")).toString() +"-"+Objects.requireNonNull(document.getLong("end")).toString()+", " + document.getString("schedule") ;
-                            classItemList.add(new ClassItem(id, code, name, lecture, time));
+                        classItemList = new ArrayList<>();
+                        classAdapter = new ClassAdapter(classItemList, getContext());
+                        assert Uid != null;
+                        Log.d("Get User ID: ", Uid);
 
-                            Log.d("DEBUG: ", document.getId() + " => " + document.getData());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String user_id = document.getString("user_id");
+                            String course_id = document.getString("course_id");
+
+                            if (Objects.equals(user_id, Uid)) {
+                                assert course_id != null;
+                                DocumentReference docRef = database.collection("course").document(course_id);
+
+                                docRef.get().addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        String id = documentSnapshot.getId();
+                                        String code = documentSnapshot.getString("code");
+                                        String name = documentSnapshot.getString("name");
+                                        String lecture = documentSnapshot.getString("lecture");
+                                        String time = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +
+                                                "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() +
+                                                ", " + documentSnapshot.getString("schedule");
+
+                                        classItemList.add(new ClassItem(id, code, name, lecture, time));
+                                        classAdapter.notifyDataSetChanged(); // Thông báo adapter dữ liệu đã thay đổi
+                                        Log.d("DEBUG: ", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                                    }
+                                }).addOnFailureListener(e -> Log.d("DEBUG: ", "Error getting document: ", e));
+                            }
                         }
+
+                        recyclerView.setAdapter(classAdapter); // Đặt adapter sau khi hoàn thành việc lấy dữ liệu
                     } else {
                         Log.d("DEBUG: ", "Error getting documents: ", task.getException());
                     }
-                    recyclerView.setAdapter(classAdapter);
                 });
-
-        }
+    }
 }
 
