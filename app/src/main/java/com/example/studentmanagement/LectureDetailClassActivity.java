@@ -90,6 +90,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
             return insets;
         });
 
+
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
@@ -132,15 +133,6 @@ public class LectureDetailClassActivity extends AppCompatActivity {
                 Log.d("LectureDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
             }
         });
-
-//        TextView classCodeView = findViewById(R.id.class_code_and_name);
-//        TextView classLectureView = findViewById(R.id.class_lecture);
-//        TextView classTimeView = findViewById(R.id.class_time);
-//
-//        classCodeView.setText(classCodeAndName);
-//        classLectureView.setText(classLecture);
-//        classTimeView.setText(classTime);
-
     }
 
     private void checkAndCreateFolder(String code) {

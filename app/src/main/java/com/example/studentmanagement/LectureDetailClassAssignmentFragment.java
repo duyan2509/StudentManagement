@@ -13,7 +13,6 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         this.code=ClassCode;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
