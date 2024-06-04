@@ -6,10 +6,11 @@ import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
+import android.widget.AdapterView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -23,20 +24,25 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.security.AccessController;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class AddAssignmentActivity extends AppCompatActivity {
 
-    Button btnSelectDate, btnSelectTime, btnAttachFile;
+    Button btnSelectDate, btnSelectTime, btnAttachFile, btnAddAssignment;
     EditText etSelectedDate, etSelectedTime;
     private ActivityResultLauncher<String> filePickerLauncher;
     private FirebaseFirestore db;
-
+    private Uri selectedFileUri;
+    private String selectedClassCode;
+    private String SelectDate,SelectTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +75,11 @@ public class AddAssignmentActivity extends AppCompatActivity {
         etSelectedDate = findViewById(R.id.etSelectedDate);
         etSelectedTime = findViewById(R.id.etSelectedTime);
         btnAttachFile = findViewById(R.id.btn_attach_file);
+        btnAddAssignment = findViewById(R.id.btn_add_assignment);
 
+        //initial Date And Time
+        etSelectedDate.setText("");
+        etSelectedTime.setText("");
         btnSelectDate.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -78,8 +88,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(AddAssignmentActivity.this,
                     (view, year1, month1, dayOfMonth) -> {
-                        String selectedDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
-                        etSelectedDate.setText(selectedDate);
+                        SelectDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
+                        etSelectedDate.setText(SelectDate);
                     }, year, month, day);
             datePickerDialog.show();
         });
@@ -91,8 +101,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
             TimePickerDialog timePickerDialog = new TimePickerDialog(AddAssignmentActivity.this,
                     (view, hourOfDay, minute1) -> {
-                        String selectedTime = hourOfDay + ":" + minute1;
-                        etSelectedTime.setText(selectedTime);
+                        SelectTime = hourOfDay + ":" + minute1;
+                        etSelectedTime.setText(SelectTime);
                     }, hour, minute, true);
             timePickerDialog.show();
         });
@@ -117,15 +127,17 @@ public class AddAssignmentActivity extends AppCompatActivity {
                             if (documentSnapshot.exists()) {
                                 String classCode = documentSnapshot.getString("code");
                                 if (classCode != null) {
-                                    uploadFileToFirebase(uri, classCode);
+                                    selectedFileUri = uri;
+                                    selectedClassCode = classCode;
+                                    Log.d("AddAssignmentActivity", "Tệp đã được chọn và lưu tạm thời.");
                                 } else {
-                                    Log.d("LectureDetailClassActivity", "classCode is null");
+                                    Log.d("AddAssignmentActivity", "classCode is null");
                                 }
                             } else {
-                                Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
+                                Log.d("AddAssignmentActivity", "Không tìm thấy lớp học với ID: " + classID);
                             }
                         }).addOnFailureListener(e -> {
-                            Log.d("LectureDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+                            Log.d("AddAssignmentActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
                         });
                     }
                 });
@@ -139,12 +151,34 @@ public class AddAssignmentActivity extends AppCompatActivity {
                 Log.d("LectureDetailClassActivity", "classID is null");
             }
         });
+        btnAddAssignment.setOnClickListener(v -> {
+
+            Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
+            Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
+            if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
+                uploadFileToFirebase(selectedFileUri, selectedClassCode);
+                String classID = getIntent().getStringExtra("classID");
+                Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
+                intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+                intent.putExtra("classID", classID);
+                startActivity(intent);
+                finish();
+
+            } else {
+                Log.d("AddAssignmentActivity", "Chưa chọn tệp hoặc mã lớp học không hợp lệ.");
+
+            }
+        });
+    }
+
+    private boolean Check(String select) {
+        return select != null && !select.isEmpty();
     }
 
     private void uploadFileToFirebase(Uri fileUri, String code) {
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child("Assignment/" + fileName);
+        StorageReference fileRef = storageRef.child("Assignment/Date:"+convertstring(SelectDate)+"/Time:"+convertstring(SelectTime)+"/" + fileName);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "upload_channel")
@@ -173,10 +207,18 @@ public class AddAssignmentActivity extends AppCompatActivity {
                 });
     }
 
+    private String convertstring(String input) {
+        if (input == null) {
+            return null;
+        }
+        String out1 = input.replace("/", "_");
+        return out1.replace(":", "_");
+    }
+
     private String getFileName(Uri uri) {
         String result = null;
         if (uri != null && "content".equals(uri.getScheme())) {
-            try (android.database.Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     if (nameIndex != -1) {
