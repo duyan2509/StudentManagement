@@ -2,6 +2,7 @@ package com.example.studentmanagement;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class StudentDetailClassDocumentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("Fragment: ", "Student Detail Class Document Fragment");
     }
 
     @Override

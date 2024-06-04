@@ -43,6 +43,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_assignment);
 
+        Log.d("Activity: ", "Add Assignment Activity");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "upload_channel";
             String channelName = "File Uploads";
