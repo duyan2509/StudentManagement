@@ -15,9 +15,15 @@ import androidx.fragment.app.Fragment;
 public class StudentDetailClassDocumentFragment extends Fragment {
     private final String code;
 
+<<<<<<< HEAD
     public StudentDetailClassDocumentFragment(String classCode) {
         // Required empty public constructor
         this.code=classCode;
+=======
+    public StudentDetailClassDocumentFragment(String code) {
+        // Required empty public constructor
+        this.code=code;
+>>>>>>> vu
     }
 
     @Override

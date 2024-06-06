@@ -72,6 +72,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if (documentSnapshot.exists()) {
+<<<<<<< HEAD
                                 String userRole = documentSnapshot.getString("role");
                                 Log.d("TAG", "Successfully get userRole:  " + userRole);
                                 Intent intent;
@@ -92,6 +93,44 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
                             }
                         }
                     });
+=======
+                                String role = documentSnapshot.getString("role");
+                                Log.d("TAG", "User role: " + role); // Log the user role
+                                Intent intent;
+                                if ("student".equals(role)) {
+                                    intent = new Intent(context, StudentDetailClassActivity.class);
+                                    intent.putExtra("classID", classItem.getClassID());
+                                    intent.putExtra("code", classItem.getClassCode());
+                                    intent.putExtra("name", classItem.getClassName());
+                                    intent.putExtra("lecture", classItem.getClassLecture());
+                                    intent.putExtra("time", classItem.getClassTime());
+
+                                } else {
+                                    intent = new Intent(context, LectureDetailClassActivity.class);
+                                    intent.putExtra("classID", classItem.getClassID());
+                                    intent.putExtra("code", classItem.getClassCode());
+                                    intent.putExtra("name", classItem.getClassName());
+                                    intent.putExtra("lecture", classItem.getClassLecture());
+                                    intent.putExtra("time", classItem.getClassTime());
+                                }
+//                                Log.d("TAG", "course_id: " +  model.getId());
+//                                intent.putExtra("classID", model.getId()); // Assuming Course class has a getId() method
+                                context.startActivity(intent);
+                            } else {
+                                Log.d("TAG", "Document does not exist");
+                            }
+                        } else {
+                            Log.d("TAG", "Failed to get document: ", task.getException());
+                        }
+                    });
+//                    Intent intent = new Intent(context, LectureDetailClassActivity.class);
+//                    intent.putExtra("classID", classItem.getClassID());
+//                    intent.putExtra("code", classItem.getClassCode());
+//                    intent.putExtra("name", classItem.getClassName());
+//                    intent.putExtra("lecture", classItem.getClassLecture());
+//                    intent.putExtra("time", classItem.getClassTime());
+//                    context.startActivity(intent);
+>>>>>>> vu
                 }
             });
         }
