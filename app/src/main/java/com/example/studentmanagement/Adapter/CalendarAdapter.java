@@ -32,13 +32,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +120,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                 for (Course course:courses)
                 {
                     CourseRepository courseRepository = new CourseRepository();
-                    courseRepository.getCodeByCourseId(course.getId()).addOnCompleteListener(new OnCompleteListener<Course>() {
+                    courseRepository.getCourseByCourseId(course.getId()).addOnCompleteListener(new OnCompleteListener<Course>() {
                         @Override
                         public void onComplete(@NonNull Task<Course> task) {
                             Course course1 = task.getResult();
