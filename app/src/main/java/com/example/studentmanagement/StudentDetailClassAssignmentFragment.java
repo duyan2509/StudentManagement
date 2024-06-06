@@ -1,6 +1,8 @@
 package com.example.studentmanagement;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("Fragment: ", "Student Detail Class Assignment Fragment");
     }
 
     @Override
