@@ -2,10 +2,24 @@ package com.example.studentmanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.studentmanagement.Adapter.AssignmentViewAdapter;
+import com.example.studentmanagement.Model.Assignment;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class LectureDetailClassAssignmentFragment extends Fragment {
     private final String code;
     public LectureDetailClassAssignmentFragment(String ClassCode) {
@@ -49,7 +63,40 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        List<Assignment> assignmentsList = new ArrayList<>();
+        AssignmentViewAdapter adapter = new AssignmentViewAdapter(assignmentsList, getContext());
+        recyclerView.setAdapter(adapter);
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Log.d("LectureDetailClassAssignmentFragment", code);
+        db.collection("course").document(code).collection("assignment").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String title = document.getString("title");
+                            Timestamp dueDate = document.getTimestamp("due_date");
+                            String description = document.getString("description");
+
+                            Assignment assignment = new Assignment(title, dueDate);
+                            assignment.setDescription(description);
+                            // Fetch and set additional fields as needed
+                            assignmentsList.add(assignment);
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Log.w("LectureDetailClassAssignmentFragment", "Error getting documents.", task.getException());
+                    }
+                });
+        //loadAssignments();
+        //
         return view;
+    }
+
+    private void loadAssignments() {
+
+
     }
 }

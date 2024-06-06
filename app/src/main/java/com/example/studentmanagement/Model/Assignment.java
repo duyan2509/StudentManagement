@@ -5,6 +5,23 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class Assignment {
+    String id;
+    Timestamp due_date;
+    String title;
+    String description;
+    private boolean submittedLate; // Trường để xác định submission có trễ hạn hay không
+    private boolean late;
+    List<Submission> submissions;
+    List<AttachedFile> attached_files;
+    public Assignment(String title, Timestamp due_date) {
+        this.due_date = due_date;
+        this.title =  title;
+    }
+
+    public Assignment() {
+
+    }
+
     public String getId() {
         return id;
     }
@@ -21,12 +38,7 @@ public class Assignment {
         this.attached_files = attached_files;
     }
 
-    String id;
-    Timestamp due_date;
-    String title;
-    String description;
-    List<Submission> submissions;
-    List<AttachedFile> attached_files;
+
 
     public String getCourseId() {
         return courseId;
@@ -77,7 +89,21 @@ public class Assignment {
     public void setAttached_file(List<AttachedFile> attached_file) {
         this.attached_files = attached_file;
     }
-
-    public Assignment() {
+    public boolean isSubmittedLate() {
+        return submittedLate;
     }
+
+    public void setSubmittedLate(boolean submittedLate) {
+        this.submittedLate = submittedLate;
+    }
+
+    // Setter and Getter for late
+    public boolean isLate() {
+        return late;
+    }
+
+    public void setLate(boolean late) {
+        this.late = late;
+    }
+
 }
