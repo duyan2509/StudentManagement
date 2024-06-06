@@ -2,8 +2,6 @@ package com.example.studentmanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,10 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         this.code=ClassCode;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Fragment: ", "Lecture Detail Class Assignment Fragment");
     }
 
     @Override

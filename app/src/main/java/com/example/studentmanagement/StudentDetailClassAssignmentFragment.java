@@ -1,25 +1,21 @@
 package com.example.studentmanagement;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 public class StudentDetailClassAssignmentFragment extends Fragment {
 
-    private final String code;
-
-    public StudentDetailClassAssignmentFragment(String ClassCode) {
+    public StudentDetailClassAssignmentFragment() {
         // Required empty public constructor
-        this.code=ClassCode;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Fragment: ", "Student Detail Class Assignment Fragment");
+
     }
 
     @Override
@@ -31,7 +27,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof StudentDetailClassActivity) {
-                ((StudentDetailClassActivity) getActivity()).loadFragment(new StudentDetailClassDocumentFragment(code));
+                ((StudentDetailClassActivity) getActivity()).loadFragment(new StudentDetailClassDocumentFragment());
             }
         });
         return view;
