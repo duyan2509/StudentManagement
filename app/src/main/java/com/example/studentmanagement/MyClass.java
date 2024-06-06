@@ -48,6 +48,9 @@ public class MyClass extends Fragment{
     private List<ClassItem> classItemList;
     private ClassAdapter classAdapter;
     private String role;
+
+    public String selectedYear;
+    public String selectedSemester;
     public MyClass() {
         // Required empty public constructor
     }
@@ -92,28 +95,22 @@ public class MyClass extends Fragment{
         List<String> years = new ArrayList<>(Arrays.asList("Năm Học", "2021", "2022", "2023", "2024"));
         List<String> semesters = new ArrayList<>(Arrays.asList("Học Kỳ", "Học Kỳ I", "Học Kỳ II", "Học Kỳ Hè"));
 
-        // Tạo một ArrayAdapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years) {
-            @Override
-            public boolean isEnabled(int position) {
-                // Vô hiệu hóa mục đầu tiên (hint)
-                return position != 0;
-            }
+        // Initialize the classItemList and adapter
+        classItemList = new ArrayList<>();
+        classAdapter = new ClassAdapter(classItemList, getContext());
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Đặt màu cho mục đầu tiên
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
+        RecyclerView recyclerView = view.findViewById(R.id.class_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
+        // Fetch all classes initially (or you can fetch based on a default year if needed)
+        if(selectedYear == null){
+            fetchClassesForYear(null); // Hoặc cung cấp một năm mặc định
+            recyclerView.setAdapter(classAdapter);
+        }
+
+        // Tạo ArrayAdapter
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years) {
             @Override
             public boolean isEnabled(int position) {
@@ -125,12 +122,7 @@ public class MyClass extends Fragment{
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Đặt màu cho mục đầu tiên
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
+                tv.setTextColor(position == 0 ? Color.GRAY : Color.BLACK); // Đặt màu cho mục đầu tiên
                 return view;
             }
         };
@@ -146,12 +138,7 @@ public class MyClass extends Fragment{
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Đặt màu cho mục đầu tiên
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
+                tv.setTextColor(position == 0 ? Color.GRAY : Color.BLACK); // Đặt màu cho mục đầu tiên
                 return view;
             }
         };
@@ -170,8 +157,12 @@ public class MyClass extends Fragment{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     // Thực hiện hành động khi một năm được chọn
-                    String selectedYear = (String) parent.getItemAtPosition(position);
-                    Toast.makeText(parent.getContext(), "Selected: " + selectedYear, Toast.LENGTH_LONG).show();
+                    selectedYear = (String) parent.getItemAtPosition(position);
+                    Toast.makeText(parent.getContext(), "Selected: " + selectedYear, Toast.LENGTH_SHORT).show();
+                    classItemList.clear();
+                    fetchClassesForYear(selectedYear); // Lấy dữ liệu lớp cho năm được chọn
+                    classAdapter = new ClassAdapter(classItemList, getContext());
+                    recyclerView.setAdapter(classAdapter);
                 }
             }
 
@@ -185,9 +176,17 @@ public class MyClass extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-
-                    String selectedYear = (String) parent.getItemAtPosition(position);
-                    Toast.makeText(parent.getContext(), "Selected: " + selectedYear, Toast.LENGTH_LONG).show();
+                    selectedSemester = (String) parent.getItemAtPosition(position);
+                    if(selectedYear != null){
+                        Toast.makeText(parent.getContext(), "Selected: " + selectedSemester, Toast.LENGTH_SHORT).show();
+                        classItemList.clear();
+                        fetchClassesForYearAndSemester(selectedYear, selectedSemester);
+                        classAdapter = new ClassAdapter(classItemList, getContext());
+                        recyclerView.setAdapter(classAdapter);
+                    }
+                    else {
+                        Toast.makeText(parent.getContext(), "Must select year first! ", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -196,22 +195,18 @@ public class MyClass extends Fragment{
                 // K làm gì cả
             }
         });
+    }
 
-        RecyclerView recyclerView = view.findViewById(R.id.class_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
+    private void fetchClassesForYear(String year) {
         // Initialize Firebase Firestore
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-
         String Uid=FirebaseAuth.getInstance().getUid();
+
         database.collection("user_course")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        classItemList = new ArrayList<>();
-                        classAdapter = new ClassAdapter(classItemList, getContext());
+//                        classItemList.clear();
                         assert Uid != null;
                         Log.d("Get User ID: ", Uid);
 
@@ -225,23 +220,125 @@ public class MyClass extends Fragment{
 
                                 docRef.get().addOnSuccessListener(documentSnapshot -> {
                                     if (documentSnapshot.exists()) {
-                                        String id = documentSnapshot.getId();
-                                        String code = documentSnapshot.getString("code");
-                                        String name = documentSnapshot.getString("name");
-                                        String lecture = documentSnapshot.getString("lecture");
-                                        String time = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +
-                                                "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() +
-                                                ", " + documentSnapshot.getString("schedule");
+                                        String courseYear = documentSnapshot.getString("academic_year"); // Giả sử "academic_year" là một field trong tài liệu "course"
+                                        if(selectedSemester == null){
+                                            if (year == null || Objects.equals(courseYear, year)) {
+                                                String id = documentSnapshot.getId();
+                                                String code = documentSnapshot.getString("code");
+                                                String name = documentSnapshot.getString("name");
+                                                String lecture = documentSnapshot.getString("lecture");
+                                                String time = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +
+                                                        "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() +
+                                                        ", " + documentSnapshot.getString("schedule");
 
-                                        classItemList.add(new ClassItem(id, code, name, lecture, time));
-                                        classAdapter.notifyDataSetChanged(); // Thông báo adapter dữ liệu đã thay đổi
-                                        Log.d("DEBUG: ", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                                                classItemList.add(new ClassItem(id, code, name, lecture, time));
+                                                classAdapter.notifyDataSetChanged(); // Thông báo adapter dữ liệu đã thay đổi
+                                                Log.d("DEBUG: ", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                                            }
+                                        }
+
+                                        else {
+                                            long courseSemester = documentSnapshot.getLong("semester");
+                                            int intSemester = 0;
+                                            switch (Objects.requireNonNull(selectedSemester)) {
+                                                case "Học Kỳ I":
+                                                    intSemester = 1;
+                                                    break;
+                                                case "Học Kỳ II":
+                                                    intSemester = 2;
+                                                    break;
+                                                case "Học Kỳ Hè":
+                                                    intSemester = 3;
+                                                    break;
+                                                default:
+                                                    intSemester = 0;
+                                                    break;
+                                            }
+
+                                            if ((year == null || Objects.equals(courseYear, year)) &&
+                                                    (intSemester == 0 || (intSemester == courseSemester))) {
+                                                String id = documentSnapshot.getId();
+                                                String code = documentSnapshot.getString("code");
+                                                String name = documentSnapshot.getString("name");
+                                                String lecture = documentSnapshot.getString("lecture");
+                                                String time = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +
+                                                        "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() +
+                                                        ", " + documentSnapshot.getString("schedule");
+
+                                                classItemList.add(new ClassItem(id, code, name, lecture, time));
+                                                classAdapter.notifyDataSetChanged();
+                                                Log.d("DEBUG: ", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                                            }
+                                        }
+
                                     }
                                 }).addOnFailureListener(e -> Log.d("DEBUG: ", "Error getting document: ", e));
                             }
                         }
+                    } else {
+                        Log.d("DEBUG: ", "Error getting documents: ", task.getException());
+                    }
+                });
+    }
 
-                        recyclerView.setAdapter(classAdapter); // Đặt adapter sau khi hoàn thành việc lấy dữ liệu
+    private void fetchClassesForYearAndSemester(String year, String semester) {
+        // Initialize Firebase Firestore
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        String Uid = FirebaseAuth.getInstance().getUid();
+
+        database.collection("user_course")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        assert Uid != null;
+                        Log.d("Get User ID: ", Uid);
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String user_id = document.getString("user_id");
+                            String course_id = document.getString("course_id");
+
+                            if (Objects.equals(user_id, Uid)) {
+                                assert course_id != null;
+                                DocumentReference docRef = database.collection("course").document(course_id);
+
+                                docRef.get().addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        String courseYear = documentSnapshot.getString("academic_year");
+                                        long courseSemester = documentSnapshot.getLong("semester");
+                                        int intSemester = 0;
+                                        switch (Objects.requireNonNull(semester)) {
+                                            case "Học Kỳ I":
+                                                intSemester = 1;
+                                                break;
+                                            case "Học Kỳ II":
+                                                intSemester = 2;
+                                                break;
+                                            case "Học Kỳ Hè":
+                                                intSemester = 3;
+                                                break;
+                                            default:
+                                                intSemester = 0;
+                                                break;
+                                        }
+
+                                        if ((year == null || Objects.equals(courseYear, year)) &&
+                                                (intSemester == 0 || (intSemester == courseSemester))) {
+                                            String id = documentSnapshot.getId();
+                                            String code = documentSnapshot.getString("code");
+                                            String name = documentSnapshot.getString("name");
+                                            String lecture = documentSnapshot.getString("lecture");
+                                            String time = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +
+                                                    "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() +
+                                                    ", " + documentSnapshot.getString("schedule");
+
+                                            classItemList.add(new ClassItem(id, code, name, lecture, time));
+                                            classAdapter.notifyDataSetChanged();
+                                            Log.d("DEBUG: ", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                                        }
+                                    }
+                                }).addOnFailureListener(e -> Log.d("DEBUG: ", "Error getting document: ", e));
+                            }
+                        }
                     } else {
                         Log.d("DEBUG: ", "Error getting documents: ", task.getException());
                     }

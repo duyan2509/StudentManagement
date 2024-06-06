@@ -153,7 +153,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
         });
         btnAddAssignment.setOnClickListener(v -> {
 
-            Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
+            Log.d("Get Date and Time",SelectDate + " - " + SelectTime);
             Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
             if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
                 uploadFileToFirebase(selectedFileUri, selectedClassCode);

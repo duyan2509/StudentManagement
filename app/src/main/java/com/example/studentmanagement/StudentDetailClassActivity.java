@@ -39,7 +39,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
         Log.d("TAG", "classID: " +  classID);
-        Log.d("TAG", "Student detail class " + classID + "Activity");
+        Log.d("TAG", "Student detail class " + classID + " Activity");
 
         if (classID != null) {
             DocumentReference docRef = db.collection("course").document(classID);
@@ -48,7 +48,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
                         String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
-                        String classStudent = documentSnapshot.getString("student");
+                        String classLecture = documentSnapshot.getString("lecture");
                         String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
 
                         TextView classCodeView = findViewById(R.id.class_code_and_name);
@@ -56,13 +56,14 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         TextView classTimeView = findViewById(R.id.class_time);
 
                         classCodeView.setText(classCodeAndName);
-                        classStudentView.setText(classStudent);
+                        classStudentView.setText(classLecture);
                         classTimeView.setText(classTime);
 
                         AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
                         String classCode = documentSnapshot.getString("code");
                         checkAndCreateFolder(classCode);
                         boolean StudentDetailClassFragment = getIntent().getBooleanExtra("show_fragment_student_detail_class_assignment", false);
+//                        Log.d("fragment", getIntent().getStringExtra("show_fragment_student_detail_class_assignment"));
                         if (savedInstanceState == null) {
                             Fragment initialFragment = StudentDetailClassFragment ? new StudentDetailClassAssignmentFragment(classCode) : new StudentDetailClassDocumentFragment(classCode);
 
@@ -92,7 +93,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             Intent intent = new Intent(StudentDetailClassActivity.this, UserActivity.class);
             intent.putExtra("show_fragment_my_class", true);
             startActivity(intent);
-            finish();
+//            finish();
         });
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
@@ -107,7 +108,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     // Lấy dữ liệu từ DocumentSnapshot
                     String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
-                    String classStudent = documentSnapshot.getString("student");
+                    String classLecture = documentSnapshot.getString("lecture");
                     String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +"-"+Objects.requireNonNull(documentSnapshot.getLong("end")).toString()+", " + documentSnapshot.getString("schedule");
 
                     TextView classCodeView = findViewById(R.id.class_code_and_name);
@@ -115,7 +116,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                     TextView classTimeView = findViewById(R.id.class_time);
 
                     classCodeView.setText(classCodeAndName);
-                    classStudentView.setText(classStudent);
+                    classStudentView.setText(classLecture);
                     classTimeView.setText(classTime);
                 } else {
                     Log.d("StudentDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
