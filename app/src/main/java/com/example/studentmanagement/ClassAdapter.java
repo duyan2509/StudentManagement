@@ -1,144 +1,280 @@
 package com.example.studentmanagement;
 
+import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.AdapterView;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import android.provider.OpenableColumns;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
+import java.security.AccessController;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
-public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
+public class AddAssignmentActivity extends AppCompatActivity {
 
-    private final List<ClassItem> classItemList;
-    private final Context context;
-//    private String userRole;
-    public ClassAdapter(List<ClassItem> classItemList,Context context) {
-
-        this.classItemList = classItemList;
-        this.context=context;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ClassItem classItem = classItemList.get(position);
-        holder.bind(classItem);
-    }
+    Button btnSelectDate, btnSelectTime, btnAttachFile, btnAddAssignment;
+    EditText etSelectedDate, etSelectedTime,etDescription,title;
+    private ActivityResultLauncher<String> filePickerLauncher;
+    private FirebaseFirestore db;
+    private Uri selectedFileUri;
+    private String selectedClassCode;
+    private String SelectDate,SelectTime;
 
     @Override
-    public int getItemCount() {
-        return classItemList.size();
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_add_assignment);
 
-    private void fetchUserRole() {
+        Log.d("Activity: ", "Add Assignment Activity");
 
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "upload_channel";
+            String channelName = "File Uploads";
+            String channelDescription = "Notifications for file uploads";
+            int importance = NotificationManager.IMPORTANCE_LOW;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView classCode;
-        public TextView className;
-        public TextView classLecture;
-        public TextView classTime;
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+            channel.setDescription(channelDescription);
 
-        public ViewHolder(@NonNull View itemview) {
-            super(itemview);
-            classCode = itemview.findViewById(R.id.class_code);
-            className = itemview.findViewById(R.id.class_name);
-            classLecture = itemview.findViewById(R.id.class_lecture);
-            classTime = itemview.findViewById(R.id.class_time);
-            itemView.setOnClickListener(view -> {
-                int position = getBindingAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    ClassItem classItem = classItemList.get(position);
-                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("user").document(userId).get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        title = findViewById(R.id.AssignmentTitle);
+        btnSelectDate = findViewById(R.id.btnSelectDate);
+        btnSelectTime = findViewById(R.id.btnSelectTime);
+        etSelectedDate = findViewById(R.id.etSelectedDate);
+        etSelectedTime = findViewById(R.id.etSelectedTime);
+        btnAttachFile = findViewById(R.id.btn_attach_file);
+        btnAddAssignment = findViewById(R.id.btn_add_assignment);
+        etDescription = findViewById(R.id.deadline_description);
+        //initial Date And Time
+        etSelectedDate.setText("");
+        etSelectedTime.setText("");
+        btnSelectDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(AddAssignmentActivity.this,
+                    (view, year1, month1, dayOfMonth) -> {
+                        SelectDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
+                        etSelectedDate.setText(SelectDate);
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
+
+        btnSelectTime.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(AddAssignmentActivity.this,
+                    (view, hourOfDay, minute1) -> {
+                        SelectTime = hourOfDay + ":" + minute1;
+                        etSelectedTime.setText(SelectTime);
+                    }, hour, minute, true);
+            timePickerDialog.show();
+        });
+
+        Button btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(v -> {
+            String classID = getIntent().getStringExtra("classID");
+            Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
+            intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+            intent.putExtra("classID", classID);
+            startActivity(intent);
+            finish();
+        });
+
+        db = FirebaseFirestore.getInstance();
+
+        filePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        String classID = getIntent().getStringExtra("classID");
+                        db.collection("course").document(classID).get().addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.exists()) {
-<<<<<<< HEAD
-                                String userRole = documentSnapshot.getString("role");
-                                Log.d("TAG", "Successfully get userRole:  " + userRole);
-                                Intent intent;
-                                if ("student".equals(userRole)) {
-                                    intent = new Intent(context, StudentDetailClassActivity.class);
-                                } else if ("lecture".equals(userRole)) {
-                                    intent = new Intent(context, LectureDetailClassActivity.class);
+                                String classCode = documentSnapshot.getString("code");
+                                if (classCode != null) {
+                                    selectedFileUri = uri;
+                                    selectedClassCode = classCode;
+                                    Log.d("AddAssignmentActivity", "Tệp đã được chọn và lưu tạm thời.");
                                 } else {
-                                    Log.d("TAG", "Invalid user role:  " + userRole);
-                                    return;
+                                    Log.d("AddAssignmentActivity", "classCode is null");
                                 }
-                                intent.putExtra("classID", classItem.getClassID());
-                                intent.putExtra("code", classItem.getClassCode());
-                                intent.putExtra("name", classItem.getClassName());
-                                intent.putExtra("lecture", classItem.getClassLecture());
-                                intent.putExtra("time", classItem.getClassTime());
-                                context.startActivity(intent);
-                            }
-                        }
-                    });
-=======
-                                String role = documentSnapshot.getString("role");
-                                Log.d("TAG", "User role: " + role); // Log the user role
-                                Intent intent;
-                                if ("student".equals(role)) {
-                                    intent = new Intent(context, StudentDetailClassActivity.class);
-                                    intent.putExtra("classID", classItem.getClassID());
-                                    intent.putExtra("code", classItem.getClassCode());
-                                    intent.putExtra("name", classItem.getClassName());
-                                    intent.putExtra("lecture", classItem.getClassLecture());
-                                    intent.putExtra("time", classItem.getClassTime());
-
-                                } else {
-                                    intent = new Intent(context, LectureDetailClassActivity.class);
-                                    intent.putExtra("classID", classItem.getClassID());
-                                    intent.putExtra("code", classItem.getClassCode());
-                                    intent.putExtra("name", classItem.getClassName());
-                                    intent.putExtra("lecture", classItem.getClassLecture());
-                                    intent.putExtra("time", classItem.getClassTime());
-                                }
-//                                Log.d("TAG", "course_id: " +  model.getId());
-//                                intent.putExtra("classID", model.getId()); // Assuming Course class has a getId() method
-                                context.startActivity(intent);
                             } else {
-                                Log.d("TAG", "Document does not exist");
+                                Log.d("AddAssignmentActivity", "Không tìm thấy lớp học với ID: " + classID);
                             }
-                        } else {
-                            Log.d("TAG", "Failed to get document: ", task.getException());
-                        }
-                    });
-//                    Intent intent = new Intent(context, LectureDetailClassActivity.class);
-//                    intent.putExtra("classID", classItem.getClassID());
-//                    intent.putExtra("code", classItem.getClassCode());
-//                    intent.putExtra("name", classItem.getClassName());
-//                    intent.putExtra("lecture", classItem.getClassLecture());
-//                    intent.putExtra("time", classItem.getClassTime());
-//                    context.startActivity(intent);
->>>>>>> vu
+                        }).addOnFailureListener(e -> {
+                            Log.d("AddAssignmentActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+                        });
+                    }
+                });
+
+        btnAttachFile.setOnClickListener(v -> {
+            String classID = getIntent().getStringExtra("classID");
+            Log.d("Debug", "ClassID = " + classID);
+            if (classID != null) {
+                filePickerLauncher.launch("*/*");
+            } else {
+                Log.d("LectureDetailClassActivity", "classID is null");
+            }
+        });
+        btnAddAssignment.setOnClickListener(v -> {
+
+            Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
+
+            Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
+            if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
+
+                //Upload To FireStore and Storage
+                uploadFileToFirebase(selectedFileUri, selectedClassCode);
+                String classID = getIntent().getStringExtra("classID");
+                saveAssignmentDetailsToFirestore(selectedClassCode, SelectDate, SelectTime,classID);
+                Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
+
+                intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+                intent.putExtra("classID", classID);
+                startActivity(intent);
+                finish();
+
+            } else {
+                Log.d("AddAssignmentActivity", "Chưa chọn tệp hoặc mã lớp học không hợp lệ.");
+
+            }
+        });
+
+    }
+
+    private void saveAssignmentDetailsToFirestore(String selectedClassCode, String selectDate, String selectTime,String classID) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //String classID = getIntent().getStringExtra("classID");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        Timestamp dueDateTimestamp = null;
+        try {
+            Date parsedDate = dateFormat.parse(selectDate + " " + selectTime);
+            assert parsedDate != null;
+            dueDateTimestamp = new Timestamp(parsedDate);
+        } catch (ParseException e) {
+            Log.e("Error", "Error parsing date and time: " + e);
+        }
+
+        // Create a new assignment object
+        Map<String, Object> assignment = new HashMap<>();
+        assignment.put("title", title.getText().toString()); // Thay đổi tiêu đề bài tập của bạn tại đây
+        assignment.put("due_date", dueDateTimestamp); // Sử dụng Timestamp đã tạo
+        assignment.put("description", etDescription.getText().toString());
+
+        assert classID != null;
+        db.collection("course").document(classID).collection("assignment").add(assignment)
+                .addOnSuccessListener(documentReference -> Log.d("Debug", "Assignment added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.d("Debug", "Error adding assignment: " + e));
+    }
+
+    private boolean Check(String select) {
+        return select != null && !select.isEmpty();
+    }
+
+    private void uploadFileToFirebase(Uri fileUri, String code) {
+        String fileName = getFileName(fileUri);
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
+        StorageReference fileRef = storageRef.child("Assignment/Date:"+convertstring(SelectDate)+"/Time:"+convertstring(SelectTime)+"/" + fileName);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "upload_channel")
+                .setSmallIcon(R.drawable.ic_upload)
+                .setContentTitle("Uploading File")
+                .setContentText("Upload in progress")
+                .setPriority(NotificationCompat.PRIORITY_LOW);
+
+        int notificationId = 1;
+
+        fileRef.putFile(fileUri)
+                .addOnProgressListener(taskSnapshot -> {
+                    // Update progress if needed
+                })
+                .addOnSuccessListener(taskSnapshot -> {
+                    Log.d("Debug", "Add Assignment Done");
+                    notificationBuilder.setContentText("Upload complete")
+                            .setProgress(0, 0, false);
+                    notificationManager.notify(notificationId, notificationBuilder.build());
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Debug", "Add Assignment False");
+                    notificationBuilder.setContentText("Upload failed")
+                            .setProgress(0, 0, false);
+                    notificationManager.notify(notificationId, notificationBuilder.build());
+                });
+    }
+
+    private String convertstring(String input) {
+        if (input == null) {
+            return null;
+        }
+        String out1 = input.replace("/", "_");
+        return out1.replace(":", "_");
+    }
+
+    private String getFileName(Uri uri) {
+        String result = null;
+        if (uri != null && "content".equals(uri.getScheme())) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
                 }
-            });
+            }
         }
-        public void bind(ClassItem classItem) {
-            classCode.setText(classItem.getClassCode());
-            className.setText(classItem.getClassName());
-            classLecture.setText(classItem.getClassLecture());
-            classTime.setText(classItem.getClassTime());
+        if (result == null) {
+            assert uri != null;
+            result = uri.getPath();
+            assert result != null;
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
         }
+        return result;
     }
 }
