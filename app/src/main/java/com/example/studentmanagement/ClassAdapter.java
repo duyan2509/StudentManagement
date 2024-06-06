@@ -21,7 +21,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
 
     private final List<ClassItem> classItemList;
     private final Context context;
-//    private String userRole;
     public ClassAdapter(List<ClassItem> classItemList,Context context) {
 
         this.classItemList = classItemList;
@@ -46,9 +45,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         return classItemList.size();
     }
 
-    private void fetchUserRole() {
 
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView classCode;
@@ -72,28 +69,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if (documentSnapshot.exists()) {
-<<<<<<< HEAD
-                                String userRole = documentSnapshot.getString("role");
-                                Log.d("TAG", "Successfully get userRole:  " + userRole);
-                                Intent intent;
-                                if ("student".equals(userRole)) {
-                                    intent = new Intent(context, StudentDetailClassActivity.class);
-                                } else if ("lecture".equals(userRole)) {
-                                    intent = new Intent(context, LectureDetailClassActivity.class);
-                                } else {
-                                    Log.d("TAG", "Invalid user role:  " + userRole);
-                                    return;
-                                }
-                                intent.putExtra("classID", classItem.getClassID());
-                                intent.putExtra("code", classItem.getClassCode());
-                                intent.putExtra("name", classItem.getClassName());
-                                intent.putExtra("lecture", classItem.getClassLecture());
-                                intent.putExtra("time", classItem.getClassTime());
-                                context.startActivity(intent);
-                            }
-                        }
-                    });
-=======
                                 String role = documentSnapshot.getString("role");
                                 Log.d("TAG", "User role: " + role); // Log the user role
                                 Intent intent;
@@ -130,7 +105,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
 //                    intent.putExtra("lecture", classItem.getClassLecture());
 //                    intent.putExtra("time", classItem.getClassTime());
 //                    context.startActivity(intent);
->>>>>>> vu
                 }
             });
         }

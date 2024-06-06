@@ -1,12 +1,5 @@
 package com.example.studentmanagement;
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-<<<<<<< HEAD
-=======
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
->>>>>>> vu
+
 
 import android.util.Log;
 import android.view.LayoutInflater;
