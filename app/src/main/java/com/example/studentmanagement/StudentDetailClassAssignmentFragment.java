@@ -1,12 +1,9 @@
 package com.example.studentmanagement;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-<<<<<<< HEAD
-=======
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
->>>>>>> vu
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,9 +35,6 @@ import java.util.Objects;
 
 public class StudentDetailClassAssignmentFragment extends Fragment {
 
-<<<<<<< HEAD
-    private final String code;
-=======
     private AssignmentAdapter adapter;
     private List<AssignmentItem> assignments_list;
     private final String code;
@@ -48,17 +42,12 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
         // Required empty public constructor
         this.code=code;
     }
->>>>>>> vu
 
-    public StudentDetailClassAssignmentFragment(String ClassCode) {
-        // Required empty public constructor
-        this.code=ClassCode;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Fragment: ", "Student Detail Class Assignment Fragment");
+
     }
 
     @Override

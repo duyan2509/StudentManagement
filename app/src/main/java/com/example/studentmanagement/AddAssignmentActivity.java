@@ -160,12 +160,9 @@ public class AddAssignmentActivity extends AppCompatActivity {
             }
         });
         btnAddAssignment.setOnClickListener(v -> {
-<<<<<<< HEAD
 
-            Log.d("Get Date and Time",SelectDate + " - " + SelectTime);
-=======
             Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
->>>>>>> vu
+
             Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
             if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
 
