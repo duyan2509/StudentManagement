@@ -5,12 +5,16 @@ package com.example.studentmanagement;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +50,13 @@ public class MyClass extends Fragment{
     private String mParam2;
 
     private List<ClassItem> classItemList;
+    private List<ClassItem> filteredClassItemList;
     private ClassAdapter classAdapter;
     private String role;
 
     public String selectedYear;
     public String selectedSemester;
+    public String query;
     public MyClass() {
         // Required empty public constructor
     }
@@ -90,6 +96,8 @@ public class MyClass extends Fragment{
 
         Spinner spinnerNamHoc = view.findViewById(R.id.spinner_nam_hoc);
         Spinner spinnerHocKy = view.findViewById(R.id.spinner_hoc_ky);
+        EditText searchEditText = view.findViewById(R.id.searchEditText);
+        Button btnSearch = view.findViewById(R.id.btn_search);
 
         // Tạo danh sách các năm
         List<String> years = new ArrayList<>(Arrays.asList("Năm Học", "2021", "2022", "2023", "2024"));
@@ -97,6 +105,7 @@ public class MyClass extends Fragment{
 
         // Initialize the classItemList and adapter
         classItemList = new ArrayList<>();
+        filteredClassItemList = new ArrayList<>();
         classAdapter = new ClassAdapter(classItemList, getContext());
 
         RecyclerView recyclerView = view.findViewById(R.id.class_view);
@@ -194,6 +203,33 @@ public class MyClass extends Fragment{
             public void onNothingSelected(AdapterView<?> parent) {
                 // K làm gì cả
             }
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filterClasses(charSequence.toString());
+                classAdapter = new ClassAdapter(filteredClassItemList, getContext());
+                recyclerView.setAdapter(classAdapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Do nothing
+            }
+        });
+
+        // Handle search button click
+        btnSearch.setOnClickListener(v -> {
+            String query = searchEditText.getText().toString();
+            filterClasses(query);
+            classAdapter = new ClassAdapter(filteredClassItemList, getContext());
+            recyclerView.setAdapter(classAdapter);
         });
     }
 
@@ -343,6 +379,21 @@ public class MyClass extends Fragment{
                         Log.d("DEBUG: ", "Error getting documents: ", task.getException());
                     }
                 });
+    }
+    private void filterClasses(String query) {
+        this.query = query;
+        filteredClassItemList.clear();
+        if (query.isEmpty()) {
+            filteredClassItemList.addAll(classItemList);
+        } else {
+            for (ClassItem item : classItemList) {
+                if (item.getClassCode().toLowerCase().contains(query.toLowerCase()) ||
+                        item.getClassName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredClassItemList.add(item);
+                }
+            }
+        }
+        classAdapter.notifyDataSetChanged();
     }
 }
 
