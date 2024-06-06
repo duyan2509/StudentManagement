@@ -75,7 +75,7 @@ public class Deadline extends AppCompatActivity {
                 for (Course course:courses)
                 {
                     CourseRepository courseRepository = new CourseRepository();
-                    courseRepository.getCodeByCourseId(course.getId()).addOnCompleteListener(new OnCompleteListener<Course>() {
+                    courseRepository.getCourseByCourseId(course.getId()).addOnCompleteListener(new OnCompleteListener<Course>() {
                         @Override
                         public void onComplete(@NonNull Task<Course> task) {
                             Course course1 = task.getResult();

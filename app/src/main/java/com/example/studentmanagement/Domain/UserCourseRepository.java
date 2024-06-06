@@ -3,6 +3,7 @@ package com.example.studentmanagement.Domain;
 import android.util.Log;
 
 import com.example.studentmanagement.Model.Course;
+import com.example.studentmanagement.Model.UserCourse;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -103,5 +104,49 @@ public class UserCourseRepository {
                     return 0;
                 });
     }
+    public Task<List<UserCourse>> getUserCoursesByCourseId(String courseId) {
+        return user_course
+                .whereEqualTo("course_id", courseId)
+                .get()
+                .continueWith(task -> {
+                    List<UserCourse> userCourses = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                String userId = document.getString("user_id");
+                                String role = document.getString("role");
+                                UserCourse userCourse = new UserCourse(userId, courseId, role);
+                                userCourses.add(userCourse);
+                            }
+                        }
+                    } else {
+                        Log.w("UserCourseRepository", "Error getting documents.", task.getException());
+                    }
+                    return userCourses;
+                });
+    }
 
+    public Task<List<UserCourse>> getUserCoursesByUserId(String userId) {
+        return user_course
+                .whereEqualTo("user_id", userId)
+                .get()
+                .continueWith(task -> {
+                    List<UserCourse> userCourses = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                String course_id = document.getString("course_id");
+                                String role = document.getString("role");
+                                UserCourse userCourse = new UserCourse(userId, course_id, role);
+                                userCourses.add(userCourse);
+                            }
+                        }
+                    } else {
+                        Log.w("UserCourseRepository", "Error getting documents.", task.getException());
+                    }
+                    return userCourses;
+                });
+    }
 }

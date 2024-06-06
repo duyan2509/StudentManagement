@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class StudentDetailClassActivity extends AppCompatActivity {
     private FirebaseFirestore db;
+    String codeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
                         String classLecture = documentSnapshot.getString("lecture");
                         String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
-
+                        codeName=classCodeAndName;
                         TextView classCodeView = findViewById(R.id.class_code_and_name);
                         TextView classStudentView = findViewById(R.id.class_lecture);
                         TextView classTimeView = findViewById(R.id.class_time);
@@ -126,6 +128,17 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("StudentDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+            }
+        });
+
+        Button btn_danh_sach_lop = findViewById(R.id.btn_danh_sach_lop);
+        btn_danh_sach_lop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StudentDetailClassActivity.this, ClassListActivity.class);
+                intent.putExtra("courseId", classID);
+                intent.putExtra("codeName",codeName);
+                startActivity(intent);
             }
         });
 

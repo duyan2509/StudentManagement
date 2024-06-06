@@ -2,28 +2,19 @@ package com.example.studentmanagement.Domain;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.studentmanagement.Model.Assignment;
-import com.example.studentmanagement.Model.AttachedFile;
 import com.example.studentmanagement.Model.Course;
 import com.example.studentmanagement.Model.Submission;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class CourseRepository {
@@ -67,7 +58,7 @@ public class CourseRepository {
                     return courses;
                 });
     }
-    public Task<Course> getCodeByCourseId(String id) {
+    public Task<Course> getCourseByCourseId(String id) {
         return course.document(id)
                 .get()
                 .continueWith(task -> {
@@ -77,6 +68,7 @@ public class CourseRepository {
                         if (document != null && document.exists()) {
                             course1.setId(document.getId());
                             course1.setCode(document.getString("code"));
+                            course1.setName(document.getString("name"));
                             return course1;
                         } else {
                             throw new Exception("Document does not exist");
