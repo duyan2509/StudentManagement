@@ -2,6 +2,7 @@ package com.example.studentmanagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
 
     private final List<ClassItem> classItemList;
     private final Context context;
+//    private String userRole;
     public ClassAdapter(List<ClassItem> classItemList,Context context) {
 
         this.classItemList = classItemList;
@@ -40,7 +46,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         return classItemList.size();
     }
 
+    private void fetchUserRole() {
 
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView classCode;
@@ -58,13 +66,71 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     ClassItem classItem = classItemList.get(position);
-                    Intent intent = new Intent(context, LectureDetailClassActivity.class);
-                    intent.putExtra("classID", classItem.getClassID());
-                    intent.putExtra("code", classItem.getClassCode());
-                    intent.putExtra("name", classItem.getClassName());
-                    intent.putExtra("lecture", classItem.getClassLecture());
-                    intent.putExtra("time", classItem.getClassTime());
-                    context.startActivity(intent);
+                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("user").document(userId).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+<<<<<<< HEAD
+                                String userRole = documentSnapshot.getString("role");
+                                Log.d("TAG", "Successfully get userRole:  " + userRole);
+                                Intent intent;
+                                if ("student".equals(userRole)) {
+                                    intent = new Intent(context, StudentDetailClassActivity.class);
+                                } else if ("lecture".equals(userRole)) {
+                                    intent = new Intent(context, LectureDetailClassActivity.class);
+                                } else {
+                                    Log.d("TAG", "Invalid user role:  " + userRole);
+                                    return;
+                                }
+                                intent.putExtra("classID", classItem.getClassID());
+                                intent.putExtra("code", classItem.getClassCode());
+                                intent.putExtra("name", classItem.getClassName());
+                                intent.putExtra("lecture", classItem.getClassLecture());
+                                intent.putExtra("time", classItem.getClassTime());
+                                context.startActivity(intent);
+                            }
+                        }
+                    });
+=======
+                                String role = documentSnapshot.getString("role");
+                                Log.d("TAG", "User role: " + role); // Log the user role
+                                Intent intent;
+                                if ("student".equals(role)) {
+                                    intent = new Intent(context, StudentDetailClassActivity.class);
+                                    intent.putExtra("classID", classItem.getClassID());
+                                    intent.putExtra("code", classItem.getClassCode());
+                                    intent.putExtra("name", classItem.getClassName());
+                                    intent.putExtra("lecture", classItem.getClassLecture());
+                                    intent.putExtra("time", classItem.getClassTime());
+
+                                } else {
+                                    intent = new Intent(context, LectureDetailClassActivity.class);
+                                    intent.putExtra("classID", classItem.getClassID());
+                                    intent.putExtra("code", classItem.getClassCode());
+                                    intent.putExtra("name", classItem.getClassName());
+                                    intent.putExtra("lecture", classItem.getClassLecture());
+                                    intent.putExtra("time", classItem.getClassTime());
+                                }
+//                                Log.d("TAG", "course_id: " +  model.getId());
+//                                intent.putExtra("classID", model.getId()); // Assuming Course class has a getId() method
+                                context.startActivity(intent);
+                            } else {
+                                Log.d("TAG", "Document does not exist");
+                            }
+                        } else {
+                            Log.d("TAG", "Failed to get document: ", task.getException());
+                        }
+                    });
+//                    Intent intent = new Intent(context, LectureDetailClassActivity.class);
+//                    intent.putExtra("classID", classItem.getClassID());
+//                    intent.putExtra("code", classItem.getClassCode());
+//                    intent.putExtra("name", classItem.getClassName());
+//                    intent.putExtra("lecture", classItem.getClassLecture());
+//                    intent.putExtra("time", classItem.getClassTime());
+//                    context.startActivity(intent);
+>>>>>>> vu
                 }
             });
         }
