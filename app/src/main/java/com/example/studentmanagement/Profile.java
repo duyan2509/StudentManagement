@@ -47,6 +47,7 @@ import kotlin.jvm.functions.Function1;
 
 public class Profile extends Fragment {
     private Button btLogout;
+    private Button btChangePassword;
     private ImageView profilePic;
     private TextView name;
     private TextView email;
@@ -80,6 +81,7 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         btLogout = view.findViewById(R.id.btLogout);
+        btChangePassword = view.findViewById(R.id.btChangePassword);
         profilePic = view.findViewById(R.id.profilePic);
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
@@ -93,6 +95,10 @@ public class Profile extends Fragment {
 
         btLogout.setOnClickListener(view1->{
             onClickLogOut();
+        });
+
+        btChangePassword.setOnClickListener(view1->{
+            startActivity(new Intent(getContext(), ChangePasswordActivity.class));
         });
 
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
