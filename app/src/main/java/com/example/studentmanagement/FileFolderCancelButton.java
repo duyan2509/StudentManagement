@@ -102,7 +102,7 @@ public class FileFolderCancelButton extends Fragment {
         // Lấy tên file từ Uri
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child(fileName);
+        StorageReference fileRef = storageRef.child("Document/"+fileName);
         //Define Notification
         NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(requireContext(), "upload_channel")

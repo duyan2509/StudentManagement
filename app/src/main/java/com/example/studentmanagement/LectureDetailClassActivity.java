@@ -96,10 +96,10 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
-            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
-            intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
-            intent.get().putExtra("show_fragment_my_class", true);
-            startActivity(intent.get());
+//            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+//            intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
+//            intent.get().putExtra("show_fragment_my_class", true);
+//            startActivity(intent.get());
             finish();
         });
         //Xử Lý Button Document;
@@ -136,7 +136,11 @@ public class LectureDetailClassActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        // Kết thúc Activity hiện tại và quay lại Activity trước đó
+        super.onBackPressed();
+    }
     private void checkAndCreateFolder(String code) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
