@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FirebaseUtil {
+    public static FirebaseUser currentUser(){return FirebaseAuth.getInstance().getCurrentUser();}
     public static String currentUserId(){
         return FirebaseAuth.getInstance().getUid();
     }

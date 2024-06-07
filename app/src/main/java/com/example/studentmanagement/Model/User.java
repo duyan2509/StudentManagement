@@ -5,9 +5,10 @@ import com.example.studentmanagement.Utils.RoleUtil;
 public class User {
     private String id;
     private String email;
-
+    private String password;
     private String name;
     private String role;
+
 
     public void setRole(String role) {
         this.role = role;
