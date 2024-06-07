@@ -17,6 +17,12 @@ public class Course {
     public Course() {
     }
 
+    public Course(String id, String code, String name){
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
+
     public Course(String id, String code, String name, long start, long end, String schedule, Long semester, String academic_year, String room) {
         this.id = id;
         this.code = code;
