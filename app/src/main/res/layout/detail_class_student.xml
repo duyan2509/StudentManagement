@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lecture_detail_class_assignment"
+    android:id="@+id/student_detail_class_document"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:orientation="vertical"
     android:background="#EEEEEE"
-    tools:context=".LectureDetailClassAssignmentFragment">
+    tools:context=".StudentDetailClassDocumentFragment">
 
     <RelativeLayout
         android:id="@+id/Button_container"

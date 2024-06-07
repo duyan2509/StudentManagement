@@ -12,6 +12,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -93,6 +94,7 @@ public class FileFolderCancelButton extends Fragment {
             filePickerLauncher.launch("*/*");
         });
 
+
         return view;
     }
 
@@ -102,7 +104,7 @@ public class FileFolderCancelButton extends Fragment {
         // Lấy tên file từ Uri
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child(fileName);
+        StorageReference fileRef = storageRef.child("Document/"+fileName);
         //Define Notification
         NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(requireContext(), "upload_channel")

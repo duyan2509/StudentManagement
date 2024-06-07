@@ -26,28 +26,38 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.security.AccessController;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class AddAssignmentActivity extends AppCompatActivity {
 
     Button btnSelectDate, btnSelectTime, btnAttachFile, btnAddAssignment;
-    EditText etSelectedDate, etSelectedTime;
+    EditText etSelectedDate, etSelectedTime,etDescription,title;
     private ActivityResultLauncher<String> filePickerLauncher;
     private FirebaseFirestore db;
     private Uri selectedFileUri;
     private String selectedClassCode;
     private String SelectDate,SelectTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_assignment);
+
+        Log.d("Activity: ", "Add Assignment Activity");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "upload_channel";
@@ -67,14 +77,14 @@ public class AddAssignmentActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        title = findViewById(R.id.AssignmentTitle);
         btnSelectDate = findViewById(R.id.btnSelectDate);
         btnSelectTime = findViewById(R.id.btnSelectTime);
         etSelectedDate = findViewById(R.id.etSelectedDate);
         etSelectedTime = findViewById(R.id.etSelectedTime);
         btnAttachFile = findViewById(R.id.btn_attach_file);
         btnAddAssignment = findViewById(R.id.btn_add_assignment);
-
+        etDescription = findViewById(R.id.deadline_description);
         //initial Date And Time
         etSelectedDate.setText("");
         etSelectedTime.setText("");
@@ -152,11 +162,16 @@ public class AddAssignmentActivity extends AppCompatActivity {
         btnAddAssignment.setOnClickListener(v -> {
 
             Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
+
             Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
             if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
+
+                //Upload To FireStore and Storage
                 uploadFileToFirebase(selectedFileUri, selectedClassCode);
                 String classID = getIntent().getStringExtra("classID");
+                saveAssignmentDetailsToFirestore(selectedClassCode, SelectDate, SelectTime,classID);
                 Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
+
                 intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
                 intent.putExtra("classID", classID);
                 startActivity(intent);
@@ -167,6 +182,32 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void saveAssignmentDetailsToFirestore(String selectedClassCode, String selectDate, String selectTime,String classID) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //String classID = getIntent().getStringExtra("classID");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        Timestamp dueDateTimestamp = null;
+        try {
+            Date parsedDate = dateFormat.parse(selectDate + " " + selectTime);
+            assert parsedDate != null;
+            dueDateTimestamp = new Timestamp(parsedDate);
+        } catch (ParseException e) {
+            Log.e("Error", "Error parsing date and time: " + e);
+        }
+
+        // Create a new assignment object
+        Map<String, Object> assignment = new HashMap<>();
+        assignment.put("title", title.getText().toString()); // Thay đổi tiêu đề bài tập của bạn tại đây
+        assignment.put("due_date", dueDateTimestamp); // Sử dụng Timestamp đã tạo
+        assignment.put("description", etDescription.getText().toString());
+
+        assert classID != null;
+        db.collection("course").document(classID).collection("assignment").add(assignment)
+                .addOnSuccessListener(documentReference -> Log.d("Debug", "Assignment added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.d("Debug", "Error adding assignment: " + e));
     }
 
     private boolean Check(String select) {

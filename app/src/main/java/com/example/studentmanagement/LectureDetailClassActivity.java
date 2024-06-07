@@ -40,6 +40,8 @@ public class LectureDetailClassActivity extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_lecture_detail_class);
 
+        Log.d("Activity: ", "Lecture Detail Class Activity");
+
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
         Log.d("TAG", "classID: " +  classID);
@@ -67,7 +69,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
                         checkAndCreateFolder(classCode);
                         boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
                         if (savedInstanceState == null) {
-                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(classCode) : new LectureDetailClassDocumentFragment(classCode);
+                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
