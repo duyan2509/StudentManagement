@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -18,6 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.studentmanagement.Model.Course;
+import com.example.studentmanagement.Utils.AndroidUtil;
+import com.example.studentmanagement.Utils.FirebaseUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StudentDetailClassActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     String codeName;
+    ImageButton chat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,10 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_detail_class);
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
+        chat = findViewById(R.id.chat_button);
+        chat.setOnClickListener(v -> {
+            onChatClick(classID);
+        });
         Log.d("TAG", "classID: " +  classID);
         if (classID != null) {
             DocumentReference docRef = db.collection("course").document(classID);
@@ -180,5 +189,27 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.detail_container, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void onChatClick(String courseId){
+        DocumentReference courseRef = FirebaseUtil.getCourseById(courseId);
+        courseRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String code = documentSnapshot.getString("code");
+                String name = documentSnapshot.getString("name");
+
+                Course course = new Course(courseId, code, name);
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                AndroidUtil.passCourseModelAsIntent(intent, course);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("StudentDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+            }
+        });
     }
 }
