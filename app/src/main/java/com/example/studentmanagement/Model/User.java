@@ -9,6 +9,16 @@ public class User {
     private String name;
     private String role;
 
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
+
+    String profile_image;
+
     public void setRole(String role) {
         this.role = role;
     }
@@ -20,6 +30,16 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    String code ;
 
 
     public String getRole() {
