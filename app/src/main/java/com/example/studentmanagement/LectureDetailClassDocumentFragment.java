@@ -73,7 +73,7 @@ public class LectureDetailClassDocumentFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
 
-        loadFolderContents(FirebaseStorage.getInstance().getReference(code).child("Document/"));
+        loadFolderContents(FirebaseStorage.getInstance().getReference(code).child("Document"));
         return view;
     }
 
