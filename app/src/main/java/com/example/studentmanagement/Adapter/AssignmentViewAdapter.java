@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.EditAssignmentActivity;
+import com.example.studentmanagement.LectureAssignmentActivity;
 import com.example.studentmanagement.Model.Assignment;
 import com.example.studentmanagement.R;
 import com.google.firebase.Timestamp;
@@ -49,7 +50,23 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
     public void onBindViewHolder(@NonNull AssignmentViewHolder holder, int position) {
         Assignment assignment = assignmentList.get(position);
         holder.titleTextView.setText(assignment.getTitle());
+        String date = formatTimestamp(assignment.getDue_date());
         holder.dueDateTextView.setText(formatTimestamp(assignment.getDue_date()));
+
+        // Set OnClickListener for item view
+        holder.btn_view_assignment.setOnClickListener(v -> {
+            Log.d("TAG", "Clicked on itemView ");
+            Intent intent = new Intent(v.getContext(), LectureAssignmentActivity.class);
+            intent.putExtra("assignmentId", assignment.getId());
+            intent.putExtra("classID", assignment.getCourseId());
+            intent.putExtra("title", assignment.getTitle());
+            intent.putExtra("date", date);
+            intent.putExtra("description", assignment.getDescription());
+            Log.d("TAG", "Clicked on assignmentId " + assignment.getId());
+            Log.d("TAG", "Clicked on classID " + assignment.getCourseId());
+            v.getContext().startActivity(intent);
+        });
+
         holder.btn_edit.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EditAssignmentActivity.class);
             intent.putExtra("assignmentId", assignment.getId()); // Pass assignment ID
@@ -72,7 +89,7 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
     public static class AssignmentViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dueDateTextView;
-        Button btn_edit, btn_remove;
+        Button btn_edit, btn_remove, btn_view_assignment;
 
         public AssignmentViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +97,7 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
             dueDateTextView = itemView.findViewById(R.id.deadline_time);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_remove = itemView.findViewById(R.id.btn_remove);
+            btn_view_assignment = itemView.findViewById(R.id.btn_view_assignment);
         }
     }
 
