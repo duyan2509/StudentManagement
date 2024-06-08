@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -36,11 +37,10 @@ public class StudentDetailClassActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     String codeName;
     ImageButton chat;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_detail_class);
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
@@ -48,45 +48,36 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         chat.setOnClickListener(v -> {
             onChatClick(classID);
         });
-        Log.d("TAG", "classID: " + classID);
+        Log.d("TAG", "classID: " +  classID);
         if (classID != null) {
             DocumentReference docRef = db.collection("course").document(classID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        String classCodeAndName = documentSnapshot.getString("code") + " - "
-                                + documentSnapshot.getString("name");
+                        String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
                         String classLecture = documentSnapshot.getString("lecture");
-                        String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-"
-                                + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", "
-                                + documentSnapshot.getString("schedule");
-                        codeName = classCodeAndName;
+                        String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
+                        codeName=classCodeAndName;
                         TextView classCodeView = findViewById(R.id.class_code_and_name);
                         TextView classLectureView = findViewById(R.id.class_lecture);
                         TextView classTimeView = findViewById(R.id.class_time);
 
                         classCodeView.setText(classCodeAndName);
                         classLectureView.setText(classLecture);
-
                         classTimeView.setText(classTime);
 
                         AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
                         String classCode = documentSnapshot.getString("code");
                         checkAndCreateFolder(classCode);
-                        boolean StudentDetailClassFragment = getIntent()
-                                .getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
+                        boolean StudentDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
                         if (savedInstanceState == null) {
-                            Fragment initialFragment = StudentDetailClassFragment
-                                    ? new StudentDetailClassAssignmentFragment(documentSnapshot.getId())
-                                    : new StudentDetailClassDocumentFragment(documentSnapshot.getId());
+                            Fragment initialFragment = StudentDetailClassFragment ? new StudentDetailClassAssignmentFragment(documentSnapshot.getId()) : new StudentDetailClassDocumentFragment(documentSnapshot.getId());
 
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
                     } else {
                         Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
-
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -102,7 +93,8 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Xử lý button Back
+
+        //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
 
@@ -111,8 +103,8 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        // Xử Lý Button Document;
-        // Xử Lý Button Assignment;
+        //Xử Lý Button Document;
+        //Xử Lý Button Assignment;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("course").document(classID);
 
@@ -121,15 +113,11 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     // Lấy dữ liệu từ DocumentSnapshot
-                    String classCodeAndName = documentSnapshot.getString("code") + " - "
-                            + documentSnapshot.getString("name");
+                    String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
                     String classLecture = documentSnapshot.getString("lecture");
-                    String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-"
-                            + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", "
-                            + documentSnapshot.getString("schedule");
+                    String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +"-"+Objects.requireNonNull(documentSnapshot.getLong("end")).toString()+", " + documentSnapshot.getString("schedule");
 
                     TextView classCodeView = findViewById(R.id.class_code_and_name);
-
                     TextView classLectureView = findViewById(R.id.class_lecture);
                     TextView classTimeView = findViewById(R.id.class_time);
 
@@ -138,7 +126,6 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                     classTimeView.setText(classTime);
                 } else {
                     Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
-
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -154,13 +141,12 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(StudentDetailClassActivity.this, ClassListActivity.class);
                 intent.putExtra("courseId", classID);
-                intent.putExtra("codeName", codeName);
+                intent.putExtra("codeName",codeName);
                 startActivity(intent);
             }
         });
 
     }
-
     private void checkAndCreateFolder(String code) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -177,8 +163,8 @@ public class StudentDetailClassActivity extends AppCompatActivity {
 
                     if (!folderExists) {
                         // Thư mục chưa tồn tại, tiến hành tạo thư mục mới
-                        StorageReference classFolderRef = storageRef.child(code + "/" + code);
-                        classFolderRef.putBytes(new byte[] {})
+                        StorageReference classFolderRef = storageRef.child(code+"/"+code);
+                        classFolderRef.putBytes(new byte[]{})
                                 .addOnSuccessListener(taskSnapshot -> {
                                     // Thư mục đã được tạo thành công
                                     Log.d("DEBUG: ", "Create Folder Done: " + code);
@@ -197,7 +183,6 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                     Log.d("DEBUG: ", "Error Listing Folders ");
                 });
     }
-
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -206,7 +191,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void onChatClick(String courseId) {
+    public void onChatClick(String courseId){
         DocumentReference courseRef = FirebaseUtil.getCourseById(courseId);
         courseRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

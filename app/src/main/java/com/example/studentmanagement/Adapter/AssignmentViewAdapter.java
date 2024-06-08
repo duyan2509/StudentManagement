@@ -2,9 +2,6 @@ package com.example.studentmanagement.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.studentmanagement.EditAssignmentActivity;
 import com.example.studentmanagement.Model.Assignment;
 import com.example.studentmanagement.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
-import androidx.core.app.NotificationCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.studentmanagement.Model.Assignment;
-import com.example.studentmanagement.Model.AssignmentItem;
-import com.example.studentmanagement.Model.MultiFilePickerDialog;
-import com.example.studentmanagement.R;
-import com.google.firebase.Timestamp;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,7 +73,6 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
         TextView titleTextView;
         TextView dueDateTextView;
         Button btn_edit, btn_remove;
-        TextView descriptionTextView;
 
         public AssignmentViewHolder(View itemView) {
             super(itemView);
@@ -102,11 +91,10 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
 
     private void removeAssignment(String assignmentId, int position) {
         Log.d("Tag", "Successfully call removeAssignment " + assignmentId);
-        // db.collection("course").document(classID).collection("assignment").add(assignment)
-        // .addOnSuccessListener(documentReference -> Log.d("Debug", "Assignment added
-        // with ID: " + documentReference.getId()))
-        // .addOnFailureListener(e -> Log.d("Debug", "Error adding assignment: " + e));
-        // // Remove from Firestore
+//        db.collection("course").document(classID).collection("assignment").add(assignment)
+//                .addOnSuccessListener(documentReference -> Log.d("Debug", "Assignment added with ID: " + documentReference.getId()))
+//                .addOnFailureListener(e -> Log.d("Debug", "Error adding assignment: " + e));
+//        // Remove from Firestore
         db.collection("course").document(classID).collection("assignment").document(assignmentId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {

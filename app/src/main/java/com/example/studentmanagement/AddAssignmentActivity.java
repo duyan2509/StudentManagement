@@ -44,12 +44,12 @@ import java.util.Objects;
 public class AddAssignmentActivity extends AppCompatActivity {
 
     Button btnSelectDate, btnSelectTime, btnAttachFile, btnAddAssignment;
-    EditText etSelectedDate, etSelectedTime, etDescription, title;
+    EditText etSelectedDate, etSelectedTime,etDescription,title;
     private ActivityResultLauncher<String> filePickerLauncher;
     private FirebaseFirestore db;
     private Uri selectedFileUri;
     private String selectedClassCode;
-    private String SelectDate, SelectTime;
+    private String SelectDate,SelectTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
         btnAttachFile = findViewById(R.id.btn_attach_file);
         btnAddAssignment = findViewById(R.id.btn_add_assignment);
         etDescription = findViewById(R.id.deadline_description);
-        // initial Date And Time
+        //initial Date And Time
         etSelectedDate.setText("");
         etSelectedTime.setText("");
         btnSelectDate.setOnClickListener(v -> {
@@ -160,17 +160,17 @@ public class AddAssignmentActivity extends AppCompatActivity {
             }
         });
         btnAddAssignment.setOnClickListener(v -> {
-            Log.d("Get Date and Time", SelectDate + " - " + SelectTime);
 
-            Log.d("GetUri and ClassCode", selectedFileUri + " - " + selectedClassCode);
+            Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
+
+            Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
             if (selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
 
-                // Upload To FireStore and Storage
+                //Upload To FireStore and Storage
                 if (selectedFileUri != null)
                     uploadFileToFirebase(selectedFileUri, selectedClassCode);
-                Log.d("GetUri and ClassCode", selectedFileUri + " - " + selectedClassCode);
                 String classID = getIntent().getStringExtra("classID");
-                saveAssignmentDetailsToFirestore(selectedClassCode, SelectDate, SelectTime, classID);
+                saveAssignmentDetailsToFirestore(selectedClassCode, SelectDate, SelectTime,classID);
                 Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
 
                 intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
@@ -186,11 +186,9 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
     }
 
-    private void saveAssignmentDetailsToFirestore(String selectedClassCode, String selectDate, String selectTime,
-            String classID) {
+    private void saveAssignmentDetailsToFirestore(String selectedClassCode, String selectDate, String selectTime,String classID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         classID = getIntent().getStringExtra("classID");
-        // String classID = getIntent().getStringExtra("classID");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         Timestamp dueDateTimestamp = null;
         try {
@@ -242,8 +240,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
     private void uploadFileToFirebase(Uri fileUri, String code) {
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child(
-                "Assignment/Date:" + convertstring(SelectDate) + "/Time:" + convertstring(SelectTime) + "/" + fileName);
+        StorageReference fileRef = storageRef.child("Assignment/Date:"+convertstring(SelectDate)+"/Time:"+convertstring(SelectTime)+"/" + fileName);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "upload_channel")

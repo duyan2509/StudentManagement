@@ -14,22 +14,21 @@ public class Assignment {
     private boolean late;
     List<Submission> submissions;
     List<AttachedFile> attached_files;
-
     public Assignment(String title, Timestamp due_date) {
         this.due_date = due_date;
-        this.title = title;
+        this.title =  title;
     }
 
     public Assignment(String id, String title, Timestamp due_date) {
         this.id = id;
         this.due_date = due_date;
-        this.title = title;
+        this.title =  title;
     }
 
     public Assignment(String courseId, String id, String title, Timestamp due_date) {
         this.id = id;
         this.due_date = due_date;
-        this.title = title;
+        this.title =  title;
         this.courseId = courseId;
     }
 
@@ -52,6 +51,8 @@ public class Assignment {
     public void setAttached_files(List<AttachedFile> attached_files) {
         this.attached_files = attached_files;
     }
+
+
 
     public String getCourseId() {
         return courseId;
@@ -100,7 +101,6 @@ public class Assignment {
     public void setAttached_file(List<AttachedFile> attached_file) {
         this.attached_files = attached_file;
     }
-
     public boolean isSubmittedLate() {
         return submittedLate;
     }

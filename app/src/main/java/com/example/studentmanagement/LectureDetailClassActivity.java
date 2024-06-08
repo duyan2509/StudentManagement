@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -37,10 +37,8 @@ import com.google.firebase.storage.StorageReference;
 public class LectureDetailClassActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
-
     String codeName;
     ImageButton chat;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +78,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
                         checkAndCreateFolder(classCode);
                         boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
                         if (savedInstanceState == null) {
-
-                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(classCode,documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(classCode,documentSnapshot.getId());
+                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
@@ -107,17 +104,15 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         });
 
 
-
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
-//            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
-//            intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
-//            intent.get().putExtra("show_fragment_my_class", true);
-//            startActivity(intent.get());
+            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+            intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
+            intent.get().putExtra("show_fragment_my_class", true);
+            startActivity(intent.get());
             finish();
         });
-
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
 
@@ -126,8 +121,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         DocumentReference docRef = db.collection("course").document(classID);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-
-    @Override
+            @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     // Lấy dữ liệu từ DocumentSnapshot
@@ -165,25 +159,6 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         });
     }
 
-        Button btn_danh_sach_lop = findViewById(R.id.btn_danh_sach_lop);
-        btn_danh_sach_lop.setOnClickListener(new View.OnClickListener() {
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(LectureDetailClassActivity.this, ClassListActivity.class);
-        intent.putExtra("courseId", classID);
-        intent.putExtra("codeName", codeName);
-        startActivity(intent);
-    }
-
-    });}
-
-    @Override
-    public void onBackPressed() {
-        // Kết thúc Activity hiện tại và quay lại Activity trước đó
-        super.onBackPressed();
-    }
-
     private void checkAndCreateFolder(String code) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -200,8 +175,8 @@ public class LectureDetailClassActivity extends AppCompatActivity {
 
                     if (!folderExists) {
                         // Thư mục chưa tồn tại, tiến hành tạo thư mục mới
-                        StorageReference classFolderRef = storageRef.child(code + "/" + code);
-                        classFolderRef.putBytes(new byte[] {})
+                        StorageReference classFolderRef = storageRef.child(code+"/"+code);
+                        classFolderRef.putBytes(new byte[]{})
                                 .addOnSuccessListener(taskSnapshot -> {
                                     // Thư mục đã được tạo thành công
                                     Log.d("DEBUG: ", "Create Folder Done: " + code);
@@ -229,7 +204,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void onChatClick(String courseId) {
+    public void onChatClick(String courseId){
         DocumentReference courseRef = FirebaseUtil.getCourseById(courseId);
         courseRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
