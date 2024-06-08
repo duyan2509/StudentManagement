@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,14 +27,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class LectureDetailClassDocumentFragment extends Fragment {
-    private final String code;
+    private final String code , id;
     private final List<StorageReference> filesAndFolders = new ArrayList<>();
     private DocumentAdapter adapter;
+    ActivityResultLauncher<String> filePickerLauncher;
+    StorageReference storageRef;
 
-
-    public LectureDetailClassDocumentFragment(String classCode) {
+    public LectureDetailClassDocumentFragment(String classCode,String classID) {
         // Required empty public constructor
         this.code=classCode;
+        this.id=classID;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class LectureDetailClassDocumentFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.detail_class_lecture, container, false);
         ViewGroup container1 = view.findViewById(R.id.container1);
-        Fragment plusButtonFragment = new PlusButton(code);
+        Fragment plusButtonFragment = new PlusButton(code,filePickerLauncher,storageRef,adapter);
         getChildFragmentManager().beginTransaction()
                 .add(container1.getId(), plusButtonFragment)
                 .commit();
@@ -56,7 +59,7 @@ public class LectureDetailClassDocumentFragment extends Fragment {
         Button Assignments = view.findViewById(R.id.Assignments);
         Assignments.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassAssignmentFragment(code));
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassAssignmentFragment(code,id));
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);

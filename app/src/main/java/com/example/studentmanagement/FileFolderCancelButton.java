@@ -112,18 +112,18 @@ public class FileFolderCancelButton extends Fragment {
 
         return view;
     }
-    private void getDataAndUpdateRecyclerView() {
-        // Lấy dữ liệu mới từ nguồn dữ liệu nào đó (ví dụ: cơ sở dữ liệu, tập tin, ...)
-        newDataList = fetchDataFromDatabaseOrFile();
-
-        // Gọi phương thức updateRecyclerView() của FirstFragment và truyền vào newDataList
-        if (getActivity() != null) {
-            LectureDetailClassDocumentFragment firstFragment = (LectureDetailClassDocumentFragment) getActivity().getSupportFragmentManager().findFragmentByTag("FirstFragment");
-            if (firstFragment != null) {
-                firstFragment.updateRecyclerView(newDataList);
-            }
-        }
-    }
+//    private void getDataAndUpdateRecyclerView() {
+//        // Lấy dữ liệu mới từ nguồn dữ liệu nào đó (ví dụ: cơ sở dữ liệu, tập tin, ...)
+//        newDataList = fetchDataFromDatabaseOrFile();
+//
+//        // Gọi phương thức updateRecyclerView() của FirstFragment và truyền vào newDataList
+//        if (getActivity() != null) {
+//            LectureDetailClassDocumentFragment firstFragment = (LectureDetailClassDocumentFragment) getActivity().getSupportFragmentManager().findFragmentByTag("FirstFragment");
+//            if (firstFragment != null) {
+//                firstFragment.updateRecyclerView(newDataList);
+//            }
+//        }
+//    }
 
     private List<StorageReference> fetchDataFromDatabaseOrFile() {
         newDataList.clear();
@@ -132,7 +132,7 @@ public class FileFolderCancelButton extends Fragment {
             newDataList.addAll(listResult.getItems());
             newDataList.addAll(listResult.getPrefixes());
             adapter.notifyDataSetChanged();
-            getDataAndUpdateRecyclerView();
+            //getDataAndUpdateRecyclerView();
         }).addOnFailureListener(e -> {
             // Handle any errors
             Toast.makeText(getContext(), "Failed to load folder contents", Toast.LENGTH_SHORT).show();

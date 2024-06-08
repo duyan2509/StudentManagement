@@ -78,4 +78,11 @@ public class User {
     }
 
 
+    public String getPassword() {
+        return getPassword();
+    }
+
+    public void setPassword(String newPassword) {
+
+    }
 }

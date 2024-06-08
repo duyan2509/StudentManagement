@@ -35,9 +35,12 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_detail_class);
+
         db = FirebaseFirestore.getInstance();
         String classID = getIntent().getStringExtra("classID");
         Log.d("TAG", "classID: " +  classID);
+        Log.d("TAG", "Student detail class " + classID + " Activity");
+
         if (classID != null) {
             DocumentReference docRef = db.collection("course").document(classID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -48,25 +51,26 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         String classLecture = documentSnapshot.getString("lecture");
                         String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
 
-
                         TextView classCodeView = findViewById(R.id.class_code_and_name);
-                        TextView classLectureView = findViewById(R.id.class_lecture);
+                        TextView classStudentView = findViewById(R.id.class_lecture);
                         TextView classTimeView = findViewById(R.id.class_time);
 
                         classCodeView.setText(classCodeAndName);
-                        classLectureView.setText(classLecture);
-
+                        classStudentView.setText(classLecture);
                         classTimeView.setText(classTime);
 
                         AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
                         String classCode = documentSnapshot.getString("code");
                         checkAndCreateFolder(classCode);
-
+                        boolean StudentDetailClassFragment = getIntent().getBooleanExtra("show_fragment_student_detail_class_assignment", false);
+//                        Log.d("fragment", getIntent().getStringExtra("show_fragment_student_detail_class_assignment"));
+                        if (savedInstanceState == null) {
+                            Fragment initialFragment = StudentDetailClassFragment ? new StudentDetailClassAssignmentFragment(classCode,documentSnapshot.getId()) : new StudentDetailClassDocumentFragment(classCode,documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
                     } else {
-
+                        Log.d("StudentDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -83,7 +87,6 @@ public class StudentDetailClassActivity extends AppCompatActivity {
             return insets;
         });
 
-
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
@@ -94,9 +97,10 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         });
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
+
+        // Thực hiện truy vấn để lấy dữ liệu của lớp học từ Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("course").document(classID);
-
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -108,58 +112,22 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                     String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +"-"+Objects.requireNonNull(documentSnapshot.getLong("end")).toString()+", " + documentSnapshot.getString("schedule");
 
                     TextView classCodeView = findViewById(R.id.class_code_and_name);
-
-                    TextView classLectureView = findViewById(R.id.class_lecture);
+                    TextView classStudentView = findViewById(R.id.class_lecture);
                     TextView classTimeView = findViewById(R.id.class_time);
 
                     classCodeView.setText(classCodeAndName);
-                    classLectureView.setText(classLecture);
+                    classStudentView.setText(classLecture);
                     classTimeView.setText(classTime);
                 } else {
-                    Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
-
+                    Log.d("StudentDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
-    }
-    private void checkAndCreateFolder(String code) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-
-        storageRef.listAll()
-                .addOnSuccessListener(listResult -> {
-                    boolean folderExists = false;
-                    for (StorageReference item : listResult.getPrefixes()) {
-                        if (item.getName().equals(code)) {
-                            folderExists = true;
-                            break;
-                        }
-                    }
-
-                    if (!folderExists) {
-                        // Thư mục chưa tồn tại, tiến hành tạo thư mục mới
-                        StorageReference classFolderRef = storageRef.child(code+"/"+code);
-                        classFolderRef.putBytes(new byte[]{})
-                                .addOnSuccessListener(taskSnapshot -> {
-                                    // Thư mục đã được tạo thành công
-                                    Log.d("DEBUG: ", "Create Folder Done: " + code);
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Xảy ra lỗi khi tạo thư mục mới
-                                    Log.d("DEBUG: ", "Create Folder Failed: " + code);
-                                });
-                    } else {
-                        // Thư mục đã tồn tại
-                        Log.d("DEBUG: ", "Folder " + code + " already exists");
-                    }
-                })
-                .addOnFailureListener(exception -> {
-                    // Xảy ra lỗi khi duyệt thư mục
-                    Log.d("DEBUG: ", "Error Listing Folders ");
-                });
+                Log.d("StudentDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+            }
+        });
 
     }
 
@@ -208,3 +176,4 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
+//helu
