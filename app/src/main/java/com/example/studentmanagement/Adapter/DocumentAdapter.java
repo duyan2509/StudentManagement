@@ -1,5 +1,7 @@
 package com.example.studentmanagement.Adapter;
 
+
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,4 +100,3 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 }
-

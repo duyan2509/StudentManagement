@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -34,11 +35,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class LectureDetailClassActivity extends AppCompatActivity {
+public class LectureDetailClassActivity extends AppCompatActivity  {
 
     private FirebaseFirestore db;
+
     String codeName;
     ImageButton chat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,8 @@ public class LectureDetailClassActivity extends AppCompatActivity {
                         checkAndCreateFolder(classCode);
                         boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
                         if (savedInstanceState == null) {
-                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(documentSnapshot.getId());
+
+                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(classCode,documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(classCode,documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
@@ -104,6 +108,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
         });
 
 
+
         //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
@@ -113,6 +118,7 @@ public class LectureDetailClassActivity extends AppCompatActivity {
 //            startActivity(intent.get());
             finish();
         });
+
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
 

@@ -19,30 +19,41 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 
+import com.example.studentmanagement.Adapter.DocumentAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.activity.result.contract.ActivityResultContracts;
+
+import java.util.ArrayList;
+import java.util.List;
 //import androidx.fragment.app.FragmentManager;
 
 public class FileFolderCancelButton extends Fragment {
     String code;
-    //ContentResolver contentResolver = requireContext().getContentResolver();
 
-    private ActivityResultLauncher<String> filePickerLauncher;
-    //FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-    StorageReference storageRef = FirebaseStorage.getInstance().getReference("SE104.027");
+    ActivityResultLauncher<String> filePickerLauncher;
+    StorageReference storageRef;
+    private DocumentAdapter adapter;
+    private List<StorageReference> newDataList = new ArrayList<>();
 
-    public FileFolderCancelButton(String code) {
+    //Thiết lập Upload Inteface
+
+    public FileFolderCancelButton(String code,ActivityResultLauncher<String> filePickerLauncher, StorageReference storageRef,DocumentAdapter adapter) {
         // Required empty public constructor
         this.code = code;
+        this.filePickerLauncher=filePickerLauncher;
+        this.storageRef=storageRef;
+        this.adapter=adapter;
+
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +67,9 @@ public class FileFolderCancelButton extends Fragment {
 
                     if (uri != null) {
                         uploadFileToFirebase(uri);
+                        //getDataAndUpdateRecyclerView();
                     }
+                    //getDataAndUpdateRecyclerView();
                 });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "upload_channel";
@@ -83,21 +96,53 @@ public class FileFolderCancelButton extends Fragment {
             // Load CancelFragment
             if (getActivity() != null) {
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container1, new PlusButton(code))
+                        .replace(R.id.container1, new PlusButton(code,filePickerLauncher,storageRef,adapter))
                         .addToBackStack(null)
                         .commit();
             }
         });
         ImageButton Add_File = view.findViewById(R.id.Add_File);
         Add_File.setOnClickListener(v ->{
+
             //uploadFile();
             filePickerLauncher.launch("*/*");
+            //getDataAndUpdateRecyclerView();
         });
 
 
         return view;
     }
+    private void getDataAndUpdateRecyclerView() {
+        // Lấy dữ liệu mới từ nguồn dữ liệu nào đó (ví dụ: cơ sở dữ liệu, tập tin, ...)
+        newDataList = fetchDataFromDatabaseOrFile();
 
+        // Gọi phương thức updateRecyclerView() của FirstFragment và truyền vào newDataList
+        if (getActivity() != null) {
+            LectureDetailClassDocumentFragment firstFragment = (LectureDetailClassDocumentFragment) getActivity().getSupportFragmentManager().findFragmentByTag("FirstFragment");
+            if (firstFragment != null) {
+                firstFragment.updateRecyclerView(newDataList);
+            }
+        }
+    }
+
+    private List<StorageReference> fetchDataFromDatabaseOrFile() {
+        newDataList.clear();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
+        storageRef.listAll().addOnSuccessListener(listResult -> {
+            newDataList.addAll(listResult.getItems());
+            newDataList.addAll(listResult.getPrefixes());
+            adapter.notifyDataSetChanged();
+            getDataAndUpdateRecyclerView();
+        }).addOnFailureListener(e -> {
+            // Handle any errors
+            Toast.makeText(getContext(), "Failed to load folder contents", Toast.LENGTH_SHORT).show();
+        }).addOnCompleteListener(task -> {
+            // Reschedule the update after 10 seconds
+            Toast.makeText(getContext(), "load folder contents", Toast.LENGTH_SHORT).show();
+            //handler.postDelayed(updateRunnable, 10000);
+        });
+        return newDataList;
+    }
 
 
     private void uploadFileToFirebase(Uri fileUri) {
