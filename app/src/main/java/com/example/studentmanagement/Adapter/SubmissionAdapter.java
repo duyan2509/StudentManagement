@@ -1,6 +1,7 @@
 package com.example.studentmanagement.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class SubmissionAdapter extends RecyclerView.Adapter<SubmissionAdapter.St
         holder.studentIdTextView.setText(student.getStudentCode());
         holder.studentNameTextView.setText(student.getStudentName());
         holder.submitStatusTextView.setText(student.getStatus());
+        if(student.getStatus().equals("view assignment"))
+            holder.submitStatusTextView.setTextColor(Color.parseColor("#00FF00"));
     }
 
     @Override

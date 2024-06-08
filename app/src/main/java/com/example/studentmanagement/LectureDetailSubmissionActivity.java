@@ -1,26 +1,19 @@
 package com.example.studentmanagement;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Adapter.SubmissionAdapter;
 import com.example.studentmanagement.Model.StudentSubmission;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 
 public class LectureDetailSubmissionActivity extends AppCompatActivity {
@@ -52,7 +45,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
 
     private void loadStudentSubmissions() {
         Log.d("TAG", "1");
-        if((classID != null) && (assignmentID != null)){
+        if ((classID != null) && (assignmentID != null)) {
             db.collection("course").document(classID)
                     .collection("assignment").document(assignmentID)
                     .collection("submission")
@@ -62,18 +55,18 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "3");
                             List<DocumentSnapshot> documents = task.getResult().getDocuments();
-                            if(documents.isEmpty())
+                            if (documents.isEmpty())
                                 Log.d("TAG", "3.5");
-                            List<String> studentSubmittedID = new ArrayList<>();
+                            List<String> studentSubmittedIDs = new ArrayList<>();
                             for (DocumentSnapshot document : documents) {
-                                String studentSubmissedID = document.getString("student_id");
-                                Log.d("TAG", "3.7 " + studentSubmissedID);
-                                if (studentSubmissedID != null && !studentSubmittedID.contains(studentSubmissedID)) {
-                                    studentSubmittedID.add(studentSubmissedID);
+                                String studentSubmittedID = document.getString("student_id");
+                                Log.d("TAG", "3.7 " + studentSubmittedID);
+                                if (studentSubmittedID != null && !studentSubmittedIDs.contains(studentSubmittedID)) {
+                                    studentSubmittedIDs.add(studentSubmittedID);
                                 }
                             }
                             Log.d("TAG", "4");
-                            loadStudentData(studentSubmittedID);
+                            loadStudentData(studentSubmittedIDs);
                             Log.d("TAG", "13");
                         } else {
                             Log.d("SubmissionActivity", "Error getting documents: ", task.getException());
@@ -82,10 +75,8 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         }
     }
 
-    private void loadStudentData(List<String> studentSubmittedID) {
+    private void loadStudentData(List<String> studentSubmittedIDs) {
         Log.d("TAG", "5");
-        List<String> studentNames = new ArrayList<>();
-        List<String> studentCodes = new ArrayList<>();
         List<String> studentIDs = new ArrayList<>();
 
         db.collection("user_course")
@@ -101,51 +92,31 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                             }
                         }
                         // Gọi phương thức lấy thông tin sinh viên sau khi lấy danh sách studentIDs thành công
-                        retrieveStudentInfo(studentIDs, studentSubmittedID, studentNames, studentCodes);
+                        updateUI(studentIDs, studentSubmittedIDs);
                     } else {
                         Log.d("SubmissionActivity", "Error getting user_course documents: ", task.getException());
                     }
                 });
     }
 
-    private void retrieveStudentInfo(List<String> studentIDs, List<String> studentSubmittedID, List<String> studentNames, List<String> studentCodes) {
-        for (String studentID : studentIDs) {
-            db.collection("user").document(studentID)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        Log.d("TAG", "6");
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            Log.d("TAG", "7");
-                            if (document.exists()) {
-                                Log.d("TAG", "8");
-                                String studentName = document.getString("name");
-                                String studentCode = document.getString("code");
-                                studentNames.add(studentName != null ? studentName : "Unknown");
-                                studentCodes.add(studentCode != null ? studentCode : "Unknown");
-                                // Kiểm tra xem tất cả dữ liệu đã được lấy chưa
-                                if (studentNames.size() == studentIDs.size() && studentCodes.size() == studentIDs.size()) {
-                                    updateUI(studentIDs, studentSubmittedID, studentCodes, studentNames);
-                                }
-                            }
-                            Log.d("TAG", "9");
-                        } else {
-                            Log.d("SubmissionActivity", "Error getting documents: ", task.getException());
-                        }
-                    });
-        }
-    }
-
-    private void updateUI(List<String> studentIDs, List<String> studentSubmittedID, List<String> studentCodes, List<String> studentNames) {
+    private void updateUI(List<String> studentIDs, List<String> studentSubmittedIDs) {
         Log.d("TAG", "10");
         List<StudentSubmission> submissions = new ArrayList<>();
         for (int i = 0; i < studentIDs.size(); i++) {
-            String status = studentSubmittedID.contains(studentIDs.get(i)) ? "view assignment" : "no submission";
-            submissions.add(new StudentSubmission(studentIDs.get(i), studentCodes.get(i), studentNames.get(i), status));
+            String status = studentSubmittedIDs.contains(studentIDs.get(i)) ? "view assignment" : "no submission";
+            db.collection("user").document(studentIDs.get(i)).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            submissions.add(new StudentSubmission(document.getId(), document.getString("code"), document.getString("name"), status));
+                            Log.d("TAG", "11");
+                            adapter = new SubmissionAdapter(submissions, this);
+                            recyclerView.setAdapter(adapter);
+                            Log.d("TAG", "12");
+                        } else {
+                            Log.d("SubmissionActivity", "Error getting user documents: ", task.getException());
+                        }
+                    });
         }
-        Log.d("TAG", "11");
-        adapter = new SubmissionAdapter(submissions, this);
-        recyclerView.setAdapter(adapter);
-        Log.d("TAG", "12");
     }
 }
