@@ -16,6 +16,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getProfile_image() {
         return profile_image;
     }
@@ -46,14 +47,14 @@ public class User {
         this.code = code;
     }
 
-    String code ;
-
+    String code;
 
     public String getRole() {
         return role;
     }
 
-    public User(){}
+    public User() {
+    }
 
     public User(String id, String email, String name, String role) {
         this.id = id;
@@ -66,7 +67,6 @@ public class User {
         this.role = RoleUtil.getRole();
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -75,7 +75,6 @@ public class User {
         this.email = email;
     }
 
-
     public String getId() {
         return id;
     }
@@ -83,6 +82,5 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
-
 
 }
