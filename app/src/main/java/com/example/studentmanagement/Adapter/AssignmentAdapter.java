@@ -2,6 +2,9 @@ package com.example.studentmanagement.Adapter;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentmanagement.Model.AssignmentItem;
 import com.example.studentmanagement.Model.MultiFilePickerDialog;
 import com.example.studentmanagement.R;
+
+import com.example.studentmanagement.StudentAssignmentActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.storage.StorageReference;
 
@@ -74,47 +79,38 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
 
             // Set the initial status and button text
             if (assignment.isLate()) {
-
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.RED);
+                btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Miss");
+                btnSubmit.setTextColor(Color.WHITE);
             } else if (assignment.isSubmittedLate()) {
-
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.GREEN);
+                btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Done");
             } else {
-
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.BLUE);
+                btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Submit");
             }
 
-            // Set button click listener
-            //                String buttonText = btnSubmit.getText().toString();
-//                if ("Miss".equals(buttonText)) {
-//                    // Do nothing if the status is "Miss"
-//                    Toast.makeText(context, "Cannot submit assignment", Toast.LENGTH_SHORT).show();
-//                } else {
-//
-//                    // Handle other cases
-//                    handleSubmission(assignment);
-//                }
-//            btnSubmit.setOnClickListener(v -> {
-//                if (btnSubmit.getText().toString().equals("Submit")) {
-//                    // Hiển thị dialog cho phép chọn file
-//                    MultiFilePickerDialog filePickerDialog = new MultiFilePickerDialog(context, filePickerLauncher, new MultiFilePickerDialog.OnFilesSelectedListener() {
-//                        @Override
-//                        public void onFilesSelected(List<Uri> selectedFiles) {
-//                            // Xử lý các file được chọn ở đây, ví dụ: upload lên Firebase Storage
-//                            for (Uri fileUri : selectedFiles) {
-//                                // Thực hiện upload fileUri lên Firebase Storage
-//                                uploadFileToFirebase(fileUri, assignment.getTitle());
-//                            }
-//                        }
-//                    });
-//                    filePickerDialog.show();
-//                }
-//            });
+            btnSubmit.setOnClickListener(v -> {
+                if (btnSubmit.getText().toString().equalsIgnoreCase("Submit") ||
+                        btnSubmit.getText().toString().equalsIgnoreCase("Done")) {
+                    Intent intent = new Intent(context, StudentAssignmentActivity.class);
+                    intent.putExtra("deadline_name", assignment.getTitle());
+                    intent.putExtra("deadline_time", formatTimestamp(assignment.getDueDate()));
+                    intent.putExtra("class_id", (assignment.getClassID()));
+                    intent.putExtra("class_code", (assignment.getClass_code()));
+                    context.startActivity(intent);
+                } else {
+                    handleSubmission(assignment);
+                }
+            });
         }
 
         private void handleSubmission(AssignmentItem assignment) {
             // Implement your submission logic here
-            Toast.makeText(context, "Submitting assignment: " + assignment.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, " Deadline đã quá hạn!", Toast.LENGTH_SHORT).show();
         }
 
         private String formatTimestamp(Timestamp timestamp) {
@@ -123,48 +119,4 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             return sdf.format(date);
         }
     }
-
-//    private void uploadFileToFirebase(Uri fileUri, AssignmentItem assignment) {
-//        String fileName = getFileName(fileUri);
-//        StorageReference storageRef = FirebasesStorage.getReference(assignment.getCode());
-//        StorageReference fileRef = storageRef.child("Assignment/" + fileName);
-//
-//        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "upload_channel")
-//                .setSmallIcon(R.drawable.ic_upload)
-//                .setContentTitle("Uploading File")
-//                .setContentText("Upload in progress")
-//                .setPriority(NotificationCompat.PRIORITY_LOW);
-//
-//        int notificationId = 1;
-//
-//        fileRef.putFile(fileUri)
-//                .addOnProgressListener(taskSnapshot -> {
-//                    // Update progress if needed
-//                })
-//                .addOnSuccessListener(taskSnapshot -> {
-//                    Log.d("Debug", "Add Assignment Done");
-//                    notificationBuilder.setContentText("Upload complete")
-//                            .setProgress(0, 0, false);
-//                    notificationManager.notify(notificationId, notificationBuilder.build());
-//
-//                    // Update Firestore
-//                    db.collection("course").document(assignment.getCode())
-//                            .collection("assignment").document(assignment.getId())
-//                            .collection("submission").add(new Submission(currentUserId, Timestamp.now()))
-//                            .addOnSuccessListener(documentReference -> {
-//                                Log.d("Firestore", "DocumentSnapshot added with ID: " + documentReference.getId());
-//                                assignment.setSubmitted(true);
-//                                notifyDataSetChanged();
-//                            })
-//                            .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("Debug", "Add Assignment Failed");
-//                    notificationBuilder.setContentText("Upload failed")
-//                            .setProgress(0, 0, false);
-//                    notificationManager.notify(notificationId, notificationBuilder.build());
-//                });
-//    }
-
 }

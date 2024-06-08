@@ -3,20 +3,29 @@ package com.example.studentmanagement.Model;
 import com.google.firebase.Timestamp;
 
 public class AssignmentItem {
-    private String title;
+    private String title,Class_id,Class_code;
     private Timestamp dueDate;
     private boolean isLate;
     private boolean isSubmittedLate;
 
-    public AssignmentItem(String title, Timestamp dueDate) {
+    public AssignmentItem(String title, Timestamp dueDate,String id,String code) {
         this.title = title;
         this.dueDate = dueDate;
+        this.Class_id=id;
+        this.Class_code=code;
         this.isLate = false;
         this.isSubmittedLate = false;
     }
 
     public String getTitle() {
         return title;
+    }
+    public String getClassID() {
+        return Class_id;
+    }
+
+    public String getClass_code() {
+        return Class_code;
     }
 
     public void setTitle(String title) {
