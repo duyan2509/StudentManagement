@@ -23,6 +23,7 @@ import java.util.List;
 
 public class LectureDetailClassAssignmentFragment extends Fragment {
     private final String code;
+    private String classID;
     public LectureDetailClassAssignmentFragment(String ClassCode) {
         // Required empty public constructor
         this.code=ClassCode;
@@ -40,6 +41,11 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_lecture_detail_class_assignment, container, false);
 
+        LectureDetailClassActivity activity = (LectureDetailClassActivity) getActivity();
+
+        // Lấy classCode từ Intent của Activity
+        String classID = activity.getIntent().getStringExtra("classID");
+
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
@@ -53,10 +59,10 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Lấy tham chiếu đến Activity chứa fragment
-                LectureDetailClassActivity activity = (LectureDetailClassActivity) getActivity();
-
-                // Lấy classCode từ Intent của Activity
-                String classID = activity.getIntent().getStringExtra("classID");
+//                LectureDetailClassActivity activity = (LectureDetailClassActivity) getActivity();
+//
+//                // Lấy classCode từ Intent của Activity
+//                String classID = activity.getIntent().getStringExtra("classID");
 
                 // Chuyển đến AddAssignmentActivity và truyền classCode
                 Intent intent = new Intent(activity, AddAssignmentActivity.class);
@@ -67,7 +73,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Assignment> assignmentsList = new ArrayList<>();
-        AssignmentViewAdapter adapter = new AssignmentViewAdapter(assignmentsList, getContext());
+        AssignmentViewAdapter adapter = new AssignmentViewAdapter(assignmentsList, getContext(), classID);
         recyclerView.setAdapter(adapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -77,11 +83,12 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getString("id");
                             String title = document.getString("title");
                             Timestamp dueDate = document.getTimestamp("due_date");
                             String description = document.getString("description");
 
-                            Assignment assignment = new Assignment(title, dueDate);
+                            Assignment assignment = new Assignment(classID, id, title, dueDate);
                             assignment.setDescription(description);
                             // Fetch and set additional fields as needed
                             assignmentsList.add(assignment);

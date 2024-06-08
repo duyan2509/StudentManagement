@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Assignment {
     String id;
+    String courseId;
     Timestamp due_date;
     String title;
     String description;
@@ -16,6 +17,19 @@ public class Assignment {
     public Assignment(String title, Timestamp due_date) {
         this.due_date = due_date;
         this.title =  title;
+    }
+
+    public Assignment(String id, String title, Timestamp due_date) {
+        this.id = id;
+        this.due_date = due_date;
+        this.title =  title;
+    }
+
+    public Assignment(String courseId, String id, String title, Timestamp due_date) {
+        this.id = id;
+        this.due_date = due_date;
+        this.title =  title;
+        this.courseId = courseId;
     }
 
     public Assignment() {
@@ -47,8 +61,6 @@ public class Assignment {
     public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
-
-    String courseId;
 
     public Timestamp getDue_date() {
         return due_date;
