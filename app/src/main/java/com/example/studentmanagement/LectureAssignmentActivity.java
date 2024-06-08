@@ -2,6 +2,7 @@ package com.example.studentmanagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +17,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -29,6 +38,8 @@ public class LectureAssignmentActivity extends AppCompatActivity {
     private String description;
     String classID;
     String assignmentID;
+    private PieChart pieChart;
+    private FirebaseFirestore db;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +97,63 @@ public class LectureAssignmentActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        pieChart = findViewById(R.id.submission_pieChart);
+        db = FirebaseFirestore.getInstance();
+        loadSubmissionData();
+    }
+
+    private void loadSubmissionData() {
+        db.collection("user_course")
+                .whereEqualTo("course_id", classID)
+                .whereEqualTo("role", "student")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int totalStudents = task.getResult().size();
+                        countSubmittedStudents(totalStudents);
+                    } else {
+                        Log.d("LectureAssignmentActivity", "Error getting user_course documents: ", task.getException());
+                    }
+                });
+    }
+
+    private void countSubmittedStudents(int totalStudents) {
+        db.collection("course").document(classID)
+                .collection("assignment").document(assignmentID)
+                .collection("submission")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int submittedCount = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String studentID = document.getString("student_id");
+                            if (studentID != null) {
+                                submittedCount++;
+                            }
+                        }
+                        setupPieChart(totalStudents, submittedCount);
+                    } else {
+                        Log.d("LectureAssignmentActivity", "Error getting submission documents: ", task.getException());
+                    }
+                });
+    }
+
+    private void setupPieChart(int totalStudents, int submittedCount) {
+        int notSubmittedCount = totalStudents - submittedCount;
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(notSubmittedCount, "Chua Nop Bai"));
+        entries.add(new PieEntry(submittedCount, "Nop Bai"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "Submission Status");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextColor(Color.BLACK);
+
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.invalidate(); // refresh the chart
     }
 
     private String formatTimestamp(Timestamp timestamp) {
