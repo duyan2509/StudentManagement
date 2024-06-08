@@ -36,17 +36,25 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/deadline_description"
-        android:layout_width="360dp"
-        android:layout_height="80dp"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:background="@drawable/edittext_border"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textStyle = "bold"
+        android:text="Mô tả: "
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/deadline_description"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
-        android:text="@string/deadline_description"
+        android:text="Mô tả: "
         android:textSize="15dp"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -161,57 +169,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp">
 
-        <Button
-            android:id="@+id/btn_open_submission"
-            app:backgroundTint="#5ce7ff"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/edittext_border"/>
-
-        <Button
-            android:id="@+id/btn_remove_submission"
-            app:backgroundTint="@null"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="330dp"
-            android:layout_centerVertical="true"
-            android:text="ADD"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:background="@drawable/btn_remove_submission"/>
-
-        <ImageView
-            app:backgroundTint="@null"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/icon_folder_bg"/>
-
-        <TextView
-            android:id="@+id/textview_title_submission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="110dp"
-            android:text="BAI NOP"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/size_submission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="110dp"
-            android:text="1.2 MB"
-            android:textSize="15dp"
-            android:textStyle="normal"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 
 

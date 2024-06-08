@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Adapter.DocumentAdapter;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -42,11 +46,6 @@ public class StudentDetailClassDocumentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.detail_class_student, container, false);
-        ViewGroup container1 = view.findViewById(R.id.List_container);
-        Fragment plusButtonFragment = new PlusButton(class_code,filePickerLauncher,storageRef,adapter);
-        getChildFragmentManager().beginTransaction()
-                .add(container1.getId(), plusButtonFragment)
-                .commit();
 
         Button Assignments = view.findViewById(R.id.Assignments);
         Assignments.setOnClickListener(v -> {
@@ -54,7 +53,34 @@ public class StudentDetailClassDocumentFragment extends Fragment {
                 ((StudentDetailClassActivity) getActivity()).loadFragment(new StudentDetailClassAssignmentFragment(class_code,class_id));
             }
         });
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new DocumentAdapter(filesAndFolders, getContext(), item -> {
+            if (item.getName().contains(".")) {
+                // Handle file click
+                Toast.makeText(getContext(), "File: " + item.getName(), Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle folder click, load folder contents
+                loadFolderContents(item);
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        loadFolderContents(FirebaseStorage.getInstance().getReference(class_code).child("Document"));
         return view;
+    }
+
+    private void loadFolderContents(StorageReference reference) {
+        reference.listAll().addOnSuccessListener(listResult -> {
+            filesAndFolders.clear();
+            filesAndFolders.addAll(listResult.getItems());
+            filesAndFolders.addAll(listResult.getPrefixes());
+            adapter.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            // Handle any errors
+            Toast.makeText(getContext(), "Failed to load folder contents", Toast.LENGTH_SHORT).show();
+        });
     }
 
 }

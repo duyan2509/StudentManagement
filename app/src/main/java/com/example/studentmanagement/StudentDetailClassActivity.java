@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -30,6 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class StudentDetailClassActivity extends AppCompatActivity {
     private FirebaseFirestore db;
+    private static final int STUDENT_ASSIGNMENT_REQUEST_CODE = 1001;
+    String codeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +54,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
                         String classLecture = documentSnapshot.getString("lecture");
                         String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
-
+                        codeName=classCodeAndName;
                         TextView classCodeView = findViewById(R.id.class_code_and_name);
                         TextView classStudentView = findViewById(R.id.class_lecture);
                         TextView classTimeView = findViewById(R.id.class_time);
@@ -65,7 +69,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         boolean StudentDetailClassFragment = getIntent().getBooleanExtra("show_fragment_student_detail_class_assignment", false);
 //                        Log.d("fragment", getIntent().getStringExtra("show_fragment_student_detail_class_assignment"));
                         if (savedInstanceState == null) {
-                            Fragment initialFragment = StudentDetailClassFragment ? new StudentDetailClassAssignmentFragment(classCode,documentSnapshot.getId()) : new StudentDetailClassDocumentFragment(classCode,documentSnapshot.getId());
+                            Fragment initialFragment = new StudentDetailClassDocumentFragment(classCode,documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
@@ -97,7 +101,16 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         });
         //Xử Lý Button Document;
         //Xử Lý Button Assignment;
-
+        Button btn_danh_sach_lop = findViewById(R.id.btn_danh_sach_lop);
+        btn_danh_sach_lop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StudentDetailClassActivity.this, ClassListActivity.class);
+                intent.putExtra("courseId", classID);
+                intent.putExtra("codeName",codeName);
+                startActivity(intent);
+            }
+        });
         // Thực hiện truy vấn để lấy dữ liệu của lớp học từ Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("course").document(classID);
@@ -175,5 +188,6 @@ public class StudentDetailClassActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 }
 //helu
