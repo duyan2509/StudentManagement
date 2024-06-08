@@ -7,18 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.studentmanagement.Adapter.DocumentAdapter;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 
 public class LectureDetailClassDocumentFragment extends Fragment {
     private final String code;
+    private final List<StorageReference> filesAndFolders = new ArrayList<>();
+    private DocumentAdapter adapter;
+
 
     public LectureDetailClassDocumentFragment(String classCode) {
         // Required empty public constructor
@@ -48,48 +59,35 @@ public class LectureDetailClassDocumentFragment extends Fragment {
                 ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassAssignmentFragment(code));
             }
         });
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new DocumentAdapter(filesAndFolders, getContext(), item -> {
+            if (item.getName().contains(".")) {
+                // Handle file click
+                Toast.makeText(getContext(), "File: " + item.getName(), Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle folder click, load folder contents
+                loadFolderContents(item);
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
-        
-       // Log.d("Get StorageReference", ID);
-//        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        List<DocumentItem> documentList = new ArrayList<>();
-//        DocumentViewAdapter adapter = new DocumentViewAdapter(documentList, getContext());
-//        String ID = getCodeID();
-//        recyclerView.setAdapter(adapter);
-        //ReCyclerView
-        //FirebaseStorage  storage = FirebaseStorage.getInstance();
-        //StorageReference storageRef = storage.getReference(ID).child("Document/");
-       // Log.d("Get StorageReference", storageRef.toString());
-//        storageRef.listAll().addOnSuccessListener(listResult -> {
-//            for (StorageReference prefix : listResult.getPrefixes()) {
-//                // This is a folder
-//                DocumentItem folderItem = new DocumentItem(prefix.getName(), true);
-//                documentList.add(folderItem);
-//            }
-//
-//            for (StorageReference item : listResult.getItems()) {
-//                // This is a file
-//                DocumentItem fileItem = new DocumentItem(item.getName(), false);
-//                documentList.add(fileItem);
-//            }
-//
-//            adapter.notifyDataSetChanged();
-//        }).addOnFailureListener(e -> {
-//            // Handle any errors
-//            Log.e("LectureDetailClassDocumentFragment", "Error listing documents", e);
-//        });
-
-
-        
-        //loadDocuments();
+        loadFolderContents(FirebaseStorage.getInstance().getReference(code).child("Document/"));
         return view;
     }
 
-    private void loadDocuments() {
 
+    private void loadFolderContents(StorageReference reference) {
+        reference.listAll().addOnSuccessListener(listResult -> {
+            filesAndFolders.clear();
+            filesAndFolders.addAll(listResult.getItems());
+            filesAndFolders.addAll(listResult.getPrefixes());
+            adapter.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            // Handle any errors
+            Toast.makeText(getContext(), "Failed to load folder contents", Toast.LENGTH_SHORT).show();
+        });
     }
-
-
 
 }
