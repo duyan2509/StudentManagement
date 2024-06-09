@@ -88,7 +88,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Done");
             } else {
-                ColorStateList colorStateList = ColorStateList.valueOf(Color.BLUE);
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.WHITE);
                 btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Submit");
             }

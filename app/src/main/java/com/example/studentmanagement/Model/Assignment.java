@@ -12,6 +12,7 @@ public class Assignment {
     String description;
     private boolean submittedLate; // Trường để xác định submission có trễ hạn hay không
     private boolean late;
+    private String storageReference;
     List<Submission> submissions;
     List<AttachedFile> attached_files;
     public Assignment(String title, Timestamp due_date) {
@@ -31,7 +32,13 @@ public class Assignment {
         this.title =  title;
         this.courseId = courseId;
     }
+    public String getStorageReference() {
+        return storageReference;
+    }
 
+    public void setStorageReference(String storageReference) {
+        this.storageReference = storageReference;
+    }
     public Assignment() {
 
     }
