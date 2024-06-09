@@ -78,6 +78,9 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
             intent.putExtra("description", assignment.getDescription());// Pass course ID
             Log.d("TAG", "Put assignmentId " + assignment.getId());
             Log.d("TAG", "Put classID " + assignment.getCourseId());
+            Log.d("TAG", "Put title " + assignment.getTitle());
+            Log.d("TAG", "Put date " + assignment.getDue_date());
+            Log.d("TAG", "Put description " + assignment.getDescription());
             v.getContext().startActivity(intent);
         });
         holder.btn_remove.setOnClickListener(v -> removeAssignment(assignment.getId(), position));

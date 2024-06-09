@@ -23,6 +23,9 @@
             android:name=".ViewStudentSubmissionActivity"
             android:exported="false" />
         <activity
+            android:name=".EditAssignmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity

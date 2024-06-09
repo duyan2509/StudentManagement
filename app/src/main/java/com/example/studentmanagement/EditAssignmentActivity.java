@@ -52,6 +52,8 @@ public class EditAssignmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_assignment);
 
+        Log.d("TAG", "EditAssignmentActivity");
+
         etDescription = findViewById(R.id.etDescription);
         etSelectedDate = findViewById(R.id.etSelectedDate);
         etSelectedTime = findViewById(R.id.etSelectedTime);
@@ -69,6 +71,9 @@ public class EditAssignmentActivity extends AppCompatActivity {
         etSelectedDate.setText(getIntent().getStringExtra("date"));
         etSelectedTime.setText(getIntent().getStringExtra("date"));
         etDescription.setText(getIntent().getStringExtra("description"));
+
+        Log.d("TAG", title.getText().toString() + etSelectedDate.getText() + etSelectedTime.getText() + etDescription.getText());
+
         btnBack.setOnClickListener(v -> finish());
 
         btnSelectDate.setOnClickListener(v -> {
