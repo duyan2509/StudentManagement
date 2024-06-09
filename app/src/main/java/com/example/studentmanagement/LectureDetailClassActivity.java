@@ -1,67 +1,101 @@
 package com.example.studentmanagement;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
+
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.firebase.Timestamp;
+import com.example.studentmanagement.Model.Course;
+import com.example.studentmanagement.Utils.AndroidUtil;
+import com.example.studentmanagement.Utils.FirebaseUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Objects;
 
-public class LectureAssignmentActivity extends AppCompatActivity {
+import java.util.concurrent.atomic.AtomicReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-    private String title;
-    private String time;
-    private String description;
-    String classID;
-    String assignmentID;
-    private PieChart pieChart;
+public class LectureDetailClassActivity extends AppCompatActivity {
+
     private FirebaseFirestore db;
-    @SuppressLint("ClickableViewAccessibility")
+    String codeName;
+    ImageButton chat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_lecture_assignment);
-        Log.d("Activity: ", "Lecture Assignment Activity");
+//        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_lecture_detail_class);
 
-        classID = getIntent().getStringExtra("classID");
-        assignmentID = getIntent().getStringExtra("assignmentId");
+        Log.d("Activity: ", "Lecture Detail Class Activity");
 
-        TextView tvTitle = findViewById(R.id.deadline_name);
-        TextView tvDescription = findViewById(R.id.deadline_description);
-        TextView tvTime = findViewById(R.id.deadline_time);
+        db = FirebaseFirestore.getInstance();
+        String classID = getIntent().getStringExtra("classID");
+        chat = findViewById(R.id.chat_button);
+        chat.setOnClickListener(v -> {
+            onChatClick(classID);
+        });
+        Log.d("TAG", "classID: " +  classID);
 
-        title = getIntent().getStringExtra("title");
-        time = getIntent().getStringExtra("date");
-        description = getIntent().getStringExtra("description");
+        if (classID != null) {
+            DocumentReference docRef = db.collection("course").document(classID);
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
+                        String classLecture = documentSnapshot.getString("lecture");
+                        String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() + "-" + Objects.requireNonNull(documentSnapshot.getLong("end")).toString() + ", " + documentSnapshot.getString("schedule");
+                        codeName=classCodeAndName;
+                        TextView classCodeView = findViewById(R.id.class_code_and_name);
+                        TextView classLectureView = findViewById(R.id.class_lecture);
+                        TextView classTimeView = findViewById(R.id.class_time);
 
-        tvTitle.setText(title);
-        tvTime.setText(time);
-        tvDescription.setText(description);
+                        classCodeView.setText(classCodeAndName);
+                        classLectureView.setText(classLecture);
+                        classTimeView.setText(classTime);
+
+                        AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+                        String classCode = documentSnapshot.getString("code");
+                        checkAndCreateFolder(classCode);
+                        boolean LectureDetailClassFragment = getIntent().getBooleanExtra("show_fragment_lecture_detail_class_assignment", false);
+                        if (savedInstanceState == null) {
+                            Fragment initialFragment = LectureDetailClassFragment ? new LectureDetailClassAssignmentFragment(documentSnapshot.getId()) : new LectureDetailClassDocumentFragment(documentSnapshot.getId());
+
+                            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
+                        }
+                    } else {
+                        Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("LectureDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+                }
+            });
+        }
+
+        // Lấy ID của lớp học từ Intent
+//        String classID = getIntent().getStringExtra("classID");
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -69,96 +103,126 @@ public class LectureAssignmentActivity extends AppCompatActivity {
             return insets;
         });
 
+
+        //Xử lý button Back
         Button btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> {
+            AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+            intent.set(new Intent(LectureDetailClassActivity.this, UserActivity.class));
+            intent.get().putExtra("show_fragment_my_class", true);
+            startActivity(intent.get());
             finish();
         });
+        //Xử Lý Button Document;
+        //Xử Lý Button Assignment;
 
-        // Thêm sự kiện khi ấn vào textview_see_detail
-        TextView textViewSeeDetail = findViewById(R.id.textview_see_detail);
-        textViewSeeDetail.setOnClickListener(v -> {
-            Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailSubmissionActivity.class);
-            intent.putExtra("assignmentId", assignmentID);
-            intent.putExtra("classID", classID);
-            startActivity(intent);
-        });
+        // Thực hiện truy vấn để lấy dữ liệu của lớp học từ Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("course").document(classID);
 
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    // Lấy dữ liệu từ DocumentSnapshot
+                    String classCodeAndName = documentSnapshot.getString("code") + " - " + documentSnapshot.getString("name");
+                    String classLecture = documentSnapshot.getString("lecture");
+                    String classTime = Objects.requireNonNull(documentSnapshot.getLong("start")).toString() +"-"+Objects.requireNonNull(documentSnapshot.getLong("end")).toString()+", " + documentSnapshot.getString("schedule");
 
-        textViewSeeDetail.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_HOVER_ENTER:
-                case MotionEvent.ACTION_DOWN:
-                    textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                    break;
-                case MotionEvent.ACTION_HOVER_EXIT:
-                case MotionEvent.ACTION_UP:
-                    textViewSeeDetail.setPaintFlags(textViewSeeDetail.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-                    break;
+                    TextView classCodeView = findViewById(R.id.class_code_and_name);
+                    TextView classLectureView = findViewById(R.id.class_lecture);
+                    TextView classTimeView = findViewById(R.id.class_time);
+
+                    classCodeView.setText(classCodeAndName);
+                    classLectureView.setText(classLecture);
+                    classTimeView.setText(classTime);
+                } else {
+                    Log.d("LectureDetailClassActivity", "Không tìm thấy lớp học với ID: " + classID);
+                }
             }
-            return false;
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("LectureDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+            }
         });
 
-        pieChart = findViewById(R.id.submission_pieChart);
-        db = FirebaseFirestore.getInstance();
-        loadSubmissionData();
+        Button btn_danh_sach_lop = findViewById(R.id.btn_danh_sach_lop);
+        btn_danh_sach_lop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LectureDetailClassActivity.this, ClassListActivity.class);
+                intent.putExtra("courseId", classID);
+                intent.putExtra("codeName",codeName);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void loadSubmissionData() {
-        db.collection("user_course")
-                .whereEqualTo("course_id", classID)
-                .whereEqualTo("role", "student")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int totalStudents = task.getResult().size();
-                        countSubmittedStudents(totalStudents);
-                    } else {
-                        Log.d("LectureAssignmentActivity", "Error getting user_course documents: ", task.getException());
-                    }
-                });
-    }
+    private void checkAndCreateFolder(String code) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
 
-    private void countSubmittedStudents(int totalStudents) {
-        db.collection("course").document(classID)
-                .collection("assignment").document(assignmentID)
-                .collection("submission")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int submittedCount = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String studentID = document.getString("student_id");
-                            if (studentID != null) {
-                                submittedCount++;
-                            }
+        storageRef.listAll()
+                .addOnSuccessListener(listResult -> {
+                    boolean folderExists = false;
+                    for (StorageReference item : listResult.getPrefixes()) {
+                        if (item.getName().equals(code)) {
+                            folderExists = true;
+                            break;
                         }
-                        setupPieChart(totalStudents, submittedCount);
-                    } else {
-                        Log.d("LectureAssignmentActivity", "Error getting submission documents: ", task.getException());
                     }
+
+                    if (!folderExists) {
+                        // Thư mục chưa tồn tại, tiến hành tạo thư mục mới
+                        StorageReference classFolderRef = storageRef.child(code+"/"+code);
+                        classFolderRef.putBytes(new byte[]{})
+                                .addOnSuccessListener(taskSnapshot -> {
+                                    // Thư mục đã được tạo thành công
+                                    Log.d("DEBUG: ", "Create Folder Done: " + code);
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Xảy ra lỗi khi tạo thư mục mới
+                                    Log.d("DEBUG: ", "Create Folder Failed: " + code);
+                                });
+                    } else {
+                        // Thư mục đã tồn tại
+                        Log.d("DEBUG: ", "Folder " + code + " already exists");
+                    }
+                })
+                .addOnFailureListener(exception -> {
+                    // Xảy ra lỗi khi duyệt thư mục
+                    Log.d("DEBUG: ", "Error Listing Folders ");
                 });
     }
 
-    private void setupPieChart(int totalStudents, int submittedCount) {
-        int notSubmittedCount = totalStudents - submittedCount;
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(notSubmittedCount, "Chua Nop Bai"));
-        entries.add(new PieEntry(submittedCount, "Nop Bai"));
-
-        PieDataSet dataSet = new PieDataSet(entries, "Submission Status");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        dataSet.setValueTextSize(16f);
-        dataSet.setValueTextColor(Color.BLACK);
-
-        PieData data = new PieData(dataSet);
-        pieChart.setData(data);
-        pieChart.invalidate(); // refresh the chart
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.detail_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    private String formatTimestamp(Timestamp timestamp) {
-        Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, dd/MM/yyyy", Locale.getDefault());
-        return sdf.format(date);
+    public void onChatClick(String courseId){
+        DocumentReference courseRef = FirebaseUtil.getCourseById(courseId);
+        courseRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String code = documentSnapshot.getString("code");
+                String name = documentSnapshot.getString("name");
+
+                Course course = new Course(courseId, code, name);
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                AndroidUtil.passCourseModelAsIntent(intent, course);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("StudentDetailClassActivity", "Lỗi khi lấy dữ liệu lớp học: " + e.getMessage());
+            }
+        });
     }
 }

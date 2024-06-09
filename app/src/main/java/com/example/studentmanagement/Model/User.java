@@ -5,11 +5,17 @@ import com.example.studentmanagement.Utils.RoleUtil;
 public class User {
     private String id;
     private String email;
-
+    private String password;
     private String name;
     private String role;
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public String getProfile_image() {
         return profile_image;
     }
