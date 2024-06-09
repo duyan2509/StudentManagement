@@ -26,14 +26,15 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class LectureDetailClassDocumentFragment extends Fragment {
-    private final String code;
+    private final String code,id;
     private final List<StorageReference> filesAndFolders = new ArrayList<>();
     private DocumentAdapter adapter;
 
 
-    public LectureDetailClassDocumentFragment(String classCode) {
+    public LectureDetailClassDocumentFragment(String classCode,String ClassID) {
         // Required empty public constructor
         this.code=classCode;
+        this.id=ClassID;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class LectureDetailClassDocumentFragment extends Fragment {
         Button Assignments = view.findViewById(R.id.Assignments);
         Assignments.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassAssignmentFragment(code));
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassAssignmentFragment(code,id));
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
@@ -88,6 +89,7 @@ public class LectureDetailClassDocumentFragment extends Fragment {
             // Handle any errors
             Toast.makeText(getContext(), "Failed to load folder contents", Toast.LENGTH_SHORT).show();
         });
+        adapter.notifyDataSetChanged();
     }
 
 }

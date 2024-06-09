@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LectureDetailClassAssignmentFragment extends Fragment {
-    private final String code;
+    private final String code,id;
     private String classID;
-    public LectureDetailClassAssignmentFragment(String ClassCode) {
+    public LectureDetailClassAssignmentFragment(String ClassCode,String ClassID) {
         // Required empty public constructor
-        this.code=ClassCode;
+        this.code=ClassID;
+        this.id=ClassCode;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(code));
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(code,id));
             }
         });
 

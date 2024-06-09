@@ -66,7 +66,7 @@ public class StudentDetailClassDocumentFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
-
+        Log.d ("DeBug Get: ",FirebaseStorage.getInstance().getReference(class_code).child("Document").toString());
         loadFolderContents(FirebaseStorage.getInstance().getReference(class_code).child("Document"));
         return view;
     }
