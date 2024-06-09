@@ -1,15 +1,18 @@
 package com.example.studentmanagement;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Adapter.SubmissionAdapter;
 import com.example.studentmanagement.Model.StudentSubmission;
-
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,6 +25,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
     private SubmissionAdapter adapter;
     private FirebaseFirestore db;
     private String classID, assignmentID;
+    private EditText searchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +41,34 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         assignmentID = getIntent().getStringExtra("assignmentId");
         Log.d("Tag", classID + " - " + assignmentID);
 
+        searchEditText = findViewById(R.id.searchEditText);
+
         db = FirebaseFirestore.getInstance();
         loadStudentSubmissions();
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        // Thêm TextWatcher để lắng nghe sự thay đổi văn bản
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Không cần làm gì ở đây
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Gọi phương thức filter của adapter với văn bản tìm kiếm
+                if (adapter != null) {
+                    adapter.filter(s.toString());
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Không cần làm gì ở đây
+            }
+        });
     }
 
     private void loadStudentSubmissions() {
@@ -99,7 +127,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUI(List<String> studentIDs, List<String> studentSubmittedIDs) {
+    private void updateUI(@NonNull List<String> studentIDs, List<String> studentSubmittedIDs) {
         Log.d("TAG", "10");
         List<StudentSubmission> submissions = new ArrayList<>();
         for (int i = 0; i < studentIDs.size(); i++) {
