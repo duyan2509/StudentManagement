@@ -49,6 +49,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
     private SubmitItemAdapter adapter;
     private List<SubmitItem> fileQueue = new ArrayList<>();
     private String class_code;
+    private String File_path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +155,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         Log.d("Check User ID", userId+class_code);
         addFileInfoToFirestore(class_id,class_code, userId, deadlineName);
         
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(class_code+"/Assignment");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(class_code+"/Assignment/"+userId);
         Log.d("Check User ID", storageRef.toString());
         for (SubmitItem submitItem : fileQueue) {
             Uri fileUri = submitItem.getFileUri();
@@ -168,12 +169,50 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                     .addOnSuccessListener(taskSnapshot -> {
                         // Upload thành công
                         Log.d("Upload", "Upload successfully"+fileUri.toString());
+                        addFileInfo(class_id,class_code, userId, deadlineName,submitItem);
                     })
                     .addOnFailureListener(e -> {
                         // Upload thất bại
                         Log.e("Upload", "Upload failed: " + e.getMessage());
                     });
         }
+    }
+
+    private void addFileInfo(String class_id, String classCode, String userId, String deadlineName,SubmitItem submitItem) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> fileInfo = new HashMap<>();
+        fileInfo.put("student_id", userId);
+        fileInfo.put("name", submitItem.getFileName());
+        fileInfo.put("file_path", submitItem.getFileName());
+        db.collection("course").document(class_id).collection("assignment")
+                .whereEqualTo("title", deadlineName)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("course").document(class_id)
+                                    .collection("assignment").document(document.getId())
+                                    .collection("submission").whereEqualTo("student_id", userId)
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            for(QueryDocumentSnapshot document1: task1.getResult()){
+                                                db.collection("course").document(class_id)
+                                                        .collection("assignment").document(document.getId())
+                                                        .collection("submission").document(document1.getId())
+                                                        .collection("attached_file").add(fileInfo)
+                                                        .addOnSuccessListener(documentReference ->
+                                                                Log.d("Firestore", "File uploaded and added to Firestore"))
+                                                        .addOnFailureListener(e ->
+                                                                Log.e("Firestore", "Failed to add file info to Firestore: " + e.getMessage()));
+                                            }
+                                        }
+                                    });
+                        }
+                    } else {
+                        Log.d("Firestore", "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     private void addFileInfoToFirestore(String class_id,String class_code, String userId, String deadlineName) {
@@ -199,6 +238,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
                     }
                 });
+
     }
 
 
