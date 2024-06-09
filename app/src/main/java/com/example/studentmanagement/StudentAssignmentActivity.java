@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.studentmanagement.Adapter.DocumentAdapter;
 import com.example.studentmanagement.Adapter.SubmitItemAdapter;
 import com.example.studentmanagement.Model.SubmitItem;
 import com.google.android.gms.tasks.Task;
@@ -56,8 +58,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_FILE_PICKER = 1;
     private static final int FILE_PICKER_REQUEST_CODE = 123;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,recyclerView1;
     private SubmitItemAdapter adapter;
+    private  DocumentAdapter adapter1;
+    private final List<StorageReference> filesAndFolders = new ArrayList<>();
     private List<SubmitItem> fileQueue = new ArrayList<>();
     private String class_code;
     private String File_path;
@@ -75,6 +79,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         String class_id = getIntent().getStringExtra("class_code");
         String code = getIntent().getStringExtra("class_id");
         String Get_Late=getIntent().getStringExtra("Get_Late");
+        String Get_Type=getIntent().getStringExtra("Get_Type");
         Log.d("Description", class_id);
         TextView deadlineNameTextView = findViewById(R.id.deadline_name);
         TextView deadlineTimeTextView = findViewById(R.id.deadline_time);
@@ -150,10 +155,42 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         adapter = new SubmitItemAdapter(fileQueue, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        recyclerView1 = findViewById(R.id.recyclerView1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView1.setLayoutManager(layoutManager);
+        adapter1 = new DocumentAdapter(filesAndFolders, this, item -> {
+            if (item.getName().contains(".")) {
+                // Handle file click
+                Toast.makeText(this, "File: " + item.getName(), Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle folder click, load folder contents
+                loadFolderContents(item);
+            }
+        });
+        recyclerView1.setAdapter(adapter1);
+        // Lấy đối tượng FirebaseAuth
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
+// Lấy người dùng hiện tại
+        FirebaseUser currentUser = auth.getCurrentUser();
+        assert currentUser != null;
+        Log.d("Get UID",currentUser.getUid() + code+class_id);
+        loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(currentUser.getUid()));
     }
 
-
+    private void loadFolderContents(StorageReference reference) {
+        Log.d("",reference.getName());
+        reference.listAll().addOnSuccessListener(listResult -> {
+            filesAndFolders.clear();
+            filesAndFolders.addAll(listResult.getItems());
+            filesAndFolders.addAll(listResult.getPrefixes());
+            adapter1.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            // Handle any errors
+            Toast.makeText(this, "Failed to load folder contents", Toast.LENGTH_SHORT).show();
+        });
+        adapter1.notifyDataSetChanged();
+    }
 
 
     private void openFilePicker() {

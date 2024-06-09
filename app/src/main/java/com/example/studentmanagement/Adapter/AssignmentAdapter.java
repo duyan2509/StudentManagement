@@ -102,6 +102,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     intent.putExtra("class_id", (assignment.getClassID()));
                     intent.putExtra("class_code", (assignment.getClass_code()));
                     intent.putExtra("Get_Late",btnSubmit.getText().toString());
+                    if(btnSubmit.getText().equals("Done"))
+                        intent.putExtra("Get_Type","View");
+                    else
+                        intent.putExtra("Get_Type","Add");
                     context.startActivity(intent);
 
             });
