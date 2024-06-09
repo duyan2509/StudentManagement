@@ -93,6 +93,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                                 .into(profilePic);
                     role.setText(user.getRole());
                     email.setText(user.getEmail());
+                    name.setText(user.getName());
                 }
             }
         });
