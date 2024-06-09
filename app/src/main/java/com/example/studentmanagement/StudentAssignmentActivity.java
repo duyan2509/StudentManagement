@@ -128,7 +128,12 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         btn_save.setOnClickListener(v -> {
             // Upload các tập tin trong hàng đợi lên storage
             uploadSelectedFiles(class_id,code,deadlineName);
-            finish();
+            Intent intent = new Intent(StudentAssignmentActivity.this, StudentDetailClassActivity.class);
+
+            intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
+            intent.putExtra("classID", class_id);
+            startActivity(intent);
+            finish();finish();
         });
 
         recyclerView = findViewById(R.id.recyclerView);

@@ -69,7 +69,7 @@ public class StudentDetailClassActivity extends AppCompatActivity {
                         boolean StudentDetailClassFragment = getIntent().getBooleanExtra("show_fragment_student_detail_class_assignment", false);
 //                        Log.d("fragment", getIntent().getStringExtra("show_fragment_student_detail_class_assignment"));
                         if (savedInstanceState == null) {
-                            Fragment initialFragment = new StudentDetailClassDocumentFragment(classCode,documentSnapshot.getId());
+                            Fragment initialFragment =StudentDetailClassFragment?new StudentDetailClassAssignmentFragment(classCode,documentSnapshot.getId()):new StudentDetailClassDocumentFragment(classCode,documentSnapshot.getId());
 
                             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, initialFragment).commitAllowingStateLoss();
                         }
