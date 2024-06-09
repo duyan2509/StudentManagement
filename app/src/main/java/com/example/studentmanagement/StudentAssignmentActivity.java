@@ -1,9 +1,12 @@
 package com.example.studentmanagement;
 
+import static android.view.View.GONE;
+
 import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -34,9 +38,16 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+
+import com.google.firebase.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,6 +61,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
     private List<SubmitItem> fileQueue = new ArrayList<>();
     private String class_code;
     private String File_path;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +74,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         String deadlineTime = getIntent().getStringExtra("deadline_time");
         String class_id = getIntent().getStringExtra("class_code");
         String code = getIntent().getStringExtra("class_id");
+        String Get_Late=getIntent().getStringExtra("Get_Late");
         Log.d("Description", class_id);
         TextView deadlineNameTextView = findViewById(R.id.deadline_name);
         TextView deadlineTimeTextView = findViewById(R.id.deadline_time);
@@ -128,13 +141,19 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             startActivity(intent);
             finish();finish();
         });
-
+        if(Objects.equals(Get_Late, "Miss"))
+        {
+            btn_add.setVisibility(GONE);
+            btn_save.setVisibility(GONE);
+        }
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new SubmitItemAdapter(fileQueue, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
     }
+
+
 
 
     private void openFilePicker() {

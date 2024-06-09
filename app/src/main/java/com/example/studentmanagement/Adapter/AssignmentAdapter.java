@@ -81,6 +81,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             if (assignment.isLate()) {
                 ColorStateList colorStateList = ColorStateList.valueOf(Color.RED);
                 btnSubmit.setBackgroundTintList(colorStateList);
+
                 btnSubmit.setText("Miss");
                 btnSubmit.setTextColor(Color.WHITE);
             } else if (assignment.isSubmittedLate()) {
@@ -94,17 +95,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             }
 
             btnSubmit.setOnClickListener(v -> {
-                if (btnSubmit.getText().toString().equalsIgnoreCase("Submit") ||
-                        btnSubmit.getText().toString().equalsIgnoreCase("Done")) {
+
                     Intent intent = new Intent(context, StudentAssignmentActivity.class);
                     intent.putExtra("deadline_name", assignment.getTitle());
                     intent.putExtra("deadline_time", formatTimestamp(assignment.getDueDate()));
                     intent.putExtra("class_id", (assignment.getClassID()));
                     intent.putExtra("class_code", (assignment.getClass_code()));
+                    intent.putExtra("Get_Late",btnSubmit.getText().toString());
                     context.startActivity(intent);
-                } else {
-                    handleSubmission(assignment);
-                }
+
             });
         }
 
