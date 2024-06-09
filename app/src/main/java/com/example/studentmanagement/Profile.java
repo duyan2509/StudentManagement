@@ -144,9 +144,9 @@ public class Profile extends Fragment {
         FirebaseUtil.currentUserDetails().set(currentUserModel)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        AndroidUtil.showToast(getContext(),"Updated successfully");
+                        Log.d("Update Image", "Update successfully");
                     }else{
-                        AndroidUtil.showToast(getContext(),"Updated failed");
+                        Log.d("Update Image", "Update failed");
                     }
                 });
     }
