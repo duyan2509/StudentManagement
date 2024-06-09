@@ -42,36 +42,41 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
-
         <RelativeLayout
-            android:layout_width="150dp"
+            android:layout_width="350dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/edittext_border">
+            android:layout_centerHorizontal="true">
 
-            <Spinner
-                android:id="@+id/spinner_nam_hoc"
-                app:backgroundTint="@null"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="140dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"/>
-        </RelativeLayout>
+                android:background="@drawable/edittext_border"
+                android:layout_alignParentStart="true">
 
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="190dp"
-            android:background="@drawable/edittext_border">
+                <Spinner
+                    android:id="@+id/spinner_nam_hoc"
+                    app:backgroundTint="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center" />
+            </RelativeLayout>
 
-            <Spinner
-                android:id="@+id/spinner_hoc_ky"
-                app:backgroundTint="@null"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="140dp"
                 android:layout_height="match_parent"
-                android:tooltipText="Học kỳ"
-                android:layout_marginLeft="0dp"/>
-        </RelativeLayout>
+                android:background="@drawable/edittext_border"
+                android:layout_alignParentEnd="true" >
 
+                <Spinner
+                    android:id="@+id/spinner_hoc_ky"
+                    app:backgroundTint="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:tooltipText="Học kỳ"
+                    android:textAlignment="center" />
+            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
