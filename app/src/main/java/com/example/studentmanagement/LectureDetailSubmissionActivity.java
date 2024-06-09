@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String classID, assignmentID, classCode;
     private EditText searchEditText;
+    private TextView tvTitle;
     private String title, time, description;
 
     @Override
@@ -49,6 +51,8 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         Log.d("Tag", classID + " - " + assignmentID);
 
         searchEditText = findViewById(R.id.searchEditText);
+        tvTitle = findViewById(R.id.title);
+        tvTitle.setText(title);
 
         db = FirebaseFirestore.getInstance();
         loadStudentSubmissions();
