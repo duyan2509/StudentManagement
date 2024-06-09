@@ -108,15 +108,8 @@ public class StudentAssignmentActivity extends AppCompatActivity {
 
 
         Button btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentAssignmentActivity.this, StudentDetailClassActivity.class);
-                startActivity(intent);
-
-                // Kết thúc activity hiện tại
-                //finish();
-            }
+        btn_back.setOnClickListener(v->{
+            finish();
         });
         Button btn_add = findViewById(R.id.btn_add);
         btn_add.setOnClickListener(v -> {
