@@ -24,8 +24,9 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SubmissionAdapter adapter;
     private FirebaseFirestore db;
-    private String classID, assignmentID;
+    private String classID, assignmentID, classCode;
     private EditText searchEditText;
+    private String title, time, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,13 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         classID = getIntent().getStringExtra("classID");
+        classCode = getIntent().getStringExtra("classCode");
         assignmentID = getIntent().getStringExtra("assignmentId");
+
+        title = getIntent().getStringExtra("title");
+        time = getIntent().getStringExtra("date");
+        description = getIntent().getStringExtra("description");
+
         Log.d("Tag", classID + " - " + assignmentID);
 
         searchEditText = findViewById(R.id.searchEditText);
@@ -138,7 +145,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             submissions.add(new StudentSubmission(document.getId(), document.getString("code"), document.getString("name"), status));
                             Log.d("TAG", "11");
-                            adapter = new SubmissionAdapter(submissions, this);
+                            adapter = new SubmissionAdapter(submissions, this, title, time, description, classID, assignmentID, classCode);
                             recyclerView.setAdapter(adapter);
                             Log.d("TAG", "12");
                         } else {

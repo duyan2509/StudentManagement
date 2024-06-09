@@ -36,7 +36,7 @@ public class LectureAssignmentActivity extends AppCompatActivity {
     private String title;
     private String time;
     private String description;
-    String classID;
+    String classID, classCode;
     String assignmentID;
     private PieChart pieChart;
     private FirebaseFirestore db;
@@ -49,15 +49,15 @@ public class LectureAssignmentActivity extends AppCompatActivity {
         Log.d("Activity: ", "Lecture Assignment Activity");
 
         classID = getIntent().getStringExtra("classID");
+        classCode = getIntent().getStringExtra("classCode");
         assignmentID = getIntent().getStringExtra("assignmentId");
+        title = getIntent().getStringExtra("title");
+        time = getIntent().getStringExtra("date");
+        description = getIntent().getStringExtra("description");
 
         TextView tvTitle = findViewById(R.id.deadline_name);
         TextView tvDescription = findViewById(R.id.deadline_description);
         TextView tvTime = findViewById(R.id.deadline_time);
-
-        title = getIntent().getStringExtra("title");
-        time = getIntent().getStringExtra("date");
-        description = getIntent().getStringExtra("description");
 
         tvTitle.setText(title);
         tvTime.setText(time);
@@ -80,6 +80,10 @@ public class LectureAssignmentActivity extends AppCompatActivity {
             Intent intent = new Intent(LectureAssignmentActivity.this, LectureDetailSubmissionActivity.class);
             intent.putExtra("assignmentId", assignmentID);
             intent.putExtra("classID", classID);
+            intent.putExtra("classCode", classCode);
+            intent.putExtra("title", title);
+            intent.putExtra("date", time);
+            intent.putExtra("description", description);
             startActivity(intent);
         });
 

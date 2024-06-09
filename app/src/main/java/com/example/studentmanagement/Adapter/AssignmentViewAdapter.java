@@ -30,13 +30,14 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
     private final List<Assignment> assignmentList;
     private final Context context;
     private final FirebaseFirestore db;
-    private final String classID; // Add classID as a member variable
+    private final String classID, classCode; // Add classID as a member variable
 
-    public AssignmentViewAdapter(List<Assignment> assignments, Context context, String classID) {
+    public AssignmentViewAdapter(List<Assignment> assignments, Context context, String classID, String code) {
         this.assignmentList = assignments;
         this.context = context;
         this.classID = classID; // Initialize classID
         this.db = FirebaseFirestore.getInstance();
+        this.classCode = code;
     }
 
     @NonNull
@@ -58,6 +59,7 @@ public class AssignmentViewAdapter extends RecyclerView.Adapter<AssignmentViewAd
             Log.d("TAG", "Clicked on itemView ");
             Intent intent = new Intent(v.getContext(), LectureAssignmentActivity.class);
             intent.putExtra("assignmentId", assignment.getId());
+            intent.putExtra("classCode", classCode);
             intent.putExtra("classID", assignment.getCourseId());
             intent.putExtra("title", assignment.getTitle());
             intent.putExtra("date", date);

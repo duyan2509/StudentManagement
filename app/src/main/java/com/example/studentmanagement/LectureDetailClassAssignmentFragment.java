@@ -74,7 +74,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Assignment> assignmentsList = new ArrayList<>();
-        AssignmentViewAdapter adapter = new AssignmentViewAdapter(assignmentsList, getContext(), classID);
+        AssignmentViewAdapter adapter = new AssignmentViewAdapter(assignmentsList, getContext(), classID, id);
         recyclerView.setAdapter(adapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

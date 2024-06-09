@@ -1,6 +1,7 @@
 package com.example.studentmanagement.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Model.StudentSubmission;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.ViewStudentSubmissionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,18 @@ public class SubmissionAdapter extends RecyclerView.Adapter<SubmissionAdapter.St
     private List<StudentSubmission> studentList;
     private List<StudentSubmission> studentListFull; // Danh sách đầy đủ để lưu trữ dữ liệu gốc
     private Context context;
+    private String title, time, description, classID, assignmentID, classCode;
 
-    public SubmissionAdapter(List<StudentSubmission> studentList, Context context) {
+    public SubmissionAdapter(List<StudentSubmission> studentList, Context context, String title, String time, String description, String classID, String assignmentID, String classCode) {
         this.studentList = studentList;
         this.studentListFull = new ArrayList<>(studentList); // Khởi tạo danh sách đầy đủ
         this.context = context;
+        this.time = time;
+        this.title = title;
+        this.description = description;
+        this.classID = classID;
+        this.assignmentID = assignmentID;
+        this.classCode = classCode;
     }
 
     @NonNull
@@ -42,8 +51,20 @@ public class SubmissionAdapter extends RecyclerView.Adapter<SubmissionAdapter.St
         holder.studentIdTextView.setText(student.getStudentCode());
         holder.studentNameTextView.setText(student.getStudentName());
         holder.submitStatusTextView.setText(student.getStatus());
-        if (student.getStatus().equals("view assignment"))
+        if (student.getStatus().equals("view assignment")) {
             holder.submitStatusTextView.setTextColor(Color.parseColor("#00FF00"));
+            holder.submitStatusTextView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ViewStudentSubmissionActivity.class);
+                intent.putExtra("studentId", student.getStudentID());
+                intent.putExtra("title", title);
+                intent.putExtra("time", time);
+                intent.putExtra("description", description);
+                intent.putExtra("classID", classID);
+                intent.putExtra("classCode", classCode);
+                intent.putExtra("assignmentID", assignmentID);
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override

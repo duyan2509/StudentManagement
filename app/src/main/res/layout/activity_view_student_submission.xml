@@ -6,47 +6,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
-    android:background="#EEEEEE"
     android:orientation="vertical"
-    tools:context=".StudentAssignmentActivity">
+    android:background="#EEEEEE"
+    tools:context=".ViewStudentSubmissionActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/white"
-        app:backgroundTint="@null">
+        app:backgroundTint="@null"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back" />
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_back"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/deadline_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="55dp"
-            android:text="BAI TAP OOP"
+            android:layout_centerVertical="true"
             android:textSize="25dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="BÀI TẬP"/>
     </RelativeLayout>
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
+        android:textStyle = "bold"
         android:text="Mô tả: "
-        android:textSize="15dp"
-        android:textStyle="bold" />
-
+        android:textSize="15dp" />
     <TextView
         android:id="@+id/deadline_description"
         android:layout_width="360dp"
@@ -54,9 +53,9 @@
         android:layout_marginLeft="25dp"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
-        android:text="Mô tả: "
-        android:textSize="15dp" />
-
+        android:text="Làm hết tất cả bài tập "
+        android:textSize="15dp"
+        android:background="@drawable/edittext_border"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -64,40 +63,40 @@
 
         <Button
             android:id="@+id/btn_open_pdf"
+            app:backgroundTint="#5ce7ff"
             android:layout_width="360dp"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="25dp"
-            android:background="@drawable/edittext_border"
-            app:backgroundTint="#5ce7ff" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_border"/>
 
         <ImageView
+            app:backgroundTint="@null"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
-            android:background="@drawable/icon_folder_bg"
-            app:backgroundTint="@null" />
+            android:background="@drawable/icon_folder_bg"/>
 
         <TextView
             android:id="@+id/textview_de_bai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
             android:layout_marginTop="15dp"
+            android:layout_marginLeft="110dp"
             android:text="DE BAI"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/size_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
             android:layout_marginTop="50dp"
+            android:layout_marginLeft="110dp"
             android:text="1.2 MB"
             android:textSize="15dp"
-            android:textStyle="normal" />
+            android:textStyle="normal"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -111,17 +110,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:text="DEADLINE: "
-            android:textSize="15dp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/deadline_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="105dp"
-            android:text="23:00 12/12/2024"
-            android:textSize="15dp"
-            android:textStyle="italic" />
+            android:text="23:00 12/6/2024"
+            android:textStyle="italic"
+            android:textSize="15dp"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -133,40 +132,11 @@
             android:id="@+id/textview_submission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="25dp"
-            android:text="Your submissions"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
-
-        <Button
-            android:id="@+id/btn_add"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
-            android:background="@drawable/button_border"
-            android:text="ADD"
-            android:textColor="@color/black"
+            android:text="Submissions"
             android:textSize="20dp"
-            app:backgroundTint="@null" />
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="230dp"
-            android:background="@drawable/button_border"
-            android:text="SAVE"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            app:backgroundTint="@null" />
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -177,7 +147,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 
 
