@@ -15,26 +15,28 @@ import com.example.studentmanagement.ChatActivity;
 import com.example.studentmanagement.Model.Course;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.Utils.AndroidUtil;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class SearchChatAdapter extends FirestoreRecyclerAdapter<Course, SearchChatAdapter.CourseViewHolder> {
+import java.util.List;
 
-    Context context;
+public class SearchChatAdapter extends RecyclerView.Adapter<SearchChatAdapter.CourseViewHolder> {
 
-    public SearchChatAdapter(@NonNull FirestoreRecyclerOptions<Course> options, Context context) {
-        super(options);
+    private List<Course> courseList;
+    private Context context;
+
+    public SearchChatAdapter(List<Course> courseList, Context context) {
+        this.courseList = courseList;
         this.context = context;
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    protected void onBindViewHolder(@NonNull CourseViewHolder holder, int position, @NonNull Course model) {
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+        Course model = courseList.get(position);
         holder.nameText.setText(model.getCode() + " - " + model.getName());
         holder.infoText.setText("Semester " + model.getSemester() + " || Year: " + model.getAcademic_year());
 
         holder.itemView.setOnClickListener(v -> {
-            //navigate to chat activity
+            // Navigate to chat activity
             Intent intent = new Intent(context, ChatActivity.class);
             AndroidUtil.passCourseModelAsIntent(intent, model);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -45,11 +47,16 @@ public class SearchChatAdapter extends FirestoreRecyclerAdapter<Course, SearchCh
     @NonNull
     @Override
     public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.search_chat_recycle_row,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.search_chat_recycle_row, parent, false);
         return new CourseViewHolder(view);
     }
 
-    class CourseViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public int getItemCount() {
+        return courseList.size();
+    }
+
+    class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView nameText;
         TextView infoText;
 
@@ -58,5 +65,10 @@ public class SearchChatAdapter extends FirestoreRecyclerAdapter<Course, SearchCh
             nameText = itemView.findViewById(R.id.user_name_text);
             infoText = itemView.findViewById(R.id.phone_text);
         }
+    }
+
+    public void updateCourses(List<Course> courses) {
+        this.courseList = courses;
+        notifyDataSetChanged();
     }
 }
