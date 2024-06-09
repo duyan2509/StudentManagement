@@ -50,7 +50,7 @@ public class LectureDetailClassAssignmentFragment extends Fragment {
         Button Document = view.findViewById(R.id.Document);
         Document.setOnClickListener(v -> {
             if (getActivity() instanceof LectureDetailClassActivity) {
-                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(code,id));
+                ((LectureDetailClassActivity) getActivity()).loadFragment(new LectureDetailClassDocumentFragment(id,code));
             }
         });
 
