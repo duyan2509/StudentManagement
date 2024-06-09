@@ -19,6 +19,7 @@ import com.example.studentmanagement.LectureAssignmentActivity;
 import com.example.studentmanagement.Model.Assignment;
 import com.example.studentmanagement.Model.Submission;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.StudentAssignmentActivity;
 import com.example.studentmanagement.Utils.RoleUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,6 +79,16 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.Deadli
             public void onComplete(@NonNull Task<String> task) {
                 String role=task.getResult();
                 if(Objects.equals(role, "student")){
+                    holder.detail.setOnClickListener(v -> {
+                        Intent intent = new Intent(v.getContext(), StudentAssignmentActivity.class);
+                        intent.putExtra("deadline_name", assignment.getTitle());
+                        intent.putExtra("deadline_time", formatTimestamp(assignment.getDue_date()));
+                        intent.putExtra("class_id", (assignment.getCourseId()));
+                        intent.putExtra("class_code", assignmentStringMap.get(assignment));
+                        if (nowGreater(assignment.getDue_date()))
+                            intent.putExtra("Get_Late","Miss");
+                        v.getContext().startActivity(intent);
+                    });
                     Log.i("adapter",String.valueOf(assignment.getSubmissions().size()));
                     boolean checkSubmit=checkStudentSubmit(assignment.getSubmissions());
                     if (!checkSubmit)
@@ -124,7 +135,6 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.Deadli
                             Log.e("DeadlineAdapter", "Assignment ID or Description is null");
                             return;
                         }
-
                         Intent intent = new Intent(v.getContext(), LectureAssignmentActivity.class);
                         intent.putExtra("assignmentId", assignment.getId());
                         intent.putExtra("classCode", assignmentStringMap.get(assignment));
