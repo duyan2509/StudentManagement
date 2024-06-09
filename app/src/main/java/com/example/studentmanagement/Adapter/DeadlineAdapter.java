@@ -1,6 +1,7 @@
 package com.example.studentmanagement.Adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Domain.UserCourseRepository;
 import com.example.studentmanagement.Domain.UserRepository;
+import com.example.studentmanagement.LectureAssignmentActivity;
 import com.example.studentmanagement.Model.Assignment;
 import com.example.studentmanagement.Model.Submission;
 import com.example.studentmanagement.R;
@@ -116,6 +118,22 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.Deadli
                                 Log.w("StudentCount", "Error getting student count.", task.getException());
                             }
                         }
+                    });
+                    holder.detail.setOnClickListener(v -> {
+                        if (assignment.getId() == null || assignment.getDescription() == null) {
+                            Log.e("DeadlineAdapter", "Assignment ID or Description is null");
+                            return;
+                        }
+
+                        Intent intent = new Intent(v.getContext(), LectureAssignmentActivity.class);
+                        intent.putExtra("assignmentId", assignment.getId());
+                        intent.putExtra("classCode", assignmentStringMap.get(assignment));
+                        intent.putExtra("classID", assignment.getCourseId());
+                        intent.putExtra("title", assignment.getTitle());
+                        intent.putExtra("date", assignment.getDue_date());
+                        intent.putExtra("description", assignment.getDescription());
+                        Log.d("PUT", assignment.getId() + assignmentStringMap.get(assignment) + assignment.getCourseId() + assignment.getTitle() + assignment.getDue_date() + assignment.getDescription());
+                        v.getContext().startActivity(intent);
                     });
                 }
             }

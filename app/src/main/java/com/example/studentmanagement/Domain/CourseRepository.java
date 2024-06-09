@@ -90,6 +90,8 @@ public Task<List<Assignment>> getAssignmentByCourseId(String id) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot assignmentDoc : task.getResult()) {
                         Assignment assignment = new Assignment();
+                        assignment.setId(assignmentDoc.getString("id"));
+                        assignment.setDescription(assignmentDoc.getString("description"));
                         assignment.setTitle(assignmentDoc.getString("title"));
                         assignment.setDue_date(assignmentDoc.getTimestamp("due_date"));
 

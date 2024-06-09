@@ -84,6 +84,7 @@ public class Deadline extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<List<Assignment>> task) {
                                     List<Assignment> assignments=task.getResult();
                                     for(Assignment assignment:assignments){
+                                        Log.d("AssignmentData", "ID: " + assignment.getId() + ", Description: " + assignment.getDescription() + ", Title: " + assignment.getTitle() + ", Due Date: " + assignment.getDue_date());
                                         assignment.setCourseId(course1.getId());
                                         assignmentStringMap.put(assignment,course1.getCode());
                                     }

@@ -55,6 +55,8 @@ public class LectureAssignmentActivity extends AppCompatActivity {
         time = getIntent().getStringExtra("date");
         description = getIntent().getStringExtra("description");
 
+        Log.d("GET",classID + classCode + assignmentID + title + time + description);
+
         TextView tvTitle = findViewById(R.id.deadline_name);
         TextView tvDescription = findViewById(R.id.deadline_description);
         TextView tvTime = findViewById(R.id.deadline_time);
