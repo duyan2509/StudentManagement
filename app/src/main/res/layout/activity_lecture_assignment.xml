@@ -104,17 +104,18 @@
             android:textColor="#0084ff"/>
     </RelativeLayout>
 
-    <!--    <com.anychart.AnyChartView-->
-    <!--        android:id="@+id/any_chart_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent" />-->
+<!--        <com.anychart.AnyChartView-->
+<!--            android:id="@+id/any_chart_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-    <!--    <com.github.mikephil.charting.charts.PieChart-->
-    <!--        android:id="@+id/submission_pieChart"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_marginTop="20dp"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        app:chart_backgroundColor="#FFFFFF" />-->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/submission_pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textview_see_detail"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="#FFFFFF" />
 
 </LinearLayout>

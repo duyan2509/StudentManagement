@@ -9,6 +9,7 @@ public class User {
     private String name;
     private String role;
 
+
     public String getProfile_image() {
         return profile_image;
     }

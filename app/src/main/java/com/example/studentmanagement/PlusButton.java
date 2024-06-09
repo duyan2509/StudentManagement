@@ -8,25 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.studentmanagement.Adapter.DocumentAdapter;
-import com.google.firebase.storage.StorageReference;
 
 
 public class PlusButton extends Fragment {
     String code;
-    ActivityResultLauncher<String> filePickerLauncher;
-    StorageReference storageRef;
-    private DocumentAdapter adapter;
-    public PlusButton(String code, ActivityResultLauncher<String> filePickerLauncher, StorageReference storageRef,DocumentAdapter adapter) {
+    public PlusButton(String code) {
         // Required empty public constructor
         this.code=code;
-        this.filePickerLauncher=filePickerLauncher;
-        this.storageRef=storageRef;
-        this.adapter=adapter;
     }
 
     @Override
@@ -40,7 +30,7 @@ public class PlusButton extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
 
-                transaction.replace(R.id.container1, new FileFolderCancelButton(code,filePickerLauncher,storageRef,adapter));
+                transaction.replace(R.id.container1, new FileFolderCancelButton(code));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -160,17 +160,15 @@ public class AddAssignmentActivity extends AppCompatActivity {
             }
         });
         btnAddAssignment.setOnClickListener(v -> {
-<<<<<<< HEAD
 
-            Log.d("Get Date and Time",SelectDate + " - " + SelectTime);
-=======
             Log.d("Get Date and Time",SelectDate+" - " + SelectTime);
->>>>>>> vu
+
             Log.d("GetUri and ClassCode",selectedFileUri+" - " + selectedClassCode);
-            if (selectedFileUri != null && selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
+            if (selectedClassCode != null && Check(SelectDate) && Check(selectedClassCode)) {
 
                 //Upload To FireStore and Storage
-                uploadFileToFirebase(selectedFileUri, selectedClassCode);
+                if (selectedFileUri != null)
+                    uploadFileToFirebase(selectedFileUri, selectedClassCode);
                 String classID = getIntent().getStringExtra("classID");
                 saveAssignmentDetailsToFirestore(selectedClassCode, SelectDate, SelectTime,classID);
                 Intent intent = new Intent(AddAssignmentActivity.this, LectureDetailClassActivity.class);
@@ -181,7 +179,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
                 finish();
 
             } else {
-                Log.d("AddAssignmentActivity", "Chưa chọn tệp hoặc mã lớp học không hợp lệ.");
+                Log.d("AddAssignmentActivity", "Mã lớp học không hợp lệ.");
 
             }
         });
@@ -190,7 +188,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
     private void saveAssignmentDetailsToFirestore(String selectedClassCode, String selectDate, String selectTime,String classID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //String classID = getIntent().getStringExtra("classID");
+        classID = getIntent().getStringExtra("classID");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         Timestamp dueDateTimestamp = null;
         try {
@@ -206,11 +204,33 @@ public class AddAssignmentActivity extends AppCompatActivity {
         assignment.put("title", title.getText().toString()); // Thay đổi tiêu đề bài tập của bạn tại đây
         assignment.put("due_date", dueDateTimestamp); // Sử dụng Timestamp đã tạo
         assignment.put("description", etDescription.getText().toString());
-
+        assignment.put("course_id", classID);
+        Log.d("Tag", "add assignment in class " + classID);
         assert classID != null;
         db.collection("course").document(classID).collection("assignment").add(assignment)
-                .addOnSuccessListener(documentReference -> Log.d("Debug", "Assignment added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.d("Debug", "Error adding assignment: " + e));
+                .addOnSuccessListener(documentReference -> {
+                    // Lấy ID của tài liệu vừa thêm vào
+                    String assignmentId = documentReference.getId();
+
+                    // Tạo một map mới để cập nhật trường "id" của assignment
+                    Map<String, Object> updateData = new HashMap<>();
+                    updateData.put("id", assignmentId);
+
+                    // Cập nhật tài liệu với trường "id" mới
+                    documentReference.update(updateData)
+                            .addOnSuccessListener(aVoid -> {
+                                // Log và thông báo thành công
+                                Log.d("Debug", "Assignment added with ID: " + assignmentId);
+                            })
+                            .addOnFailureListener(e -> {
+                                // Log lỗi nếu có bất kỳ lỗi nào xảy ra trong quá trình cập nhật
+                                Log.e("Error", "Error updating document with ID: " + assignmentId, e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    // Log lỗi nếu có bất kỳ lỗi nào xảy ra trong quá trình thêm tài liệu mới
+                    Log.e("Error", "Error adding assignment: " + e);
+                });
     }
 
     private boolean Check(String select) {
@@ -220,7 +240,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
     private void uploadFileToFirebase(Uri fileUri, String code) {
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child("Assignment/"+title.getText().toString()+"/" + fileName);
+        StorageReference fileRef = storageRef.child("Assignment/Date:"+convertstring(SelectDate)+"/Time:"+convertstring(SelectTime)+"/" + fileName);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "upload_channel")

@@ -8,7 +8,7 @@
     android:layout_marginLeft="30dp">
 
     <Button
-        android:id="@+id/btn_view_document"
+        android:id="@+id/btn_view_assignment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/edittext_border"
