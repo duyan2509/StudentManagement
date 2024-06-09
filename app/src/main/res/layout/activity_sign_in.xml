@@ -105,6 +105,7 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
+        android:visibility="gone"
         android:id="@+id/forgotPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -139,6 +140,7 @@
     </FrameLayout>
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/textView10"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -160,6 +162,7 @@
 
     </ProgressBar>
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/btSIGG"
         android:layout_width="match_parent"
         android:layout_height="70dp"
