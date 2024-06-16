@@ -2,6 +2,7 @@ package com.example.studentmanagement;
 
 import static android.view.View.GONE;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentmanagement.Adapter.DocumentAdapter;
 import com.example.studentmanagement.Adapter.SubmitItemAdapter;
 import com.example.studentmanagement.Model.SubmitItem;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +40,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -65,6 +69,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
     private List<SubmitItem> fileQueue = new ArrayList<>();
     private String class_code;
     private String File_path;
+    TextView score;
+    String assignmentId;
+    String class_id;
+    String code;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +84,9 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_assignment);
         String deadlineName = getIntent().getStringExtra("deadline_name");
         String deadlineTime = getIntent().getStringExtra("deadline_time");
-        String class_id = getIntent().getStringExtra("class_code");
-        String code = getIntent().getStringExtra("class_id");
-        String Get_Late=getIntent().getStringExtra("Get_Late");
+        class_id = getIntent().getStringExtra("class_code");
+        code = getIntent().getStringExtra("class_id");
+        boolean Get_Late=getIntent().getBooleanExtra("Get_Late",false);
         String Get_Type=getIntent().getStringExtra("Get_Type");
         Log.d("Description", class_id);
         TextView deadlineNameTextView = findViewById(R.id.deadline_name);
@@ -86,14 +94,14 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         TextView deadlineDescriptionTextView = findViewById(R.id.deadline_description);
         deadlineNameTextView.setText(deadlineName);
         deadlineTimeTextView.setText(deadlineTime);
-
+        score=findViewById(R.id.score);
 // Thiết lập lấy dữ liệu từ Firestore và cập nhật description
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d("Check Class ID", class_id);
         Log.d("Check Class ID", code);
 
-        db.collection("course").document(class_id).collection("assignment")
+        db.collection("course").document(code).collection("assignment")
                 .whereEqualTo("title", deadlineName) // Tìm document có trường 'title' giống với 'deadlineName'
                 .get()
                 .addOnCompleteListener(task -> {
@@ -103,6 +111,9 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                             if (description != null) {
                                 Log.d("Description", description);
                                 deadlineDescriptionTextView.setText(description);
+                                Log.i("assignmentId get",snapshot.getId());
+                                assignmentId=snapshot.getId();
+                                setScoreView();
                                 // Dừng vòng lặp sau khi tìm thấy mô tả đầu tiên
                                 break;
                             }
@@ -146,10 +157,14 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             startActivity(intent);
             finish();finish();
         });
-        if(Objects.equals(Get_Late, "Miss"))
+        if(Get_Late)
         {
             btn_add.setVisibility(GONE);
             btn_save.setVisibility(GONE);
+            score.setVisibility(View.VISIBLE);
+        }
+        else {
+            score.setVisibility(View.GONE);
         }
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new SubmitItemAdapter(fileQueue, this);
@@ -176,6 +191,34 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         assert currentUser != null;
         Log.d("Get UID",currentUser.getUid() + code+class_id);
         loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(currentUser.getUid()));
+    }
+
+    private void setScoreView() {
+        if(assignmentId==null) {
+            Log.i("assignmentId","score null");
+            return;
+        }
+        FirebaseFirestore.getInstance().collection("course").document(code).collection("assignment").document(assignmentId)
+                .collection("submission").whereEqualTo("student_id",FirebaseAuth.getInstance().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()) {
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                Long grade = document.getLong("grade");
+                                Log.i(String.valueOf(grade),String.valueOf(grade));
+                                if(grade!=null)
+                                    score.setText("Grade: "+String.valueOf(grade));
+                                else
+                                    score.setText("Not Graded Yet");
+                            }
+                        }
+                    }
+                });
     }
 
     private void loadFolderContents(StorageReference reference) {

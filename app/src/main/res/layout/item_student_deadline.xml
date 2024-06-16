@@ -1,63 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
-    android:layout_height="80dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
-    android:layout_marginLeft="30dp">
+    android:layout_marginHorizontal="30dp"
+    android:background="@drawable/edittext_border"
+    android:backgroundTint="#E0FFFF"
 
-    <Button
-        android:id="@+id/btn_view_document"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/edittext_border"
-        app:backgroundTint="#E0FFFF" />
-
-    <Button
-        android:id="@+id/btn_submit"
-        app:backgroundTint="@null"
-        android:layout_width="90dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="250dp"
-        android:layout_centerVertical="true"
-        android:text="SUBMIT"
-        android:textColor="@color/black"
-        android:textSize="10dp"
-        android:textStyle="bold"
-        android:backgroundTint="@color/white"
-        android:background="@drawable/edittext_border"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/deadline_name"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/black"
-        android:text="BAI TAP OOP"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="5dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/deadline_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="BAI TAP OOP"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textSize="20dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SUBMIT"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/edittext_border"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="45dp"
-        android:textColor="@color/black"
-        android:text="Deadline: "
-        android:textSize="15dp"/>
+        android:orientation="horizontal"
+        android:paddingLeft="40dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/deadline_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="110dp"
-        android:layout_marginTop="45dp"
-        android:textColor="@color/black"
-        android:text="23:00 12/12/2024"
-        android:textSize="15dp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Deadline: "
+            android:textSize="15dp"
+            />
 
-</RelativeLayout>
-
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/deadline_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="23:00 12/12/2024"
+            android:textSize="15dp"
+            android:layout_weight="2"/>
+    </LinearLayout>
+</LinearLayout>
