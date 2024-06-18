@@ -201,7 +201,7 @@ public class EditAssignmentActivity extends AppCompatActivity {
     private void uploadNewFileToFirebase(Uri fileUri, String code) {
         String fileName = getFileName(fileUri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(code);
-        StorageReference fileRef = storageRef.child("Assignment/Date:" + convertString(selectDate) + "/Time:" + convertString(selectTime) + "/" + fileName);
+        StorageReference fileRef = storageRef.child("Assignment/"+title.getText().toString()+"/AttachFile/" + fileName);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "upload_channel")
