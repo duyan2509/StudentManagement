@@ -77,7 +77,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String title = document.getString("title");
                         Timestamp Time_Assignment = document.getTimestamp("due_date");
-
+                        String assignmentId = document.getId();
                         Task<QuerySnapshot> querySnapshotTask = db.collection("course").document(class_id).collection("assignment")
                                 .document(document.getId()).collection("submission").get()
                                 .addOnCompleteListener(task1 -> {
@@ -96,7 +96,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                                                         if (submissionDoc.exists()) {
                                                             //AssignmentID= submissionDoc.getId();
                                                             Log.d("Debug:Time", "Check DoneDeadline");
-                                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code);
+                                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code,assignmentId);
                                                             String id = submissionDoc.getString("student_id");
 
                                                             Timestamp Time_submitted = submissionDoc.getTimestamp("submitted_at");
@@ -110,7 +110,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                                                         } else {
                                                             Log.d("Debug:Time", "Check CurrentTime");
                                                             //AssignmentID= submissionDoc.getId();
-                                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code);
+                                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code,assignmentId);
                                                             if (currentDate.compareTo(Time_Assignment) < 0) {
                                                                 assignment.setLate(false);
                                                                 assignment.setSubmittedLate(false);
@@ -134,7 +134,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
 
                                         if (!assignmentAdded) {
 
-                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_code,class_id);
+                                            AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_code,class_id,assignmentId);
                                             if (currentDate.compareTo(Time_Assignment) < 0) {
                                                 assignment.setLate(false);
                                                 assignment.setSubmittedLate(false);
