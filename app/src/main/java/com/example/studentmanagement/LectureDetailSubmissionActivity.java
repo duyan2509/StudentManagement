@@ -82,6 +82,12 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadStudentSubmissions();
+    }
+
     private void loadStudentSubmissions() {
         Log.d("TAG", "1");
         if ((classID != null) && (assignmentID != null)) {

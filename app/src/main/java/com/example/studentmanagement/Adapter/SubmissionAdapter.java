@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentmanagement.Model.StudentSubmission;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.ViewStudentSubmissionActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +70,26 @@ public class SubmissionAdapter extends RecyclerView.Adapter<SubmissionAdapter.St
                 context.startActivity(intent);
             });
         }
+
+        FirebaseFirestore.getInstance().collection("course").document(classID).collection("assignment").document(assignmentID).collection("submission")
+                .whereEqualTo("student_id",student.getStudentID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()) {
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                Long grade = document.getLong("grade");
+                                if (grade != null) {
+                                    holder.score.setText("Score: "+String.valueOf(grade));
+                                    holder.score.setVisibility(View.VISIBLE);
+                                }
+                            }
+                            else
+                                holder.score.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -76,12 +101,14 @@ public class SubmissionAdapter extends RecyclerView.Adapter<SubmissionAdapter.St
         TextView studentIdTextView;
         TextView studentNameTextView;
         TextView submitStatusTextView;
+        TextView score;
 
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);
             studentIdTextView = itemView.findViewById(R.id.student_id);
             studentNameTextView = itemView.findViewById(R.id.student_name);
             submitStatusTextView = itemView.findViewById(R.id.submit_status);
+            score=itemView.findViewById(R.id.score);
         }
     }
 

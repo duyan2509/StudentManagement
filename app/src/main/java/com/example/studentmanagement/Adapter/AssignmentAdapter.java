@@ -95,13 +95,17 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             }
 
             btnSubmit.setOnClickListener(v -> {
-
+                    boolean isLate = Timestamp.now().compareTo(assignment.getDueDate()) > 0;
                     Intent intent = new Intent(context, StudentAssignmentActivity.class);
                     intent.putExtra("deadline_name", assignment.getTitle());
                     intent.putExtra("deadline_time", formatTimestamp(assignment.getDueDate()));
                     intent.putExtra("class_id", (assignment.getClassID()));
                     intent.putExtra("class_code", (assignment.getClass_code()));
-                    intent.putExtra("Get_Late",btnSubmit.getText().toString());
+                    intent.putExtra("Get_Late",isLate);
+                    if(btnSubmit.getText().equals("Done"))
+                        intent.putExtra("Get_Type","View");
+                    else
+                        intent.putExtra("Get_Type","Add");
                     context.startActivity(intent);
 
             });

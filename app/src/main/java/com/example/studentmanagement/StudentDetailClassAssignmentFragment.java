@@ -102,7 +102,6 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                                                             Timestamp Time_submitted = submissionDoc.getTimestamp("submitted_at");
                                                             assert Time_submitted != null;
                                                             Log.d("Debug: Get ID and Time", id + " ; " + formatTimestamp(Time_Assignment) + " ; " + formatTimestamp(Time_submitted) + ";" + Time_submitted.compareTo(Time_Assignment));
-
                                                             assignment.setSubmittedLate(true);
                                                             assignments_list.add(assignment);
                                                             adapter.notifyDataSetChanged();

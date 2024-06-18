@@ -56,6 +56,13 @@
         android:paddingTop="5dp"
         android:text="Mô tả: "
         android:textSize="15dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/main_blue"
+        android:text="Not grade yet"
+        android:id="@+id/score"
+        android:layout_marginHorizontal="25dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -140,44 +147,46 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:layout_marginHorizontal="25dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_add"
-            android:layout_width="150dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
             android:background="@drawable/button_border"
             android:text="ADD"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:backgroundTint="@null" />
-
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="150dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="230dp"
             android:background="@drawable/button_border"
             android:text="SAVE"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:backgroundTint="@null" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp">
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 
