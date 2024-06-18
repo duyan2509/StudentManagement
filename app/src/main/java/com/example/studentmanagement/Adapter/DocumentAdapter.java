@@ -3,6 +3,8 @@ package com.example.studentmanagement.Adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.ViewFileActivity;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
@@ -78,7 +81,18 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public FileViewHolder(@NonNull View itemView) {
             super(itemView);
             fileName = itemView.findViewById(R.id.document_text);
-            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(filesAndFolders.get(getAdapterPosition())));
+            itemView.setOnClickListener(v -> {
+                StorageReference item = filesAndFolders.get(getAdapterPosition());
+                item.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Intent intent = new Intent(context, ViewFileActivity.class);
+                    intent.putExtra("fileUrl", uri.toString());  // Correct way to get download URL
+                    intent.putExtra("fileName", item.getName());
+                    context.startActivity(intent);
+                }).addOnFailureListener(e -> {
+                    // Handle error
+                    Log.e("FileViewHolder", "Failed to get download URL: " + e.getMessage());
+                });
+            });
         }
 
         public void bind(StorageReference item) {
@@ -92,7 +106,11 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public FolderViewHolder(@NonNull View itemView) {
             super(itemView);
             folderName = itemView.findViewById(R.id.document_text);
-            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(filesAndFolders.get(getAdapterPosition())));
+            itemView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(filesAndFolders.get(getAdapterPosition()));
+                }
+            });
         }
 
         public void bind(StorageReference item) {
