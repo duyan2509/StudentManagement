@@ -97,6 +97,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                                                             //AssignmentID= submissionDoc.getId();
                                                             Log.d("Debug:Time", "Check DoneDeadline");
                                                             AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code,assignmentId);
+                                                            Log.d("Debug:Time1", title+Time_Assignment+class_id+class_code+assignmentId);
                                                             String id = submissionDoc.getString("student_id");
 
                                                             Timestamp Time_submitted = submissionDoc.getTimestamp("submitted_at");
@@ -111,6 +112,7 @@ public class StudentDetailClassAssignmentFragment extends Fragment {
                                                             Log.d("Debug:Time", "Check CurrentTime");
                                                             //AssignmentID= submissionDoc.getId();
                                                             AssignmentItem assignment = new AssignmentItem(title, Time_Assignment,class_id,class_code,assignmentId);
+                                                            Log.d("Debug:Time1", title+Time_Assignment+class_id+class_code+assignmentId);
                                                             if (currentDate.compareTo(Time_Assignment) < 0) {
                                                                 assignment.setLate(false);
                                                                 assignment.setSubmittedLate(false);

@@ -146,15 +146,13 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         String temp;
         if(class_id.length()>code.length())
             temp = code;
-        else temp =class_id;
+        else if(class_id.startsWith("course")) temp =class_id;
+        else temp = code;
         AtomicReference<String> fileUrl = new AtomicReference<>();
         AtomicReference<String> namefile = new AtomicReference<>();
         StorageReference child = FirebaseStorage.getInstance().getReference(temp).child("Assignment/"+deadlineName+"/AttachFile/");
         Log.d("Debug: "," " + child.getPath());
         child.listAll().addOnSuccessListener(listResult -> {
-            int fileCount=listResult.getItems().size();
-            //System.out.println("Số lượng tệp trong thư mục: " + fileCount);
-            Log.d("Debug: ","Số lượng tệp trong thư mục: " + fileCount+deadlineName);
             StorageReference fileRef = listResult.getItems().get(0);
             //FileURl = getUrlFromStorage(listResult.getItems().get(0));
 
