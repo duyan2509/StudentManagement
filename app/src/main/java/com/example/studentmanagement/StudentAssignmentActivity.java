@@ -66,6 +66,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
     String assignmentId;
     String class_id;
     String code;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         TextView deadlineNameTextView = findViewById(R.id.deadline_name);
         TextView deadlineTimeTextView = findViewById(R.id.deadline_time);
         TextView FileNameTextView = findViewById(R.id.textview_de_bai);
+        Button openfile = findViewById(R.id.btn_open_pdf);
         TextView Size_File = findViewById(R.id.size_file);
         TextView deadlineDescriptionTextView = findViewById(R.id.deadline_description);
         deadlineNameTextView.setText(deadlineName);
@@ -145,6 +147,8 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         if(class_id.length()>code.length())
             temp = code;
         else temp =class_id;
+        AtomicReference<String> fileUrl = new AtomicReference<>();
+        AtomicReference<String> namefile = new AtomicReference<>();
         StorageReference child = FirebaseStorage.getInstance().getReference(temp).child("Assignment/"+deadlineName+"/AttachFile/");
         Log.d("Debug: "," " + child.getPath());
         child.listAll().addOnSuccessListener(listResult -> {
@@ -152,9 +156,22 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             //System.out.println("Số lượng tệp trong thư mục: " + fileCount);
             Log.d("Debug: ","Số lượng tệp trong thư mục: " + fileCount+deadlineName);
             StorageReference fileRef = listResult.getItems().get(0);
-            Log.d("Debug: ","Data:"+listResult.getItems());
+            //FileURl = getUrlFromStorage(listResult.getItems().get(0));
+
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                fileUrl.set(uri.toString());
+                Log.d("Debug", "URL của tệp: " + fileUrl.get());
+
+            }).addOnFailureListener(e -> {
+                Log.d("Debug", "Không thể lấy URL của tệp: " + e.getMessage());
+
+            });
+            Log.d("Debug: ","Data:"+fileUrl.get());
+            Log.d("Debug: ","Data:"+listResult.getItems() );
             fileRef.getMetadata().addOnSuccessListener(metadata -> {
+
                 String fileName = metadata.getName();
+                namefile.set(metadata.getName());
                 long fileSize = metadata.getSizeBytes();
                 double fileSizeInMB = fileSize/ (1024.0 * 1024.0);
                 String fileSizeInMBString = String.format("%.2f MB", fileSizeInMB);
@@ -170,7 +187,13 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             System.out.println("Không thể liệt kê các tệp: " + e.getMessage());
             Log.d("Debug: ","Không thể liệt kê các tệp:" );
         });
-
+        openfile.setOnClickListener(v ->{
+            Intent intent = new Intent(this, ViewFileActivity.class);
+            intent.putExtra("fileUrl", fileUrl.get());  // Correct way to get download URL
+            Log.d("FileViewHolder", fileUrl.get());
+            intent.putExtra("fileName", namefile.get());
+            startActivity(intent);
+        });
         //
         Button btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(v -> {
@@ -219,7 +242,6 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         Log.d("Get UID",currentUser.getUid() + code+class_id);
         loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(deadlineName).child("Submission").child(currentUser.getUid()));
     }
-
 
 
 

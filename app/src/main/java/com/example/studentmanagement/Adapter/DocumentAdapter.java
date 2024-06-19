@@ -86,6 +86,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 item.getDownloadUrl().addOnSuccessListener(uri -> {
                     Intent intent = new Intent(context, ViewFileActivity.class);
                     intent.putExtra("fileUrl", uri.toString());  // Correct way to get download URL
+                    Log.d("FileViewHolder", uri.toString());
                     intent.putExtra("fileName", item.getName());
                     context.startActivity(intent);
                 }).addOnFailureListener(e -> {
