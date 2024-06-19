@@ -83,7 +83,10 @@ public class ViewStudentSubmissionActivity extends AppCompatActivity {
         deadlineNameTextView.setText(title);
         deadlineTimeTextView.setText(time);
         deadlineDescriptionTextView.setText(description);
-
+        layout_save_score=findViewById(R.id.layout_save_score);
+        save = findViewById(R.id.save);
+        score = findViewById(R.id.score);
+        db=FirebaseFirestore.getInstance();
         Button btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
@@ -107,26 +110,24 @@ public class ViewStudentSubmissionActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        loadFolderContents(FirebaseStorage.getInstance().getReference(classCode).child("Assignment").child(studentID));
-        layout_save_score=findViewById(R.id.layout_save_score);
-        save = findViewById(R.id.save);
-        score = findViewById(R.id.score);
-        db=FirebaseFirestore.getInstance();
+        loadFolderContents(FirebaseStorage.getInstance().getReference(classCode).child("Assignment").child(title).child("Submission").child(studentID));
+
         setSaveScoreView();
     }
 
     private void setSaveScoreView() {
-        db.collection("course").document(classID).collection("assignment").document(assignmentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    Timestamp dueDate = task.getResult().getTimestamp("due_date");
-                    if((dueDate != null) && isTimestampAfterCurrent(dueDate)) {
-                        setLayoutSave();
-                    } else {
-                        layout_save_score.setVisibility(View.GONE);
-                    }
+        db.collection("course").document(classID).collection("assignment").document(assignmentID).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+
+                Timestamp dueDate = task.getResult().getTimestamp("due_date");
+                Log.d("Debug","Go to 1:"+isTimestampAfterCurrent(dueDate));
+                if((dueDate != null) && !isTimestampAfterCurrent(dueDate)) {
+                    setLayoutSave();
+                    layout_save_score.setVisibility(View.GONE);
+                    Log.d("Debug","Go to 1");
+                } else {
+                    layout_save_score.setVisibility(View.GONE);
+                    Log.d("Debug","Go to 23");
                 }
             }
         });
