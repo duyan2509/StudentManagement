@@ -291,7 +291,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
     private void displayAttachedFile(Uri fileUri, String classCode) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(classCode);
         String fileName = getFileName(fileUri);
-        StorageReference fileRef = storageRef.child("Assignment/Date:" + convertstring(SelectDate) + "/Time:" + convertstring(SelectTime) + "/" + fileName);
+        StorageReference fileRef = storageRef.child("Assignment/"+title.getText().toString()+"/AttachFile/" + fileName);
         attachedFiles.add(fileRef);
         documentAdapter.notifyDataSetChanged();
     }
