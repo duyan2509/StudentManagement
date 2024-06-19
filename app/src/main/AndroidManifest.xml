@@ -26,6 +26,9 @@
             android:name=".ViewFileActivity"
             android:exported="false" />
         <activity
+            android:name=".GradeStatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewStudentSubmissionActivity"
             android:exported="false" />
         <activity

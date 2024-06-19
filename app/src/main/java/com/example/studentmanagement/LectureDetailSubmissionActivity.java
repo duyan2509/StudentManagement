@@ -1,10 +1,13 @@
 package com.example.studentmanagement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +20,11 @@ import com.example.studentmanagement.Model.StudentSubmission;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class LectureDetailSubmissionActivity extends AppCompatActivity {
 
@@ -29,6 +35,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
     private EditText searchEditText;
     private TextView tvTitle;
     private String title, time, description;
+    ImageView stat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lecture_detail_submission);
 
         Log.d("Activity: ", "Lecture Detail Submission Activity");
-
+        stat = findViewById(R.id.stat);
         recyclerView = findViewById(R.id.submission_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -87,8 +94,9 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
         super.onResume();
         loadStudentSubmissions();
     }
-
+    Map<Long, Integer> gradeCount;
     private void loadStudentSubmissions() {
+        gradeCount=new HashMap<>();
         Log.d("TAG", "1");
         if ((classID != null) && (assignmentID != null)) {
             db.collection("course").document(classID)
@@ -102,6 +110,7 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                             List<DocumentSnapshot> documents = task.getResult().getDocuments();
                             if (documents.isEmpty())
                                 Log.d("TAG", "3.5");
+                            int graded=0;
                             List<String> studentSubmittedIDs = new ArrayList<>();
                             for (DocumentSnapshot document : documents) {
                                 String studentSubmittedID = document.getString("student_id");
@@ -109,7 +118,18 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                                 if (studentSubmittedID != null && !studentSubmittedIDs.contains(studentSubmittedID)) {
                                     studentSubmittedIDs.add(studentSubmittedID);
                                 }
+                                Long grade = document.getLong("grade");
+                                if(grade!=null){
+                                    graded++;
+                                    if(gradeCount.containsKey(grade))
+                                        gradeCount.put(grade,gradeCount.get(grade)+1);
+                                    else
+                                        gradeCount.put(grade,1);
+                                }
                             }
+                            if(graded!=studentSubmittedIDs.size())
+                                gradeCount.put((long) -1,studentSubmittedIDs.size()-graded);
+                            setOnClickStat();
                             Log.d("TAG", "4");
                             loadStudentData(studentSubmittedIDs);
                             Log.d("TAG", "13");
@@ -118,6 +138,17 @@ public class LectureDetailSubmissionActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void setOnClickStat() {
+        stat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LectureDetailSubmissionActivity.this, GradeStatActivity.class);
+                intent.putExtra("gradeCountMap", (Serializable) gradeCount);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadStudentData(List<String> studentSubmittedIDs) {

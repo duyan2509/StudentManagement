@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
-    android:layout_marginHorizontal="30dp"
+    android:layout_marginHorizontal="28dp"
     android:background="@drawable/edittext_border"
     android:backgroundTint="#E0FFFF"
-
+    android:paddingHorizontal="32dp"
     android:orientation="vertical">
 
 
@@ -17,8 +17,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="10dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
         android:paddingBottom="5dp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -48,9 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="40dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="10dp">
+        android:paddingVertical="4dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -69,4 +65,13 @@
             android:textSize="15dp"
             android:layout_weight="2"/>
     </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting for grade"
+        android:paddingBottom="4dp"
+        android:textColor="@color/main_blue"
+        android:textStyle="italic"/>
 </LinearLayout>

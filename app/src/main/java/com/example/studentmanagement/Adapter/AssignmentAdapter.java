@@ -24,7 +24,13 @@ import com.example.studentmanagement.Model.MultiFilePickerDialog;
 import com.example.studentmanagement.R;
 
 import com.example.studentmanagement.StudentAssignmentActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
@@ -62,14 +68,14 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
 
     class AssignmentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, dueDate, status;
+        TextView title, dueDate, status, grade;
         Button btnSubmit;
 
         public AssignmentViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.deadline_name);
             dueDate = itemView.findViewById(R.id.deadline_time);
-
+            grade=itemView.findViewById(R.id.grade);
             btnSubmit = itemView.findViewById(R.id.btn_submit);
         }
 
@@ -88,6 +94,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 ColorStateList colorStateList = ColorStateList.valueOf(Color.GREEN);
                 btnSubmit.setBackgroundTintList(colorStateList);
                 btnSubmit.setText("Done");
+                setGrade(assignment);
             } else {
                 ColorStateList colorStateList = ColorStateList.valueOf(Color.WHITE);
                 btnSubmit.setBackgroundTintList(colorStateList);
@@ -109,6 +116,31 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     context.startActivity(intent);
 
             });
+        }
+
+        private void setGrade(AssignmentItem assignment) {
+            FirebaseFirestore.getInstance().collection("course").document(assignment.getClassID()).collection("assignment").document(assignment.getId())
+                    .collection("submission")
+                    .whereEqualTo("student_id", FirebaseAuth.getInstance().getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                grade.setVisibility(View.GONE);
+                                if(documentSnapshot!=null){
+                                    Long score = documentSnapshot.getLong("grade");
+                                    if(score!=null){
+                                        grade.setText("Grade: "+String.valueOf(score));
+                                    }
+                                    else
+                                        grade.setText("Waiting for grade.");
+                                    grade.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    });
         }
 
         private void handleSubmission(AssignmentItem assignment) {
