@@ -48,6 +48,16 @@
     <RelativeLayout
         android:id="@+id/file_item"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/attached_files_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="20dp">
 
@@ -61,6 +71,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/date_time_select"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:layout_marginTop="20dp">
@@ -105,7 +116,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/btn_add_assignment"

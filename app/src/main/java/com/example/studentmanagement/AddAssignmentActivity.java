@@ -19,6 +19,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -26,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.studentmanagement.Adapter.DocumentAdapter;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,9 +37,11 @@ import com.google.firebase.storage.StorageReference;
 import java.security.AccessController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -50,6 +55,10 @@ public class AddAssignmentActivity extends AppCompatActivity {
     private Uri selectedFileUri;
     private String selectedClassCode;
     private String SelectDate,SelectTime;
+    private RecyclerView attachedFilesRecyclerView;
+    private DocumentAdapter documentAdapter;
+    private List<StorageReference> attachedFiles;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +136,15 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        attachedFilesRecyclerView = findViewById(R.id.attached_files_recycler_view);
+        attachedFiles = new ArrayList<>();
+        documentAdapter = new DocumentAdapter(attachedFiles, this, item -> {
+            // Handle item click if needed
+        });
+
+        attachedFilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        attachedFilesRecyclerView.setAdapter(documentAdapter);
+
         filePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
@@ -138,6 +156,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
                                     selectedFileUri = uri;
                                     selectedClassCode = classCode;
                                     Log.d("AddAssignmentActivity", "Tệp đã được chọn và lưu tạm thời.");
+                                    displayAttachedFile(uri, classCode);
                                 } else {
                                     Log.d("AddAssignmentActivity", "classCode is null");
                                 }
@@ -268,6 +287,15 @@ public class AddAssignmentActivity extends AppCompatActivity {
                     notificationManager.notify(notificationId, notificationBuilder.build());
                 });
     }
+
+    private void displayAttachedFile(Uri fileUri, String classCode) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(classCode);
+        String fileName = getFileName(fileUri);
+        StorageReference fileRef = storageRef.child("Assignment/Date:" + convertstring(SelectDate) + "/Time:" + convertstring(SelectTime) + "/" + fileName);
+        attachedFiles.add(fileRef);
+        documentAdapter.notifyDataSetChanged();
+    }
+
 
     private String convertstring(String input) {
         if (input == null) {
