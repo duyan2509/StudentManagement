@@ -190,7 +190,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         assert currentUser != null;
         Log.d("Get UID",currentUser.getUid() + code+class_id);
-        loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(currentUser.getUid()));
+        loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(deadlineName).child("Submission").child(currentUser.getUid()));
     }
 
     private void setScoreView() {
@@ -252,7 +252,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         Log.d("Check User ID", userId+class_code);
         addFileInfoToFirestore(class_id,class_code, userId, deadlineName);
         
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(class_code+"/Assignment/"+userId);
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(class_code+"/Assignment/"+deadlineName+"/"+"Submission"+"/"+userId);
         Log.d("Check User ID", storageRef.toString());
         for (SubmitItem submitItem : fileQueue) {
             Uri fileUri = submitItem.getFileUri();
