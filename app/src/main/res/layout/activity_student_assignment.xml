@@ -80,6 +80,7 @@
             app:backgroundTint="#5ce7ff" />
 
         <ImageView
+            android:id="@+id/image_de_bai"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
@@ -87,7 +88,7 @@
             android:background="@drawable/icon_folder_bg"
             app:backgroundTint="@null" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textview_de_bai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -32,10 +32,8 @@ import com.example.studentmanagement.Adapter.SubmitItemAdapter;
 import com.example.studentmanagement.Model.SubmitItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,17 +43,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
-import com.google.firebase.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class StudentAssignmentActivity extends AppCompatActivity {
@@ -91,6 +84,8 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         Log.d("Description", class_id);
         TextView deadlineNameTextView = findViewById(R.id.deadline_name);
         TextView deadlineTimeTextView = findViewById(R.id.deadline_time);
+        TextView FileNameTextView = findViewById(R.id.textview_de_bai);
+        TextView Size_File = findViewById(R.id.size_file);
         TextView deadlineDescriptionTextView = findViewById(R.id.deadline_description);
         deadlineNameTextView.setText(deadlineName);
         deadlineTimeTextView.setText(deadlineTime);
@@ -145,7 +140,38 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             // Mở picker file để chọn tập tin
             openFilePicker();
         });
+        //
+        String temp;
+        if(class_id.length()>code.length())
+            temp = code;
+        else temp =class_id;
+        StorageReference child = FirebaseStorage.getInstance().getReference(temp).child("Assignment/"+deadlineName+"/AttachFile/");
+        Log.d("Debug: "," " + child.getPath());
+        child.listAll().addOnSuccessListener(listResult -> {
+            int fileCount=listResult.getItems().size();
+            //System.out.println("Số lượng tệp trong thư mục: " + fileCount);
+            Log.d("Debug: ","Số lượng tệp trong thư mục: " + fileCount+deadlineName);
+            StorageReference fileRef = listResult.getItems().get(0);
+            Log.d("Debug: ","Data:"+listResult.getItems());
+            fileRef.getMetadata().addOnSuccessListener(metadata -> {
+                String fileName = metadata.getName();
+                long fileSize = metadata.getSizeBytes();
+                double fileSizeInMB = fileSize/ (1024.0 * 1024.0);
+                String fileSizeInMBString = String.format("%.2f MB", fileSizeInMB);
+                FileNameTextView.setText(fileName);
+                Size_File.setText(fileSizeInMBString);
+                Log.d("Debug: ","Không thể lấy metadata của tệp:"+fileName+ fileSizeInMBString);
 
+            }).addOnFailureListener(e -> {
+                //System.out.println("Không thể lấy metadata của tệp: " + e.getMessage());
+                Log.d("Debug: ","Không thể lấy metadata của tệp:" );
+            });
+        }).addOnFailureListener(e -> {
+            System.out.println("Không thể liệt kê các tệp: " + e.getMessage());
+            Log.d("Debug: ","Không thể liệt kê các tệp:" );
+        });
+
+        //
         Button btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(v -> {
             // Upload các tập tin trong hàng đợi lên storage
@@ -153,9 +179,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             Intent intent = new Intent(StudentAssignmentActivity.this, StudentDetailClassActivity.class);
 
             intent.putExtra("show_fragment_lecture_detail_class_assignment", true);
-            intent.putExtra("classID", class_id);
+            intent.putExtra("class_id", class_id);
+            intent.putExtra("class_code", class_code);
             startActivity(intent);
-            finish();finish();
+            finish();
         });
         if(Get_Late)
         {
@@ -164,7 +191,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
             score.setVisibility(View.VISIBLE);
         }
         else {
-            score.setVisibility(View.GONE);
+            score.setVisibility(GONE);
         }
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new SubmitItemAdapter(fileQueue, this);
@@ -192,6 +219,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         Log.d("Get UID",currentUser.getUid() + code+class_id);
         loadFolderContents(FirebaseStorage.getInstance().getReference(class_id).child("Assignment").child(deadlineName).child("Submission").child(currentUser.getUid()));
     }
+
+
+
+
 
     private void setScoreView() {
         if(assignmentId==null) {

@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +27,7 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentmanagement.Adapter.DocumentAdapter;
@@ -50,6 +52,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
     Button btnSelectDate, btnSelectTime, btnAttachFile, btnAddAssignment;
     EditText etSelectedDate, etSelectedTime,etDescription,title;
+
     private ActivityResultLauncher<String> filePickerLauncher;
     private FirebaseFirestore db;
     private Uri selectedFileUri;
@@ -94,6 +97,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
         btnAttachFile = findViewById(R.id.btn_attach_file);
         btnAddAssignment = findViewById(R.id.btn_add_assignment);
         etDescription = findViewById(R.id.deadline_description);
+
         //initial Date And Time
         etSelectedDate.setText("");
         etSelectedTime.setText("");
